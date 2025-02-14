@@ -1,4 +1,4 @@
-package Controller;
+package com.drscan.web.Controller;
 
 import com.drscan.web.secondary.study.domain.StudyRepository;
 import com.drscan.web.secondary.study.service.StudyService;
