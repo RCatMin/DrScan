@@ -11,11 +11,11 @@
 <head>
     <title>Title</title>
 </head>
-<c:import url="/header">
+<c:import url="/header" />
 <body>
     <div id ="content-container">
         hello World
     </div>
 </body>
-</c:import url="footer">
+<c:import url="/footer" />
 </html>
