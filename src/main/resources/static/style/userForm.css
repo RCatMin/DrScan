@@ -1,0 +1,86 @@
+.form-box {
+    width: 350px;
+    padding: 20px;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.input-group input {
+    width: 350px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+    display: none;
+}
+
+button {
+    width: 350px;
+    padding: 10px;
+    background: darkgray;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.hospital-department {
+    display: flex;
+    gap: 10px;
+}
+.hospital, .department {
+    flex: 1;
+}
+.email-container {
+    display: flex;
+    gap: 10px;
+}
+#email-verify-btn {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#username {
+    padding: 10px 10px 10px 40px;
+}
+
+#password {
+    padding: 10px 10px 10px 50px;
+}
+
+#hospital {
+    padding: 10px 10px 10px 45px;
+}
+
+#department {
+    padding: 10px 10px 10px 45px;
+}
+
+#name {
+    padding: 10px 10px 10px 65px;
+}
+
+#email {
+    padding: 10px 10px 10px 65px;
+}
+
+#phone {
+    padding: 10px 10px 10px 73px;
+}
