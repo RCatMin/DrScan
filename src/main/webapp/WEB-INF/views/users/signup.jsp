@@ -11,6 +11,7 @@
 <head>
     <title>Sign Up</title>
     <link rel="stylesheet" href="/style/userForm.css">
+    <script type="module" src="/script/signup.js"></script>
 </head>
 <c:import url="/header" />
 <body>
@@ -27,7 +28,7 @@
     <div class="input-group">
         <div class="hospital-department">
             <div class="hospital">
-                <label for="hospital">HN : </label>
+                <label id="department-label" for="hospital">HN : </label>
                 <input type="text" id="hospital" name="hospital" required>
             </div>
             <div class="department">
@@ -54,6 +55,7 @@
     <button type="submit">Sign Up</button>
     <a href="/users/signin">Sign In</a>
 </form>
+
 
 </body>
 <c:import url="/footer" />
