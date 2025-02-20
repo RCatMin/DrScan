@@ -1,10 +1,12 @@
-package com.drscan.web.clinics.domain;
+package com.drscan.web.clinic.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
+@Setter
 @Getter
 @Entity
 @Table(name = "clinic", schema = "drscan_db")
@@ -13,6 +15,7 @@ public class Clinic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer clinicCode;
 
+    @Column(nullable = false)
     private String patientCode;
     private String userCode;
     private String clinicDate;
