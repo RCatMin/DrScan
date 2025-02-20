@@ -11,33 +11,23 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EmailService {
 
-    private final JavaMailSender mailSender;
+    private final JavaMailSender emailSender;
+    private final TokenService tokenService;
 
-    // 이메일 인증을 위한 메서드
-    public void sendVerificationEmail(String to, String subject, String token) {
-        // 이메일 인증 링크를 직접 문자열로 작성
-        String verificationLink = "http://localhost:8080/auth/verify?token=" + token;
+    public void sendVerificationEmail(String toEmail) throws MessagingException {
+        // 이메일 인증 토큰 생성
+        String token = tokenService.generateToken(toEmail);
+        // 이메일 인증 링크 생성
+        String verificationLink = "http://localhost:8080/verify?token=" + token;
 
-        // 이메일 내용 (HTML 형식)
-        String emailContent = "<html>" +
-                "<body>" +
-                "<h1>이메일 인증</h1>" +
-                "<p>아래 링크를 클릭하여 이메일 인증을 완료하세요:</p>" +
-                "<a href='" + verificationLink + "'>인증하기</a>" +
-                "</body>" +
-                "</html>";
+        // 이메일 내용 설정
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setTo(toEmail);
+        helper.setSubject("Email Verification");
+        helper.setText("Click the link to verify your email: " + verificationLink, true);
 
-        // MimeMessage 생성
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
-
-        try {
-            helper.setTo(to);               // 수신자 이메일 설정
-            helper.setSubject(subject);     // 이메일 제목 설정
-            helper.setText(emailContent, true);  // 이메일 내용 설정 (HTML 형식)
-            mailSender.send(message);       // 이메일 전송
-        } catch (MessagingException e) {
-            throw new RuntimeException("이메일 전송 실패", e);  // 이메일 전송 실패시 예외 처리
-        }
+        // 이메일 발송
+        emailSender.send(message);
     }
 }
