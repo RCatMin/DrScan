@@ -1,4 +1,4 @@
-package com.drscan.web.users.util;
+package com.drscan.web.primary.users.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ public class AuthController {
     public ResponseEntity<String> sendVerificationEmail(@RequestParam String email) {
         String token = jwtUtil.generateToken(email);
         redisService.saveToken(email, token, 5); // 5분 유지
-        emailService.sendHtmlEmail(email, "이메일 인증", token);
+        emailService.sendVerificationEmail(email, "이메일 인증", token);
         return ResponseEntity.ok("인증 이메일이 발송되었습니다.");
     }
 

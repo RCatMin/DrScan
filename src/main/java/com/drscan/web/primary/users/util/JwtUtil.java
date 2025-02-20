@@ -1,4 +1,4 @@
-package com.drscan.web.users.util;
+package com.drscan.web.primary.users.util;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

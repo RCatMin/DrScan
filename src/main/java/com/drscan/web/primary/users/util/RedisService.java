@@ -1,4 +1,4 @@
-package com.drscan.web.users.util;
+package com.drscan.web.primary.users.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;

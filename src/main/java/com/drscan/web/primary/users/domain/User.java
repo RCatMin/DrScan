@@ -1,16 +1,18 @@
-package com.drscan.web.users.domain;
+package com.drscan.web.primary.users.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 @Getter
 @Entity
 @Table(name = "users", schema = "drscan_db", uniqueConstraints = @UniqueConstraint(columnNames = {"username", "email", "phone", "otp_key"}))
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userCode;
 
     private String accountType;
