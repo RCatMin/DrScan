@@ -1,6 +1,7 @@
 package com.drscan.web.filter;
 
 import com.drscan.web.permission.service.PermissionService;
+import com.drscan.web.users.domain.AuthUser;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,15 +18,24 @@ public class AuthFilter implements Filter {
 
     private final List resources = List.of(
             "/script",
-            "/style"
+            "/style",
+            "/users/valid"
     );
 
     private final List urls = List.of(
             "/",
             "/index",
             "/header",
-            "/footer"
+            "/footer",
+            "/users/signin",
+            "/users/signup"
     );
+
+    private final PermissionService permissionService;
+
+    public AuthFilter(PermissionService permissionService) {
+        this.permissionService = permissionService;
+    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -39,19 +49,18 @@ public class AuthFilter implements Filter {
             return;
         }
 
-//        HttpSession session = request.getSession();
-//        AuthUser authUser = (AuthUser) session.getAttribute("authUser");
-//
-//        if(authUser == null) {
-//            response.sendRedirect("/users/signin");
-//            return;
-//        }
-//
-//        PermissionService permissionService = new PermissionService;
-//        if(permissionService.checkAdmin(authUser.getUsercode())){
-//            response.sendRedirect("/admin");
-//            return;
-//        }
+        HttpSession session = request.getSession();
+        AuthUser authUser = (AuthUser) session.getAttribute("authUser");
+
+        if(authUser == null) {
+            response.sendRedirect("/users/signin");
+            return;
+        }
+
+        if(permissionService.checkAdmin(authUser.getUserCode())) {
+            response.sendRedirect("/admin");
+            return;
+        }
 
         filterChain.doFilter(servletRequest, servletResponse);
     }
