@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <html>
 <head>
-    <title>진료등록페이지</title>
+    <title>진료</title>
 </head>
 <c:import url="/header" />
 <body>
