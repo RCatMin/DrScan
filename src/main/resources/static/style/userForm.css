@@ -67,10 +67,16 @@ button {
 
 #hospital {
     padding: 10px 10px 10px 45px;
+    width: 170px;
 }
 
 #department {
     padding: 10px 10px 10px 45px;
+    width: 170px;
+}
+
+#department-label {
+    left: 190px;
 }
 
 #name {
