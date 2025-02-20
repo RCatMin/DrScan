@@ -17,8 +17,8 @@ public class ReportsController {
 
     private final ReportsService reportsService;
 
-    @GetMapping("/{patientId}")
-    public String patientReports(){
-        return "patientReports";
+    @GetMapping("/views/{patientId}")
+    public ResponseEntity<?> findPatientAll(){
+        return ResponseEntity.ok("");
     }
 }
