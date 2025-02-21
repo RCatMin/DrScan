@@ -1,6 +1,6 @@
 package com.drscan.web.Controller;
 
-import com.drscan.web.patientScan.service.PatientScanService;
+import com.drscan.web.secondary.patientScan.service.PatientScanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

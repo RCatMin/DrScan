@@ -1,4 +1,4 @@
-package com.drscan.web.patientScan.domain;
+package com.drscan.web.secondary.patientScan.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
