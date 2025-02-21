@@ -58,6 +58,11 @@ button {
     display: flex;
     gap: 10px;
 }
+
+#verification-code-container {
+    display: none;
+}
+
 #email-verify-btn {
     padding: 5px 10px;
     cursor: pointer;
@@ -91,6 +96,10 @@ button {
 
 #email {
     padding: 10px 10px 10px 65px;
+}
+
+#verification-code {
+    padding: 10px 10px 10px 130px;
 }
 
 #phone {
