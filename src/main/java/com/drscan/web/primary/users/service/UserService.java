@@ -10,8 +10,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-
     private final UserRepository userRepository;
 
     public List<User> findUserAll(){ return userRepository.findAll(); }
+
+    public User findUserByUsername(String username){
+        return userRepository.findUserByUsername(username);
+    }
 }
