@@ -1,11 +1,7 @@
 package com.drscan.web.filter;
 
 import com.drscan.web.primary.permission.service.PermissionService;
-<<<<<<< HEAD
-import com.drscan.web.users.domain.AuthUser;
-=======
 import com.drscan.web.primary.users.domain.AuthUser;
->>>>>>> origin/feature/clinic
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,8 +14,7 @@ import java.util.List;
 
 @Configuration
 @WebFilter("/*")
-public class
-AuthFilter implements Filter {
+public class AuthFilter implements Filter {
 
     private final List resources = List.of(
             "/script",
