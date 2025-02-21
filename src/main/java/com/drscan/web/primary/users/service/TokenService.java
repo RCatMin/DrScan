@@ -16,6 +16,12 @@ public class TokenService {
 
     private final String SECRET_KEY;
 
+    public static String generateSecretKey() {
+        byte[] key = new byte[32];
+        new SecureRandom().nextBytes(key);
+        return Base64.getEncoder().encodeToString(key);
+    }
+
     public TokenService() {
         byte[] key = new byte[32];
         new SecureRandom().nextBytes(key);
