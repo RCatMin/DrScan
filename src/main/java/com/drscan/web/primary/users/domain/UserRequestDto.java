@@ -12,4 +12,9 @@ import lombok.Setter;
 public class UserRequestDto {
     private String username;
     private String password;
+    private String hospital;
+    private String department;
+    private String name;
+    private String email;
+    private String phone;
 }
