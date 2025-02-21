@@ -21,18 +21,20 @@
         <label for="username">ID : </label>
         <input type="text" id="username" name="username" required>
     </div>
+    <p class="error-msg" id="error-username">사용할 수 없는 아이디입니다.</p>
     <div class="input-group">
         <label for="password">PW : </label>
         <input type="password" id="password" name="password" required>
     </div>
+    <p class="error-msg" id="error-password">사용할 수 없는 비밀번호입니다.</p>
     <div class="input-group">
         <div class="hospital-department">
             <div class="hospital">
-                <label id="department-label" for="hospital">HN : </label>
+                <label for="hospital">HN : </label>
                 <input type="text" id="hospital" name="hospital" required>
             </div>
             <div class="department">
-                <label for="department">DP : </label>
+                <label id="department-label"  for="department">DP : </label>
                 <input type="text" id="department" name="department" required>
             </div>
         </div>
@@ -41,6 +43,7 @@
         <label for="name">NAME : </label>
         <input type="text" id="name" name="name" required>
     </div>
+    <p class="error-msg" id="error-name">사용할 수 없는 이름입니다.</p>
     <div class="input-group">
         <label for="email">EMAIL : </label>
         <div class="email-container">
@@ -48,10 +51,12 @@
             <button type="button" id="email-verify-btn">Verify</button>
         </div>
     </div>
+    <p class="error-msg" id="error-email">사용할 수 없는 이메일입니다.</p>
     <div class="input-group">
         <label for="phone">PHONE : </label>
         <input type="text" id="phone" name="phone" required>
     </div>
+    <p class="error-msg" id="error-phone">사용할 수 없는 전화번호입니다.</p>
     <button type="submit">Sign Up</button>
     <a href="/users/signin">Sign In</a>
 </form>

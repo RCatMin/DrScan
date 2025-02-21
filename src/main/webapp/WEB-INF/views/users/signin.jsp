@@ -11,6 +11,7 @@
 <head>
     <title>Sign In</title>
     <link rel="stylesheet" href="/style/userForm.css">
+    <script type="module" src="/script/signin.js"></script>
 </head>
 <c:import url="/header" />
 <body>
@@ -20,10 +21,12 @@
         <label for="username">ID : </label>
         <input type="text" id="username" name="username" required>
     </div>
+    <p class="error-msg" id="error-username">잘못된 입력입니다.</p>
     <div class="input-group">
         <label for="password">PW : </label>
         <input type="password" id="password" name="password" required>
     </div>
+    <p class="error-msg" id="error-password">잘못된 입력입니다.</p>
     <button type="submit">Sign In</button>
     <a href="/users/signup">Sign Up</a>
 </form>
