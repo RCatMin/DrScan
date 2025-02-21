@@ -1,4 +1,4 @@
-package com.drscan.web.reports.domain;
+package com.drscan.web.primary.reports.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
