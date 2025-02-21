@@ -11,7 +11,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
     verifyBtn.addEventListener("click", async () => {
         const email = document.getElementById("email").value;
-        console.log(email)
+
+        if(email){
+            document.getElementById("verification-code-container").style.display = "block";
+        }
+
         await sendEmail(email);
     });
 
