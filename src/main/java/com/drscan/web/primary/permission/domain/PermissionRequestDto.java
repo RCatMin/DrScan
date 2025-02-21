@@ -1,4 +1,4 @@
-package com.drscan.web.permission.domain;
+package com.drscan.web.primary.permission.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
