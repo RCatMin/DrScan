@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import com.drscan.web.primary.reports.domain.ReportsRepository;
+
 @RequiredArgsConstructor
 @Service
 public class ReportsService {
@@ -29,5 +31,6 @@ public class ReportsService {
         return imageInfoRepository.findAll();
     }
 
+    private final ReportsRepository reportsRepository;
 
 }

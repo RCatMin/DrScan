@@ -1,4 +1,4 @@
-package com.drscan.web.clinic.domain;
+package com.drscan.web.primary.clinic.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,10 +15,10 @@ public class Clinic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer clinicCode;
 
-    @Column(nullable = false)
+
     private String patientCode;
     private String userCode;
-    private String clinicDate;
+    private Timestamp clinicDate;
     private String context;
     private Timestamp regDate;
     private Timestamp modDate;

@@ -1,5 +1,9 @@
 package com.drscan.web.primary.permission.service;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/feature/clinic
 import com.drscan.web.primary.permission.domain.Permission;
 import com.drscan.web.primary.permission.domain.PermissionRepository;
 import lombok.RequiredArgsConstructor;
