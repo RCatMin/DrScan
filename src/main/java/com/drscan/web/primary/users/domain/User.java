@@ -1,16 +1,18 @@
 package com.drscan.web.primary.users.domain;
 
+import com.drscan.web.primary.users.util.Timestamp;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-
+@NoArgsConstructor
 @Getter
 @Entity
 @Table(name = "users", schema = "drscan_db", uniqueConstraints = @UniqueConstraint(columnNames = {"username", "email", "phone", "otp_key"}))
-public class User {
+public class User extends Timestamp {
     @Id
     @Column(name = "user_code")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userCode;
 
     @Column(name = "account_type")
@@ -35,9 +37,17 @@ public class User {
     @Column(name = "fail_count")
     private Integer failCount;
 
-    @Column(name = "reg_date")
-    private Timestamp regDate;
-
-    @Column(name = "mod_date")
-    private Timestamp modDate;
+    public User(String username, String password, String hospital, String department, String name, String email, String phone, String otpKey) {
+        this.username = username;
+        this.password = password;
+        this.hospitalName = hospital;
+        this.department = department;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.otpKey = otpKey;
+        this.accountType = "temporary";
+        this.status = "pending";
+        this.failCount = 0;
+    }
 }
