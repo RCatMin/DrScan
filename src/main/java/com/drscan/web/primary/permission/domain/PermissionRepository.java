@@ -1,4 +1,4 @@
-package com.drscan.web.permission.domain;
+package com.drscan.web.primary.permission.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

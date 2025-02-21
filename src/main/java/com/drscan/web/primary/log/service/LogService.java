@@ -1,6 +1,6 @@
-package com.drscan.web.log.service;
+package com.drscan.web.primary.log.service;
 
-import com.drscan.web.log.domain.LogRepository;
+import com.drscan.web.primary.log.domain.LogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

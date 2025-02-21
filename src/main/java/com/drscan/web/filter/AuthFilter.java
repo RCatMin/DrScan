@@ -1,6 +1,6 @@
 package com.drscan.web.filter;
 
-import com.drscan.web.permission.service.PermissionService;
+import com.drscan.web.primary.permission.service.PermissionService;
 import com.drscan.web.users.domain.AuthUser;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
