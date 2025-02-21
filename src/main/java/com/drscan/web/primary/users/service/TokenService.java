@@ -28,12 +28,20 @@ public class TokenService {
         this.SECRET_KEY = Base64.getEncoder().encodeToString(key);
     }
 
+    private String generateVerificationCode() {
+        SecureRandom random = new SecureRandom();
+        int code = 100000 + random.nextInt(900000);
+        return String.valueOf(code);
+    }
+
     public String generateToken(String email) {
         SecretKey secretKey = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+        String verificationCode = generateVerificationCode();
 
         return Jwts.builder()
                 .setSubject(email)
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5))  // 1시간 만료
+                .claim("verificationCode", verificationCode)
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -47,6 +55,16 @@ public class TokenService {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public String getVerificationCodeFromToken(String token) {
+        SecretKey secretKey = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+
+        return (String) Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody()
+                .get("verificationCode");
     }
 
     public boolean isTokenExpired(String token) {
