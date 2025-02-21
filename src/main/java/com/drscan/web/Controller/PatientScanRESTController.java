@@ -15,8 +15,9 @@ public class PatientScanRESTController {
 
     private final PatientScanService patientScanService;
 
-    @GetMapping("/{pid}")
-    public ResponseEntity<?> getPatientStudies(@PathVariable String pid) {
-        return ResponseEntity.ok(patientScanService.getStudiesByPatientId(pid));
+    @GetMapping("/{pid}/records")
+    public ResponseEntity<?> getPatientRecords(@PathVariable String pid) {
+        return ResponseEntity.ok(patientScanService.getPatientRecords(pid));
     }
+
 }
