@@ -20,4 +20,15 @@ public class Log {
     private String event;
     private Timestamp eventDate;
 
+    public Log(long userCode, long reportCode, String event) {
+        this.userCode = userCode;
+        this.reportCode = reportCode;
+        this.event = event;
+    }
+
+    public void update(LogRequestDto logDto) {
+        this.userCode = logDto.getUserCode();
+        this.reportCode = logDto.getReportCode();
+        this.event = logDto.getEvent();
+    }
 }
