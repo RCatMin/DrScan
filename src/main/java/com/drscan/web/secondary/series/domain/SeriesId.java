@@ -1,4 +1,4 @@
-package com.drscan.web.secondary.study.domain;
+package com.drscan.web.secondary.series.domain;
 
 import lombok.*;
 
