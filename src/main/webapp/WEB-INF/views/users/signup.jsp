@@ -52,6 +52,10 @@
         </div>
     </div>
     <p class="error-msg" id="error-email">사용할 수 없는 이메일입니다.</p>
+    <div class="input-group" id="verification-code-container" style="display: none;">
+        <label for="verification-code">Verification Code:</label>
+        <input type="text" id="verification-code" name="verification-code" required>
+    </div>
     <div class="input-group">
         <label for="phone">PHONE : </label>
         <input type="text" id="phone" name="phone" required>
