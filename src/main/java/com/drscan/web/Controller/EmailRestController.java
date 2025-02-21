@@ -42,12 +42,12 @@ public class EmailRestController {
         try {
 
             String email = tokenService.getEmailFromToken(token);
+            String code = tokenService.getVerificationCodeFromToken(token);
 
             if (tokenService.isTokenExpired(token)) {
                 return "Token has expired!";
             }
-
-            return "Email " + email + " has been successfully verified!";
+            return "Email " + email + " has been successfully verified! and this is a verification code " + code;
         } catch (Exception e) {
             return "Invalid token: " + e.getMessage();
         }
