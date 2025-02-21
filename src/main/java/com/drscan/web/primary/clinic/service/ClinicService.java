@@ -1,7 +1,7 @@
-package com.drscan.web.clinic.service;
+package com.drscan.web.primary.clinic.service;
 
-import com.drscan.web.clinic.domain.Clinic;
-import com.drscan.web.clinic.domain.ClinicRepository;
+import com.drscan.web.primary.clinic.domain.Clinic;
+import com.drscan.web.primary.clinic.domain.ClinicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

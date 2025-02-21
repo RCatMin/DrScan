@@ -1,7 +1,7 @@
-package com.drscan.web.permission.service;
+package com.drscan.web.primary.permission.service;
 
-import com.drscan.web.permission.domain.Permission;
-import com.drscan.web.permission.domain.PermissionRepository;
+import com.drscan.web.primary.permission.domain.Permission;
+import com.drscan.web.primary.permission.domain.PermissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class PermissionService {
 
         if(permission.getPermission().equals("admin")){
             return true;
-        } else{
+        } else {
             return false;
         }
     }

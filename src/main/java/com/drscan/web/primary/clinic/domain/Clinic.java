@@ -1,4 +1,4 @@
-package com.drscan.web.clinic.domain;
+package com.drscan.web.primary.clinic.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
