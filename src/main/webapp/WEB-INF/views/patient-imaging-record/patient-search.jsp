@@ -13,7 +13,11 @@
 </head>
 <c:import url="/header" />
 <body>
-    <h1>dasddasdasdas</h1>
+    <div>
+        <h1>환자 정보를 입력하세요</h1>
+        <input type="text" id="patientId" placeholder="환자 ID 입력">
+        <button>검색</button>
+    </div>
 </body>
 <c:import url="/footer" />
 </html>
