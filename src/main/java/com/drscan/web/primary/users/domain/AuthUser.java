@@ -1,4 +1,4 @@
-package com.drscan.web.users.domain;
+package com.drscan.web.primary.users.domain;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

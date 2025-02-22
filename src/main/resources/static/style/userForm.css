@@ -31,6 +31,12 @@
     display: none;
 }
 
+.error-msg {
+    display: none;
+    color: red;
+    font-size: 12px;
+}
+
 button {
     width: 350px;
     padding: 10px;
@@ -52,6 +58,11 @@ button {
     display: flex;
     gap: 10px;
 }
+
+#verification-code-container {
+    display: none;
+}
+
 #email-verify-btn {
     padding: 5px 10px;
     cursor: pointer;
@@ -85,6 +96,10 @@ button {
 
 #email {
     padding: 10px 10px 10px 65px;
+}
+
+#verification-code {
+    padding: 10px 10px 10px 130px;
 }
 
 #phone {

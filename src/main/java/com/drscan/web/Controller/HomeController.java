@@ -26,9 +26,4 @@ public class HomeController {
         return "error";
     }
 
-    @GetMapping("/users/signin")
-    public String signin() { return "users/signin"; }
-
-    @GetMapping("/users/signup")
-    public String signup() { return "users/signup"; }
 }
