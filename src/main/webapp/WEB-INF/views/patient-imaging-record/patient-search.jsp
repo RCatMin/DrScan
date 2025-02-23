@@ -11,7 +11,6 @@
 <head>
     <title>환자 정보 검색 페이지</title>
     <link rel="stylesheet" type="text/css" href="/style/patient-search.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/script/patient-search.js" defer></script>
 </head>
 <c:import url="/header" />

@@ -1,7 +1,7 @@
-var currentPage = 1;
-var itemsPerPage = 10;
-var totalPages = 1;
-var allStudies = [];
+var currentPage = 1; // 현재 페이지
+var itemsPerPage = 10; // 한 페이지당 표시할 개수
+var totalPages = 1; // 총 페이지 수
+var allStudies = []; // 전체 데이터를 저장할 배열
 
 function searchPatient() {
     var patientCode = document.getElementById("patientCode").value.trim();
@@ -18,10 +18,14 @@ function searchPatient() {
         return;
     }
 
-    $.ajax({
-        url: "/patientScan/action/" + patientCode + "/records",
-        method: "GET",
-        success: function(response) {
+    fetch(`/patientScan/action/${patientCode}/records`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("환자 정보를 불러오는 중 오류가 발생했습니다.");
+            }
+            return response.json();
+        })
+        .then(response => {
             document.getElementById("resultSection").style.display = "block";
             var patientRecords = document.getElementById("patientRecords");
             patientRecords.innerHTML = ""; // 기존 데이터 삭제
@@ -53,11 +57,10 @@ function searchPatient() {
             totalPages = Math.ceil(allStudies.length / itemsPerPage);
             currentPage = 1; // 페이지 초기화
             displayPage(currentPage);
-        },
-        error: function() {
-            alert("환자 정보를 불러오는 중 오류가 발생했습니다.");
-        }
-    });
+        })
+        .catch(error => {
+            alert(error.message);
+        });
 }
 
 // 특정 페이지의 데이터 표시 함수
