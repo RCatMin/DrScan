@@ -15,7 +15,7 @@ function searchPatient() {
 
 
     $.ajax({
-        url: "/patientScan/action" + patientCode + "/records",
+        url: "/patientScan/action/" + patientCode + "/records",
         method: "GET",
         success: function(response) {
             document.getElementById("resultSection").style.display = "block";
