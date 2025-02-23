@@ -46,3 +46,25 @@ th {
     background-color: #007bff;
     color: white;
 }
+
+.pagination-container {
+    margin-top: 10px;
+}
+
+.pagination-btn {
+    padding: 5px 10px;
+    margin: 2px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #f1f1f1;
+}
+
+.pagination-btn:hover {
+    background-color: #ddd;
+}
+
+.pagination-btn.active {
+    background-color: #007bff;
+    color: white;
+}

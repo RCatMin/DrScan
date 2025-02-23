@@ -43,6 +43,8 @@
             <tbody id="patientRecords">
             </tbody>
         </table>
+        <div id="pagination" class="pagination-container" style="text-align: center; margin-top: 10px;">
+        </div>
     </div>
 </div>
 </body>
