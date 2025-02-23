@@ -12,4 +12,5 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
     List<Patient> findByPid(String pid);
 
     Optional<Patient> findById(String pid);
+    // 다시확인하기
 }
