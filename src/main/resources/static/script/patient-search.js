@@ -15,7 +15,7 @@ function searchPatient() {
 
 
     $.ajax({
-        url: "/patient/" + patientCode + "/records",
+        url: "/patientScan/action" + patientCode + "/records",
         method: "GET",
         success: function(response) {
             document.getElementById("resultSection").style.display = "block";
@@ -57,9 +57,9 @@ function searchPatient() {
 }
 
 function viewMedicalRecords(pid) {
-    window.location.href = "/patient/" + pid + "/records";
+    // window.location.href = 진료기록조회 주소넣기 ;
 }
 
 function analyzeImage(seriesId) {
-    window.location.href = "/image-analysis/" + seriesId;
+    // window.location.href = 영산판독 주소넣기;
 }
