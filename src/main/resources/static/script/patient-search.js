@@ -26,6 +26,9 @@ function searchPatient() {
             return response.json();
         })
         .then(response => {
+
+            console.log("서버 응답 데이터:", response); // 확인용
+
             document.getElementById("resultSection").style.display = "block";
             var patientRecords = document.getElementById("patientRecords");
             patientRecords.innerHTML = ""; // 기존 데이터 삭제
@@ -33,22 +36,25 @@ function searchPatient() {
             var patient = response.patient;
             allStudies = []; // 기존 데이터 초기화
 
+            var studyDetails = response.studyDetails || []; // undefined 방지
+
             if (!patient || response.studies.length === 0) {
                 patientRecords.innerHTML = "<tr><td colspan='10'>해당 환자의 데이터가 없습니다.</td></tr>";
                 return;
             }
 
-            response.studies.forEach(function(study) {
-                study.series.forEach(function(series) {
+            studyDetails.forEach(function(study) {
+                var seriesList = study.series || []; // undefined 방지
+                seriesList.forEach(function(series) {
                     allStudies.push({
                         pname: patient.pname,
                         pid: patient.pid,
                         psex: patient.psex,
                         pbirthdate: patient.pbirthdate,
-                        modality: series.modality,
-                        studydesc: study.studydesc,
-                        studydate: study.studydate,
-                        studytime: study.studytime,
+                        modality: series.modality || "N/A",
+                        studydesc: study.study.studydesc || "N/A",
+                        studydate: study.study.studydate || "N/A",
+                        studytime: study.study.studytime || "N/A",
                         seriesinsuid: series.seriesinsuid
                     });
                 });
