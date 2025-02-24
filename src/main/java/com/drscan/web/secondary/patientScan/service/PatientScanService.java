@@ -3,7 +3,7 @@ package com.drscan.web.secondary.patientScan.service;
 import com.drscan.web.secondary.image.domain.Image;
 import com.drscan.web.secondary.image.domain.ImageRepository;
 import com.drscan.web.secondary.patientScan.domain.Patient;
-import com.drscan.web.secondary.patientScan.domain.PatientRepository;
+import com.drscan.web.secondary.patientScan.domain.PatientScanRepository;
 import com.drscan.web.secondary.series.domain.Series;
 import com.drscan.web.secondary.series.domain.SeriesRepository;
 import com.drscan.web.secondary.study.domain.Study;
@@ -17,7 +17,7 @@ import java.util.*;
 @Service
 public class PatientScanService {
 
-    private final PatientRepository patientRepository;
+    private final PatientScanRepository patientRepository;
     private final StudyRepository studyRepository;
     private final SeriesRepository seriesRepository;
     private final ImageRepository imageRepository;
@@ -26,7 +26,7 @@ public class PatientScanService {
         Map<String, Object> result = new HashMap<>();
 
         // 환자 정보 조회
-        Optional<Patient> patient = patientRepository.findById(pid);
+        Optional<Patient> patient = patientRepository.findByPid(pid);
         // 다시확인하기 @@@@@@@
         if (patient.isEmpty()) {
             result.put("error", "환자 정보 없음!");
