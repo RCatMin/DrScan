@@ -90,8 +90,8 @@ function displayPage(page) {
                 <td>${item.studydesc}</td>
                 <td>${item.studydate}</td>
                 <td>${item.studytime}</td>
-                <td><button class="btn btn-record" onclick="viewMedicalRecords('${item.pid}')">진료 기록 조회</button></td>
-                <td><button class="btn btn-analysis" onclick="analyzeImage('${item.seriesinsuid}')">영상 판독</button></td>
+                <td><div><button class="btn btn-record" onclick="viewMedicalRecords('${item.pid}')">진료 기록 조회</button></div></td>
+                <td><div><button class="btn btn-analysis" onclick="analyzeImage('${item.seriesinsuid}')">영상 판독</button></div></td>
             </tr>
         `;
         patientRecords.innerHTML += row;

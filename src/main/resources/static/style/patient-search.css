@@ -41,11 +41,19 @@ th {
     font-size: 16px !important;
 }
 
+td div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
 .btn {
     padding: 5px 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin: 0 !important;
 }
 
 .btn-record {
