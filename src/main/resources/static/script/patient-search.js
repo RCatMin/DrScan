@@ -1,5 +1,5 @@
 var currentPage = 1; // 현재 페이지
-var itemsPerPage = 10; // 한 페이지당 표시할 개수
+var itemsPerPage = 5; // 한 페이지당 표시할 개수
 var totalPages = 1; // 총 페이지 수
 var allStudies = []; // 전체 데이터를 저장할 배열
 
