@@ -43,9 +43,9 @@ function searchPatient() {
                 return;
             }
 
-            studyDetails.forEach(function(study) {
+            studyDetails.forEach(function (study) {
                 var seriesList = study.series || []; // undefined 방지
-                seriesList.forEach(function(series) {
+                seriesList.forEach(function (series) {
                     allStudies.push({
                         pname: patient.pname,
                         pid: patient.pid,
@@ -79,7 +79,7 @@ function displayPage(page) {
     var end = start + itemsPerPage;
     var paginatedItems = allStudies.slice(start, end);
 
-    paginatedItems.forEach(function(item) {
+    paginatedItems.forEach(function (item) {
         var row = `
             <tr>
                 <td>${item.pname}</td>
