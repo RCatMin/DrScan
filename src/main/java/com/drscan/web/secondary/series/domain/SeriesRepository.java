@@ -8,5 +8,5 @@ import java.util.List;
 @Repository
 public interface SeriesRepository extends JpaRepository<Series, SeriesId> {
 
-    public List<Series> findSriesByStudykey(Integer studykey);
+    public List<Series> findSeriesByStudyKey(Integer studyKey);
 }
