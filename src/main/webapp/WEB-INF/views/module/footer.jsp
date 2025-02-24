@@ -9,7 +9,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="/style/reset.css">
-    <link rel="stylesheet" href="style/footer.css">
+    <link rel="stylesheet" href="/style/footer.css">
 </head>
 <body>
 <div class="footer-container">
