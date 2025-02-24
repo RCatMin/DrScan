@@ -63,7 +63,17 @@ public class EmailRestController {
             if (tokenService.isTokenExpired(token)) {
                 return "Token has expired!";
             }
-            return "Email " + email + " has been successfully verified! and this is a verification code " + code;
+            return "<html>" +
+                    "<head><title>Email Verification</title></head>" +
+                    "<body style='font-family: Arial, sans-serif; text-align: center; padding: 20px;'>" +
+                    "<h2 style='color: #4CAF50;'>Email Verification Successful!</h2>" +
+                    "<p style='font-size: 16px;'>The email <strong>" + email + "</strong> has been successfully verified.</p>" +
+                    "<p style='font-size: 18px; font-weight: bold;'>Your verification code:</p>" +
+                    "<p style='font-size: 24px; font-weight: bold; color: #ff5722;'>" + code + "</p>" +
+                    "<p style='font-size: 14px; color: #555;'>You can now proceed with the next step.</p>" +
+                    "</body>" +
+                    "</html>";
+
         } catch (Exception e) {
             return "Invalid token: " + e.getMessage();
         }
