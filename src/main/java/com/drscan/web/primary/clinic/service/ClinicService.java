@@ -15,19 +15,23 @@ public class ClinicService {
 
     private final ClinicRepository clinicRepository;
 
-    // 진료 내용 저장
-    public Clinic saveClinic(Clinic clinic) {
-        return clinicRepository.save(clinic);
+    // 진료 내용 생성
+    public String saveClinic(Clinic clinic) {
+
+        clinicRepository.save(clinic);
+        return "진료 등록 성공";
     }
 
-    // 모든 진료 내용 조회
-    public List<Clinic> getAllClinics() {
-        return clinicRepository.findAll();
+
+    // 환자 id로 진료 전체 내용 조회
+    public List<Clinic> getClinicByPatientCode(String patientCode) {
+
+        return (List<Clinic>) clinicRepository.findClinicByPatientCode(patientCode);
     }
 
-    // 특정 진료 내용 조회
-    public Optional<Clinic> getClinicById(Integer clinicCode) {
-        return clinicRepository.findById(clinicCode);
+    // 진료코드로 진료내용 조회
+    public Clinic getClinicByClinicCode(Integer clinicCode) {
+        return clinicRepository.findClinicByClinicCode(clinicCode);
     }
 
     // 진료 내용 업데이트
@@ -46,4 +50,6 @@ public class ClinicService {
     public void deleteClinic(Integer clinicCode) {
         clinicRepository.deleteById(clinicCode);
     }
+
+
 }
