@@ -1,13 +1,14 @@
 package com.drscan.web.Controller;
 
-import com.drscan.web.clinic.domain.Clinic;
-import com.drscan.web.clinic.service.ClinicService;
+import com.drscan.web.primary.clinic.domain.Clinic;
+
+import com.drscan.web.primary.clinic.service.ClinicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("clinic")
 @RequiredArgsConstructor
 public class ClinicController {
@@ -21,7 +22,7 @@ public class ClinicController {
     }
 
     @GetMapping("/{clinicCode}")
-    public ResponseEntity<Clinic> getClinic(@PathVariable Integer clinicCode) {
+    public ResponseEntity<?> getClinic(@PathVariable Integer clinicCode) {
         return clinicService.getClinicById(clinicCode)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

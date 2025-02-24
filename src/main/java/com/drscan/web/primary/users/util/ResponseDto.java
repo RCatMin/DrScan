@@ -1,4 +1,4 @@
-package com.drscan.web.primary.permission.domain;
+package com.drscan.web.primary.users.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,9 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PermissionRequestDto {
-    private long userCode;
-    private String permission;
+public class ResponseDto {
+
+    private int statusCode;
+    private String message;
+
 }

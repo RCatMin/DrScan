@@ -11,6 +11,7 @@
 
 </head>
 <body>
-  <address>서울특별시 관악구</address>
+<p>&copy; 2025 DrScan. All Rights Reserved.</p>
+<p>Address: Gangnam-gu, Seoul, Republic of Korea</p>
 </body>
 </html>

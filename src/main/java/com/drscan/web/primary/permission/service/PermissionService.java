@@ -16,7 +16,7 @@ public class PermissionService {
 
         if(permission.getPermission().equals("admin")){
             return true;
-        } else{
+        } else {
             return false;
         }
     }

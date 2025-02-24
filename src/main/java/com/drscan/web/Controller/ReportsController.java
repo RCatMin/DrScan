@@ -1,8 +1,7 @@
 package com.drscan.web.Controller;
 
 import com.drscan.web.primary.reports.service.ReportsService;
-import com.drscan.web.primary.users.domain.User;
-import com.drscan.web.primary.users.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
