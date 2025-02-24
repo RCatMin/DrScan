@@ -1,7 +1,11 @@
 package com.drscan.web.Controller;
 
+import com.drscan.web.primary.users.domain.User;
 import com.drscan.web.primary.users.service.EmailService;
 import com.drscan.web.primary.users.service.TokenService;
+import com.drscan.web.primary.users.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,15 +18,24 @@ public class EmailRestController {
 
     private final TokenService tokenService;
     private final EmailService emailService;
+    private final UserService userService;
 
-    public EmailRestController(TokenService tokenService, EmailService emailService) {
+    public EmailRestController(TokenService tokenService, EmailService emailService, UserService userService) {
         this.tokenService = tokenService;
         this.emailService = emailService;
+        this.userService = userService;
     }
 
     @PostMapping("/send-verification")
     public ResponseEntity<Map<String, String>> sendVerificationEmail(@RequestBody Map<String, String> request) {
         String email = request.get("email");
+
+        if(email == null) {
+            String username = request.get("username");
+            User user = userService.findUserByUsername(username);
+            email = user.getEmail();
+        }
+
         Map<String, String> response = new HashMap<>();
 
         try {
@@ -38,11 +51,14 @@ public class EmailRestController {
     }
 
     @GetMapping("/verify")
-    public String verifyEmail(@RequestParam String token) {
+    public String verifyEmail(@RequestParam String token, HttpServletRequest request) {
         try {
 
             String email = tokenService.getEmailFromToken(token);
             String code = tokenService.getVerificationCodeFromToken(token);
+
+            HttpSession session = request.getSession();
+            session.setAttribute("authCode", code);
 
             if (tokenService.isTokenExpired(token)) {
                 return "Token has expired!";
