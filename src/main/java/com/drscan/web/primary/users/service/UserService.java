@@ -18,6 +18,14 @@ public class UserService {
         return userRepository.findUserByUsername(username);
     }
 
+    public List<User> findAllByAccountType(String accountType) {
+        return userRepository.findAllByAccountType(accountType);
+    }
+
+    public List<User> findAllByAccountTypeAndStatus(String accountType, String status) {
+        return userRepository.findAllByAccountTypeAndStatus(accountType, status);
+    }
+
     public String createUser(User user) {
         User existUserByUsername = userRepository.findUserByUsername(user.getUsername());
         User existUserByEmail = userRepository.findUserByEmail(user.getEmail());
