@@ -10,3 +10,5 @@ public interface SeriesRepository extends JpaRepository<Series, SeriesId> {
 
     public List<Series> findSriesByStudykey(Integer studykey);
 }
+
+

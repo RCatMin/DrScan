@@ -10,16 +10,16 @@ import lombok.Getter;
 public class Series {
 
     @Id
-    private Integer studyKey;
+    private Integer  studykey;
 
     @Id
-    private Integer seriesKey;
+    private Integer serieskey;
 
     private String studyinsuid;
 
-    @Column(unique = true)
+    @Column(unique=true)
     private String seriesinsuid;
-    private Integer seriesnum;
+    private String seriesnum;
     private String modality;
     private String seriesdate;
     private String seriestime;
@@ -27,6 +27,4 @@ public class Series {
     private String seriesdesc;
     private Integer imagecnt;
     private Integer delflag;
-
-
 }
