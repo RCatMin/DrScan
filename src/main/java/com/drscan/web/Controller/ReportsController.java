@@ -21,6 +21,7 @@ public class ReportsController {
     private final PatientScanService patientScanService;
     private final SeriesService seriesService;
 
+    // 환자 정보 불러오기
     @GetMapping("/views/{patientId}/{studyKey}")
     public ResponseEntity<?> getPatientRecords(@PathVariable String patientId) {
         Map<String, Object> patientResponse = patientScanService.getPatientRecords(patientId);
@@ -30,6 +31,7 @@ public class ReportsController {
         }
         return ResponseEntity.ok(patientResponse);
     }
+
 
     public ResponseEntity<?> getStudyRecords(@PathVariable Integer studyKey) {
         List<Series> seriesResponse = seriesService.findSeriesAll(studyKey);
