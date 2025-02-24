@@ -71,7 +71,11 @@ window.addEventListener('DOMContentLoaded', () => {
         let target = phone.value;
         const msg = document.getElementById("error-phone");
 
-        if(target === "" || !validatePhone(target)) {
+        alert("인증코드 발송 완료!");
+
+        phone.value = formatPhoneString(target);
+
+        if(target === "" || !validatePhone(phone.value)) {
             msg.style.display = "block";
         } else {
             msg.style.display = "none";
