@@ -58,6 +58,14 @@ th {
     color: white;
 }
 
+.btn-record:hover {
+    background-color: #3B6790;
+}
+
+.btn-analysis:hover {
+    background-color: #4C7B8B;
+}
+
 .pagination-container {
     margin: 20px 0 20px 0 !important;
 }
@@ -77,4 +85,8 @@ th {
 .pagination-btn.active {
     background-color: #2973B2;
     color: white;
+}
+
+.pagination-btn.active:hover {
+    background-color: #23486A;
 }
