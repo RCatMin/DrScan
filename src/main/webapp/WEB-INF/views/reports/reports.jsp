@@ -13,8 +13,23 @@
 </head>
 <c:import url="header" />
 <body>
-    <div id = "content-container"></div>
-    <h1>reports 브렌치 테스트용으로 파일 수정</h1>
+    <div id = "ImageManipulationBox">
+
+    </div>
+
+    <div id = "printSeriesList">
+
+    </div>
+
+    <div id = "printPatientAndVidInfo">
+        <thead>
+            <tbody id = "patientInfo"></tbody>
+        </thead>
+    </div>
+
+    <div id = "printSeriesVideo">
+
+    </div>
 </body>
 <c:import url="footer" />
 </html>
