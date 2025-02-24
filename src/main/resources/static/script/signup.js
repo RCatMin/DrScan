@@ -89,8 +89,9 @@ window.addEventListener('DOMContentLoaded', () => {
         const name = document.getElementById("name").value;
         const email = document.getElementById("email").value;
         const phone = document.getElementById("phone").value;
+        const code = document.getElementById("verification-code").value;
 
-        await registAction(username, password, hospital, department, name, email, phone);
+        await registAction(username, password, hospital, department, name, email, phone, code);
     });
 
 });
@@ -109,7 +110,7 @@ async function sendEmail(email) {
     return json.isValid;
 }
 
-async function registAction(username, password, hospital, department, name, email, phone) {
+async function registAction(username, password, hospital, department, name, email, phone, code) {
     const response = await fetch("/users/action/signup", {
         method: "POST",
         headers: {
@@ -122,16 +123,18 @@ async function registAction(username, password, hospital, department, name, emai
             "department": department,
             "name": name,
             "email": email,
-            "phone": phone
+            "phone": phone,
+            "code": code
         })
     });
 
     if (response.ok) {
         window.location.href = "/users/signin";
+        alert("회원가입 성공!");
+        return true;
     } else {
-        const text = await response.json();
-        alert(`오류 : ${text.message}`);
+        const json = await response.json();
+        alert(`오류 : ${json.message}`);
+        return json.isValid;
     }
-
-    return json.isValid;
 }
