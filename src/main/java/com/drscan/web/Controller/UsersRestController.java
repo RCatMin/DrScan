@@ -66,8 +66,20 @@ public class UsersRestController {
         User user = userService.findUserByUsername(userRequestDto.getUsername());
 
         if(!userRequestDto.getPassword().equals(user.getPassword())){
+            if(userRequestDto.getFailCount()<5){
+                userRequestDto.setFailCount(userRequestDto.getFailCount() + 1);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
+                        .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "아이디 혹은 비밀번호가 일치하지 않습니다."));
+            } else{
+                userRequestDto.setStatus("suspended");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
+                        .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "로그인 5회 실패로 계정이 정지됐습니다."));
+            }
+        }
+
+        if(userRequestDto.getStatus().equals("suspended")){
             return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
-                    .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "아이디 혹은 비밀번호가 일치하지 않습니다."));
+                    .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "정지된 계정입니다."));
         }
 
         String otpCode = userRequestDto.getCode();
@@ -81,6 +93,7 @@ public class UsersRestController {
                     .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "인증코드가 일치하지 않습니다."));
         }
 
+        userRequestDto.setFailCount(0);
         session = request.getSession();
         session.setAttribute("authUser", user);
 
