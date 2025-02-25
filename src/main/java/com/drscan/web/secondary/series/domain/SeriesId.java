@@ -4,15 +4,14 @@ import lombok.*;
 
 import java.io.Serializable;
 
-@EqualsAndHashCode
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SeriesId implements Serializable {
+@EqualsAndHashCode
+public class SeriesId  implements Serializable {
 
-    private Integer studyKey;
-    private Integer seriesKey;
+    private Integer  studykey;
 
-
+    private Integer serieskey;
 }

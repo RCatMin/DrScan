@@ -26,4 +26,8 @@ public class HomeController {
         return "error";
     }
 
+    @GetMapping("/admin")
+    public String admin() {
+        return "users/admin";
+    }
 }

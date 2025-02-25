@@ -10,8 +10,4 @@ public class PatientScanController {
 
     @GetMapping("/search")
     public String search() { return "patient-imaging-record/patient-search"; }
-
-    @GetMapping("/histiry")
-    public String histiry() { return "patient-imaging-record/scan-history"; }
-
 }

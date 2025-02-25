@@ -1,7 +1,20 @@
 window.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById("signin-form");
+    const verifyBtn = document.getElementById("email-verify-btn");
     const username = document.getElementById("username")
     const password = document.getElementById("password")
+
+    verifyBtn.addEventListener("click", async () => {
+        const username = document.getElementById("username").value;
+
+        alert("인증코드 발송 완료!");
+
+        if(username){
+            document.getElementById("verification-code-container").style.display = "block";
+        }
+
+        await sendEmailByUsername(username);
+    });
 
     username.addEventListener("focusout", async () => {
         let target = username.value;
@@ -32,12 +45,27 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const username = document.getElementById("username").value;
         const password = document.getElementById("password").value;
+        const code = document.getElementById("verification-code").value;
 
-        await loginAction(username, password);
+        await loginAction(username, password, code);
     });
 })
 
-async function loginAction(username, password) {
+async function sendEmailByUsername(username) {
+    const response = await fetch("/send-verification", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "username": username
+        })
+    });
+    const json = await response.json();
+    return json.isValid;
+}
+
+async function loginAction(username, password, code) {
     const response = await fetch("/users/action/signin", {
         method: "POST",
         headers: {
@@ -45,16 +73,18 @@ async function loginAction(username, password) {
         },
         body: JSON.stringify({
             "username": username,
-            "password" : password
+            "password" : password,
+            "code" : code
         })
     });
 
     if (response.ok) {
         window.location.href = "/";
+        alert("로그인 성공!");
+        return true;
     } else {
-        const text = await response.json();
-        alert(`오류 : ${text.message}`);
+        const json = await response.json();
+        alert(`오류 : ${json.message}`);
+        return json.isValid;
     }
-
-    return json.isValid;
 }

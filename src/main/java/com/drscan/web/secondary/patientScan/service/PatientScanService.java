@@ -55,7 +55,7 @@ public class PatientScanService {
                 seriesData.put("series", series);
 
                 // Image 조회
-                List<Image> images = imageRepository.findByStudykeyAndSerieskey(series.getStudyKey(), series.getSeriesKey());
+                List<Image> images = imageRepository.findByStudykeyAndSerieskey(series.getStudykey(), series.getSerieskey());
                 seriesData.put("images", images);
 
                 seriesDetails.add(seriesData);
