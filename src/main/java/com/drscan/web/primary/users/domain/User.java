@@ -50,4 +50,16 @@ public class User extends Timestamp {
         this.status = "pending";
         this.failCount = 0;
     }
+
+    public void update(UserRequestDto userDto) {
+        this.username = userDto.getUsername();
+        this.email = userDto.getEmail();
+        this.status = userDto.getStatus();
+        this.accountType = userDto.getAccountType();
+    }
+
+    public void approve(String accountType, String status) {
+        this.status = status;
+        this.accountType = accountType;
+    }
 }

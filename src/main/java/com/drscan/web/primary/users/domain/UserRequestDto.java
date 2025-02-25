@@ -10,6 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequestDto {
+    private Integer userCode;
+    private String accountType;
     private String username;
     private String password;
     private String hospital;
@@ -17,6 +19,7 @@ public class UserRequestDto {
     private String name;
     private String email;
     private String phone;
+    private String status;
     private String code;
     private String status;
     private Integer failCount;

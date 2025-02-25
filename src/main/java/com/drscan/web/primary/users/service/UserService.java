@@ -2,6 +2,8 @@ package com.drscan.web.primary.users.service;
 
 import com.drscan.web.primary.users.domain.User;
 import com.drscan.web.primary.users.domain.UserRepository;
+import com.drscan.web.primary.users.domain.UserRequestDto;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +43,38 @@ public class UserService {
 
         userRepository.save(user);
         return "success";
+    }
+
+    @Transactional
+    public boolean updateUser(UserRequestDto userDto) {
+        Integer code = Integer.valueOf(userDto.getCode());
+
+        User target = userRepository.findUserByUserCode(code);
+
+        if(target == null)
+            return false;
+
+        target.update(userDto);
+        return true;
+    }
+
+    @Transactional
+    public boolean approveUser(UserRequestDto userDto) {
+        Integer code = Integer.valueOf(userDto.getCode());
+        User target = userRepository.findUserByUserCode(code);
+
+        String accountType = target.getAccountType();
+        String status = target.getStatus();
+
+        if(accountType.equals("temporary") && status.equals("pending")) {
+            target.approve("user", "active");
+        } else if(accountType.equals("user") && status.equals("pending")) {
+            userRepository.delete(target);
+        }
+
+        if(target == null)
+            return false;
+
+        return true;
     }
 }

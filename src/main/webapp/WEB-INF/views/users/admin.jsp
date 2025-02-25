@@ -30,23 +30,37 @@
     </c:if>
     <c:forEach var="user" items="${userList}" varStatus="list">
         <div class="member-section">
-            <button class="showDropdown" data-id="${list.index}">${user.name} 정보 수정</button>
+            <button class="showDropdown" data-id="${list.index}">No. ${list.index+1} | CODE : ${user.userCode} | ID : ${user.username} | NAME : ${user.name}</button>
 
             <div id="dropdownMenu-${list.index}" class="dropdown-menu">
-                <form>
+                <form data-id="${list.index}" id="first-tab">
+                    <input type="hidden" id="userCode-tab1-${list.index}" name="userCode" value="${user.userCode}">
+
                     <label for="username-${list.index}">ID:</label>
-                    <input type="text" id="username-${list.index}" name="username" value="${user.username}"><br>
+                    <input type="text" id="username-tab1-${list.index}" name="username" value="${user.username}">
 
                     <label for="email-${list.index}">Email:</label>
-                    <input type="email" id="email-${list.index}" name="email" value="${user.email}"><br>
+                    <input type="email" id="email-tab1-${list.index}" name="email" value="${user.email}">
 
-                    <label for="status-${list.index}">Status:</label>
-                    <input type="text" id="status-${list.index}" name="status" value="${user.status}"><br>
-
-                    <label for="accountType-${list.index}">Account Type:</label>
-                    <input type="text" id="accountType-${list.index}" name="accountType" value="${user.accountType}"><br>
-
-                    <button type="submit">수정 완료</button>
+                    <div id="dropdown-container">
+                        <label for="status-tab1-${list.index}">Status:</label>
+                        <label>
+                            <select id="status-tab1-${list.index}" name="status">
+                                <option value="active" ${user.status == 'active' ? 'selected' : ''}>active</option>
+                                <option value="pending" ${user.status == 'pending' ? 'selected' : ''}>pending</option>
+                                <option value="suspended" ${user.status == 'suspended' ? 'selected' : ''}>suspended</option>
+                            </select>
+                        </label>
+                        <label id="account" for="accountType-tab1-${list.index}">Account Type:</label>
+                        <label>
+                            <select id="accountType-tab1-${list.index}" name="accountType">
+                                <option value="admin" ${user.accountType == 'admin' ? 'selected' : ''}>admin</option>
+                                <option value="user" ${user.accountType == 'user' ? 'selected' : ''}>user</option>
+                                <option value="temporary" ${user.accountType == 'temporary' ? 'selected' : ''}>temporary</option>
+                            </select>
+                        </label>
+                    </div>
+                    <button class="edit-submit" type="submit">수정 완료</button>
                 </form>
             </div>
         </div>
@@ -57,22 +71,24 @@
     <c:if test="${empty temporaryList}">
         <p>세션에 회원 데이터가 없습니다.</p>
     </c:if>
-    <c:forEach var="temporary" items="${temporaryList}" varStatus="status">
+    <c:forEach var="temporary" items="${temporaryList}" varStatus="list">
         <div class="member-section">
-            <button class="showDropdown" data-id="tab2-${status.index}">${temporary.name} 정보 수정</button>
+            <button class="showDropdown" data-id="tab2-${list.index}">No. ${list.index+1} | CODE : ${temporary.userCode} | ID : ${temporary.username} | NAME : ${temporary.name}</button>
 
-            <div id="dropdownMenu-tab2-${status.index}" class="dropdown-menu">
-                <form>
-                    <label for="userCode-${status.index}">UserCode:</label>
-                    <input type="text" id="userCode-${status.index}" name="userCode" value="${temporary.userCode}"><br>
+            <div id="dropdownMenu-tab2-${list.index}" class="dropdown-menu">
+                <form data-id="${list.index}" id="second-tab">
+                    <input type="hidden" id="userCode-tab2-${list.index}" name="userCode" value="${temporary.userCode}">
 
-                    <label for="username-${status.index}">ID:</label>
-                    <input type="text" id="username-${status.index}" name="username" value="${temporary.username}"><br>
+                    <label for="userCode-${list.index}">UserCode:</label>
+                    <input type="text" id="userCode-tab2-${list.index}" name="userCode" value="${temporary.userCode}" disabled>
 
-                    <label for="name-${status.index}">NAME:</label>
-                    <input type="text" id="name-${status.index}" name="name" value="${temporary.name}"><br>
+                    <label for="username-${list.index}">ID:</label>
+                    <input type="text" id="username-tab2-${list.index}" name="username" value="${temporary.username}" disabled>
 
-                    <button type="submit">승인</button>
+                    <label for="name-${list.index}">NAME:</label>
+                    <input type="text" id="name-tab2-${list.index}" name="name" value="${temporary.name}" disabled>
+
+                    <button class="temporary-submit" type="submit">승인</button>
                 </form>
             </div>
         </div>
@@ -83,22 +99,24 @@
     <c:if test="${empty deleteList}">
         <p>세션에 회원 데이터가 없습니다.</p>
     </c:if>
-    <c:forEach var="delete" items="${deleteList}" varStatus="status">
+    <c:forEach var="delete" items="${deleteList}" varStatus="list">
         <div class="member-section">
-            <button class="showDropdown" data-id="${status.index}">${delete.name} 정보 수정</button>
+            <button class="showDropdown" data-id="tab3-${list.index}">No. ${list.index+1} | CODE : ${delete.userCode} | ID : ${delete.username} | NAME : ${delete.name}</button>
 
-            <div id="dropdownMenu-${status.index}" class="dropdown-menu">
-                <form>
-                    <label for="name-${status.index}">이름:</label>
-                    <input type="text" id="name-${status.index}" name="name" value="${delete.name}"><br>
+            <div id="dropdownMenu-tab3-${list.index}" class="dropdown-menu">
+                <form data-id="${list.index}" id="third-tab">
+                    <input type="hidden" id="userCode-tab3-${list.index}" name="userCode" value="${delete.userCode}">
 
-                    <label for="email-${status.index}">이메일:</label>
-                    <input type="email" id="email-${status.index}" name="email" value="${delete.email}"><br>
+                    <label for="name-${list.index}">UserCode: </label>
+                    <input type="text" id="name-tab3-${list.index}" name="name" value="${delete.userCode}" disabled>
 
-                    <label for="phone-${status.index}">전화번호:</label>
-                    <input type="text" id="phone-${status.index}" name="phone" value="${delete.phone}"><br>
+                    <label for="email-${list.index}">ID: </label>
+                    <input type="email" id="email-tab3-${list.index}" name="email" value="${delete.username}" disabled>
 
-                    <button type="submit">승인</button>
+                    <label for="phone-${list.index}">NAME: </label>
+                    <input type="text" id="phone-tab3-${list.index}" name="phone" value="${delete.name}" disabled>
+
+                    <button class="delete-submit" type="submit">승인</button>
                 </form>
             </div>
         </div>

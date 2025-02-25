@@ -7,9 +7,8 @@ window.addEventListener('DOMContentLoaded', () => {
     verifyBtn.addEventListener("click", async () => {
         const username = document.getElementById("username").value;
 
-        alert("인증코드 발송 완료!");
-
         if(username){
+            alert("인증코드 발송 완료!");
             document.getElementById("verification-code-container").style.display = "block";
         }
 
