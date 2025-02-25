@@ -14,7 +14,8 @@ import java.sql.Timestamp;
 public class Clinic extends com.drscan.web.primary.users.util.Timestamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer clinicCode;
+    @Column(name="clinic_code")
+    private Long clinicCode;
 
     @Column(name="patient_code")
     private String patientCode;
@@ -23,5 +24,10 @@ public class Clinic extends com.drscan.web.primary.users.util.Timestamp {
     @Column(name="clinic_date")
     private Timestamp clinicDate;
     private String context;
+
+    public void update(ClinicRequestDto clinicDto){
+        this.clinicDate = clinicDto.getClinicDate();
+        this.context = clinicDto.getContext();
+    }
 
 }
