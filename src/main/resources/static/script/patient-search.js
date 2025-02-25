@@ -125,7 +125,7 @@ function updatePaginationControls() {
 }
 
 function viewMedicalRecords(pid) {
-    // window.location.href = 진료기록조회 주소넣기;
+    window.location.href = "/clinic/" + pid;
 }
 
 function analyzeImage(pid, studykey, serieskey) {
