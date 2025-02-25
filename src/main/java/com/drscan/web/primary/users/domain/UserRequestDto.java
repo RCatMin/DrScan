@@ -21,6 +21,5 @@ public class UserRequestDto {
     private String phone;
     private String status;
     private String code;
-    private String status;
     private Integer failCount;
 }
