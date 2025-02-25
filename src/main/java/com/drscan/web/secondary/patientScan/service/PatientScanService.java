@@ -45,7 +45,7 @@ public class PatientScanService {
             studyData.put("study", study);
 
             // 해당 Study의 Series 조회
-            List<Series> seriesList = seriesRepository.findSeriesByStudyKey(study.getStudykey());
+            List<Series> seriesList = seriesRepository.findSeriesByStudykey(study.getStudykey());
             studyData.put("series", seriesList);
 
             // 각 Series에 대한 Image 조회

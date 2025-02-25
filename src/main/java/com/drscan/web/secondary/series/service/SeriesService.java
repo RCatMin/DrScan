@@ -14,6 +14,6 @@ public class SeriesService {
     private final SeriesRepository seriesRepository;
 
     public List<Series> findSeriesAll(int studykey){
-        return seriesRepository.findSeriesByStudyKey(studykey);
+        return seriesRepository.findSeriesByStudykey(studykey);
     }
 }
