@@ -1,46 +1,35 @@
 package com.drscan.web.Controller;
 
 import com.drscan.web.secondary.patientScan.service.PatientScanService;
-import com.drscan.web.secondary.series.domain.Series;
-import com.drscan.web.secondary.series.service.SeriesService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
 
-import java.util.List;
+
 import java.util.Map;
 
-@RequiredArgsConstructor
 @RequestMapping("/reports")
 @Controller
+@RequiredArgsConstructor
 public class ReportsController {
 
     private final PatientScanService patientScanService;
-    private final SeriesService seriesService;
 
-    // 환자 정보 불러오기
-    @GetMapping("/views/{patientId}/{studyKey}")
-    public ResponseEntity<?> getPatientRecords(@PathVariable String patientId) {
-        Map<String, Object> patientResponse = patientScanService.getPatientRecords(patientId);
+    @GetMapping("/views/test/{pId}")
+    public String viewPatientReport(@PathVariable String pId, Model model) {
+        Map<String, Object> patientReport = patientScanService.getPatientRecords(pId);
 
-        if (patientResponse.containsKey("error")){
-            return ResponseEntity.badRequest().body(patientResponse);
-        }
-        return ResponseEntity.ok(patientResponse);
-    }
-
-
-    public ResponseEntity<?> getStudyRecords(@PathVariable Integer studyKey) {
-        List<Series> seriesResponse = seriesService.findSeriesAll(studyKey);
-
-        if (seriesResponse.isEmpty()){
-            return ResponseEntity.badRequest().body(seriesResponse);
+        if (patientReport.containsKey("error")) {
+            model.addAttribute("error", patientReport.get("error"));
+            return "error";  // 오류 페이지로 이동
         }
 
-        return ResponseEntity.ok(seriesResponse);
+        System.out.println("환자 정보 : " + patientReport);
+        model.addAttribute("patientReport", patientReport);
+        return "reports/reports";
     }
 
 }
