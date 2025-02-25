@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins="*")
 @RestController
-@RequestMapping("/clinic")
+@RequestMapping("/clinic/action")
 @RequiredArgsConstructor
 public class ClinicRestController {
     private final ClinicService clinicService;
@@ -30,7 +31,7 @@ public class ClinicRestController {
     public ResponseEntity<?> getClinic(@PathVariable String patientCode) {
         List<Clinic> clinics = clinicService.getClinicByPatientCode(patientCode);
 
-        if(clinics.size() == 0){
+        if(clinics.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
                     .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "진료정보가 존재하지 않습니다."));
         }
@@ -39,7 +40,7 @@ public class ClinicRestController {
     }
     // 진료 상세
     @GetMapping("/detail/{clinicCode}")
-    public ResponseEntity<ResponseDto> getBoardByCode(@PathVariable Integer clinicCode) {
+    public ResponseEntity<ResponseDto> getBoardByCode(@PathVariable Long clinicCode) {
         Clinic clinic = clinicService.getClinicByClinicCode(clinicCode);
 
         if(clinic == null) {
@@ -54,15 +55,18 @@ public class ClinicRestController {
 
 
     // 진료 수정
-    @PutMapping("/{clinicCode}")
-    public ResponseEntity<Clinic> updateClinic(@PathVariable Integer clinicCode, @RequestBody Clinic clinic) {
+    @PutMapping("/detail/{clinicCode}")
+    public ResponseEntity<Clinic> updateClinic(@PathVariable Long clinicCode, @RequestBody Clinic clinic) {
         return ResponseEntity.ok(clinicService.updateClinic(clinicCode, clinic));
     }
 
     // 진료 삭제
     @DeleteMapping("/{clinicCode}")
-    public ResponseEntity<Void> deleteClinic(@PathVariable Integer clinicCode) {
-        clinicService.deleteClinic(clinicCode);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ResponseDto> deleteClinicByCode(@PathVariable Long clinicCode) {
+        boolean isSuccess = clinicService.deleteClinic(clinicCode);
+        if(!isSuccess)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
+                    .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "존재하지 않는 진료기록입니다."));
+        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "진료 삭제가 완료되었습니다."));
     }
 }
