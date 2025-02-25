@@ -13,6 +13,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const email = document.getElementById("email").value;
 
         if(email){
+            alert("인증코드 발송 완료!");
             document.getElementById("verification-code-container").style.display = "block";
         }
 
@@ -70,8 +71,6 @@ window.addEventListener('DOMContentLoaded', () => {
     phone.addEventListener("focusout", async () => {
         let target = phone.value;
         const msg = document.getElementById("error-phone");
-
-        alert("인증코드 발송 완료!");
 
         phone.value = formatPhoneString(target);
 
