@@ -55,7 +55,9 @@ function searchPatient() {
                         studydesc: study.study.studydesc || "N/A",
                         studydate: study.study.studydate || "N/A",
                         studytime: study.study.studytime || "N/A",
-                        seriesinsuid: series.seriesinsuid
+                        seriesinsuid: series.seriesinsuid,
+                        studykey: study.study.studykey || study.studykey,
+                        serieskey: series.serieskey || series.serieskey
                     });
                 });
             });
@@ -91,7 +93,7 @@ function displayPage(page) {
                 <td>${item.studydate}</td>
                 <td>${item.studytime}</td>
                 <td><div><button class="btn btn-record" onclick="viewMedicalRecords('${item.pid}')">진료 기록 조회</button></div></td>
-                <td><div><button class="btn btn-analysis" onclick="analyzeImage('${item.seriesinsuid}')">영상 판독</button></div></td>
+                <td><div><button class="btn btn-analysis" onclick="analyzeImage('${item.pid}', '${item.studykey}', '${item.serieskey}')">영상 판독</button></div></td>
             </tr>
         `;
         patientRecords.innerHTML += row;
@@ -126,6 +128,6 @@ function viewMedicalRecords(pid) {
     // window.location.href = 진료기록조회 주소넣기;
 }
 
-function analyzeImage(seriesId) {
-    // window.location.href = 영산판독 주소넣기;
+function analyzeImage(pid, studykey, serieskey) {
+    window.location.href = "/patientScan/imaging-record/" + pid + "/" +studykey + "/" + serieskey;
 }
