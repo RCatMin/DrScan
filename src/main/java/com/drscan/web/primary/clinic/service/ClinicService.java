@@ -2,8 +2,13 @@ package com.drscan.web.primary.clinic.service;
 
 import com.drscan.web.primary.clinic.domain.Clinic;
 import com.drscan.web.primary.clinic.domain.ClinicRepository;
+import com.drscan.web.primary.clinic.domain.ClinicRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -30,12 +35,12 @@ public class ClinicService {
     }
 
     // 진료코드로 진료내용 조회
-    public Clinic getClinicByClinicCode(Integer clinicCode) {
+    public Clinic getClinicByClinicCode(Long clinicCode) {
         return clinicRepository.findClinicByClinicCode(clinicCode);
     }
 
     // 진료 내용 업데이트
-    public Clinic updateClinic(Integer clinicCode, Clinic updatedClinic) {
+    public Clinic updateClinic(Long clinicCode, Clinic updatedClinic) {
         return clinicRepository.findById(clinicCode)
                 .map(clinic -> {
                     clinic.setClinicDate(updatedClinic.getClinicDate());
@@ -45,10 +50,36 @@ public class ClinicService {
                 })
                 .orElseThrow(() -> new RuntimeException("Clinic not found with id: " + clinicCode));
     }
+//    @Transactional
+//    public boolean updateClinic(ClinicRequestDto clinicDto) {
+//
+//        long code = clinicDto.getClinicCode();
+//        Optional<Clinic> target = clinicRepository.findById(code);
+//        Clinic clinic = target.orElse(null);
+//
+//
+//
+//        if(clinic==null){
+//            return false;
+//        }
+//
+//        target.get().update(clinicDto);
+//        return true;
+//    }
+
 
     // 진료 내용 삭제
-    public void deleteClinic(Integer clinicCode) {
-        clinicRepository.deleteById(clinicCode);
+    @Transactional
+    public boolean deleteClinic(Long clinicCode) {
+        Optional<Clinic> target = clinicRepository.findById(clinicCode);
+        Clinic clinic = target.orElse(null);
+
+        if(clinic == null) {
+            return false;
+        }
+
+        clinicRepository.delete(clinic);
+        return true;
     }
 
 
