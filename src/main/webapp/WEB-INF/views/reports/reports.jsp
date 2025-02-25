@@ -5,31 +5,25 @@
   Time: 오후 2:01
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>영상판독 페이지</title>
+    <title>환자 판독</title>
 </head>
-<c:import url="header" />
 <body>
-    <div id = "ImageManipulationBox">
+<h2>환자 검사 리포트</h2>
+<c:out value="${patientReport}" />
 
-    </div>
+<c:if test="${not empty patientReport}">
+    <h3>환자 정보</h3>
+    <p>환자 ID: ${patientReport.patienttab.pid}</p>
+    <p>이름: ${patientReport.patienttab.pname}</p>
+    <p>생년월일: ${patientReport.patienttab.pbirthDate}</p>
+    <p>성별: ${patientReport.patienttab.psex}</p>
 
-    <div id = "printSeriesList">
-
-    </div>
-
-    <div id = "printPatientAndVidInfo">
-        <thead>
-            <tbody id = "patientInfo"></tbody>
-        </thead>
-    </div>
-
-    <div id = "printSeriesVideo">
-
-    </div>
+</c:if>
 </body>
-<c:import url="footer" />
 </html>
+
+
