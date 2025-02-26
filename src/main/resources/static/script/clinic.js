@@ -1,16 +1,27 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // 페이지 로딩 시 진료 데이터를 가져와서 tbody에 추가
-    fetchClinicData();
+    const patientCode = getPatientCodeFromURL();
+
+    if (patientCode) {
+        document.getElementById("patient-code").textContent = patientCode + "님의 진료기록";
+        fetchClinicData(patientCode);
+    } else {
+        console.error("URL에서 환자 코드를 찾을 수 없습니다.");
+    }
 
     // 버튼 클릭 시 addClinic 페이지로 이동
-    document.getElementById("hiddenPatientCode").value = "MS0006";
-
+    document.querySelector("#add-button").addEventListener("click", function() {
+        window.location.href = "/clinic/add/" + patientCode;
+    });
 });
 
-function fetchClinicData() {
-    const patientCode = "MS0006"; // 하드코딩된 예시, 실제로는 JSP에서 받아야 함
+// URL에서 환자코드 추출
+function getPatientCodeFromURL() {
+    const pathSegments = window.location.pathname.split("/");
+    return pathSegments.length > 2 ? pathSegments[2] : null;  // /clinic/{patientCode} 구조
+}
 
-    // 서버의 API에서 해당 환자의 진료 데이터를 가져오기
+// 진료 데이터 가져오기
+function fetchClinicData(patientCode) {
     fetch(`/clinic/action/${patientCode}`)
         .then(response => {
             if (!response.ok) {
@@ -20,11 +31,12 @@ function fetchClinicData() {
         })
         .then(data => {
             const tbody = document.getElementById("clinic-body");
-            console.log(tbody);  // tbody가 잘 선택되는지 확인
 
             if (!tbody) {
                 throw new Error("tbody 요소를 찾을 수 없습니다.");
             }
+
+            tbody.innerHTML = ""; // 기존 데이터 초기화
 
             data.forEach(clinic => {
                 const tr = document.createElement("tr");
@@ -35,8 +47,18 @@ function fetchClinicData() {
                     <td>${clinic.context}</td>
                     <td>${new Date(clinic.regDate).toLocaleString()}</td>
                     <td>${new Date(clinic.modDate).toLocaleString()}</td>
+                    <td><button class="detail-button" data-cliniccode="${clinic.clinicCode}">상세보기</button></td>
                 `;
+
                 tbody.appendChild(tr);
+            });
+
+            // 상세보기 버튼 이벤트 추가
+            document.querySelectorAll(".detail-button").forEach(button => {
+                button.addEventListener("click", function() {
+                    const clinicCode = this.getAttribute("data-cliniccode");
+                    window.location.href = `/clinic/detail/${clinicCode}`;
+                });
             });
         })
         .catch(error => {
