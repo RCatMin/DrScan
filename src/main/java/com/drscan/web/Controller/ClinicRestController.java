@@ -40,7 +40,7 @@ public class ClinicRestController {
     }
     // 진료 상세
     @GetMapping("/detail/{clinicCode}")
-    public ResponseEntity<ResponseDto> getBoardByCode(@PathVariable Long clinicCode) {
+    public ResponseEntity<?> getClinicByCode(@PathVariable Long clinicCode) {
         Clinic clinic = clinicService.getClinicByClinicCode(clinicCode);
 
         if(clinic == null) {
@@ -50,6 +50,7 @@ public class ClinicRestController {
         }
 
         ClinicResponseDto clinicDto = new ClinicResponseDto(clinic);
+        System.out.println("진료 상세 데이터: " + clinicDto); // 로그 출력 추가
         return ResponseEntity.ok(clinicDto);
     }
 
