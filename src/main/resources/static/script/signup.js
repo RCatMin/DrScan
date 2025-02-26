@@ -8,11 +8,13 @@ window.addEventListener('DOMContentLoaded', () => {
     const name = document.getElementById("name")
     const email = document.getElementById("email")
     const phone = document.getElementById("phone")
+    const privacyPolicyCheckbox = document.getElementById("privacy-policy");
 
     verifyBtn.addEventListener("click", async () => {
         const email = document.getElementById("email").value;
 
         if(email){
+            alert("인증코드 발송 완료!");
             document.getElementById("verification-code-container").style.display = "block";
         }
 
@@ -20,14 +22,14 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     username.addEventListener("focusout", async () => {
-       let target = username.value;
-       const msg = document.getElementById("error-username");
+        let target = username.value;
+        const msg = document.getElementById("error-username");
 
-       if(target === "" || !validateUsername(target)) {
-           msg.style.display = "block";
-       } else {
-           msg.style.display = "none";
-       }
+        if(target === "" || !validateUsername(target)) {
+            msg.style.display = "block";
+        } else {
+            msg.style.display = "none";
+        }
 
     });
 
@@ -71,8 +73,6 @@ window.addEventListener('DOMContentLoaded', () => {
         let target = phone.value;
         const msg = document.getElementById("error-phone");
 
-        alert("인증코드 발송 완료!");
-
         phone.value = formatPhoneString(target);
 
         if(target === "" || !validatePhone(phone.value)) {
@@ -94,6 +94,11 @@ window.addEventListener('DOMContentLoaded', () => {
         const email = document.getElementById("email").value;
         const phone = document.getElementById("phone").value;
         const code = document.getElementById("verification-code").value;
+
+        if (!privacyPolicyCheckbox.checked) {
+            alert("개인정보 수집 및 이용 동의가 필요합니다.");
+            return;
+        }
 
         await registAction(username, password, hospital, department, name, email, phone, code);
     });
@@ -142,3 +147,22 @@ async function registAction(username, password, hospital, department, name, emai
         return json.isValid;
     }
 }
+
+const modal = document.getElementById("privacy-modal");
+const privacyLink = document.getElementById("privacy-link");
+const closeBtn = document.getElementsByClassName("close")[0];
+
+privacyLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    modal.style.display = "block";
+});
+
+closeBtn.addEventListener("click", function () {
+    modal.style.display = "none";
+});
+
+window.addEventListener("click", function (event) {
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+});
