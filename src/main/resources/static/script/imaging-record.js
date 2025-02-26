@@ -87,8 +87,6 @@ function renderImage(arrayBuffer, viewportId) {
         type: 'application/dicom'
     }));
 
-    console.log(`[${viewportId}] imageId:`, imageId);
-
     const viewport = renderingEngine.getViewport(viewportId);
     viewport.setStack([imageId], 0);
     viewport.render();
