@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <html>
 <head>
-    <script src="/script/imaging-record.js" defer></script>
+    <script type="module" src="/dist/bundle.js"></script>
     <title>영상 판독 페이지</title>
 </head>
 <c:import url="/header" />
