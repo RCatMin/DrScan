@@ -12,7 +12,7 @@ body {
     background-color: #f4f4f4;
     padding: 20px;
     border-radius: 10px;
-    margin-bottom: 20px !important;
+    margin: 20px 0 20px 0 !important;
 }
 
 table {
@@ -73,6 +73,7 @@ td div {
 .btn-analysis:hover {
     background-color: #4C7B8B;
 }
+
 
 .pagination-container {
     margin: 20px 0 20px 0 !important;
