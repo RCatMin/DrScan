@@ -65,7 +65,7 @@ public class UsersRestController {
     public ResponseEntity<ResponseDto> signin(@RequestBody UserRequestDto userRequestDto, HttpServletRequest request) {
         User user = userService.findUserByUsername(userRequestDto.getUsername());
 
-        if(!userRequestDto.getPassword().equals(user.getPassword())){
+        if(user == null || !userRequestDto.getPassword().equals(user.getPassword())){
             return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
                     .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "아이디 혹은 비밀번호가 일치하지 않습니다."));
         }
@@ -93,5 +93,10 @@ public class UsersRestController {
         session.invalidate();
 
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "로그아웃 완료"));
+    }
+
+    @PutMapping("/edit")
+    public ResponseEntity<ResponseDto> edit(@RequestBody UserRequestDto userRequestDto, HttpServletRequest request) {
+        return null;
     }
 }
