@@ -9,10 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("clinic")
+@RequestMapping("/clinic")
 public class ClinicController {
 
-   @GetMapping("/")
+   @GetMapping({"/",""})
     public String clinic() {
        return "clinic/clinic";
    }

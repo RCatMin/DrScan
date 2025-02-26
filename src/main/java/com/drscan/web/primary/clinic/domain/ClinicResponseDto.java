@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import java.sql.Timestamp;
 
 public class ClinicResponseDto extends ResponseDto {
-    private Integer clinicCode;
+    private Long clinicCode;
     private String patientCode;
     private String userCode;
     private Timestamp clinicDate;

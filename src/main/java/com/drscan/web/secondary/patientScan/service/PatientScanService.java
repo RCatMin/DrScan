@@ -67,4 +67,8 @@ public class PatientScanService {
 
         return result;
     }
+
+    public List<Image> getImagesByStudyAndSeries(Integer studykey, Integer serieskey) {
+        return imageRepository.findByStudykeyAndSerieskey(studykey, serieskey);
+    }
 }
