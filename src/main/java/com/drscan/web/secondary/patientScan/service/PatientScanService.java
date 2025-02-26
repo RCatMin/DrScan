@@ -26,6 +26,7 @@ public class PatientScanService {
     private final SeriesRepository seriesRepository;
     private final ImageRepository imageRepository;
 
+    // 환자 검사 정보 불러오기
     public Map<String, Object> getPatientRecords(String pid) {
         Map<String, Object> result = new HashMap<>();
 
@@ -71,7 +72,12 @@ public class PatientScanService {
         return result;
     }
 
+    // 이미지 불러오기
     public List<Image> getImagesByStudyAndSeries(Integer studykey, Integer serieskey) {
         return imageRepository.findByStudykeyAndSerieskey(studykey, serieskey);
+    }
+
+    public List<Patient> getPatientByPid(String pid) {
+        return patientRepository.findByPid(pid);
     }
 }

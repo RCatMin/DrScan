@@ -22,20 +22,27 @@ import java.util.List;
 public class PatientScanRESTController {
 
     private final PatientScanService patientScanService;
-    private final ImageRepository imageRepository;
 
+    // 환자 ID로 조회
     @GetMapping("/{pid}/records")
     public ResponseEntity<?> getPatientRecords(@PathVariable String pid) {
         return ResponseEntity.ok(patientScanService.getPatientRecords(pid));
     }
 
+    // 이미지 불러오기
     @GetMapping("/images/{studykey}/{serieskey}")
     public ResponseEntity<?> getImages(@PathVariable Integer studykey, @PathVariable Integer serieskey) {
         List<Image> images = patientScanService.getImagesByStudyAndSeries(studykey, serieskey);
         return ResponseEntity.ok(images);
     }
 
+    // 환자 아이디로 환자정보 가져오기
+    @GetMapping("/{pid}")
+    public ResponseEntity<?> getPatient(@PathVariable String pid) {
+        return ResponseEntity.ok(patientScanService.getPatientByPid(pid));
+    }
 
+    // DICOM 파일
     private final String DICOM_STORAGE_PATH = "Z:/"; // 실제 DICOM 파일 저장소 경로
 
     @GetMapping("/getDicomFile")
