@@ -1,10 +1,16 @@
 package com.drscan.web.primary.clinic.domain;
 
 import com.drscan.web.primary.users.util.ResponseDto;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
 import java.sql.Timestamp;
 
+@Getter
+@Setter
+@ToString
 public class ClinicResponseDto extends ResponseDto {
     private Long clinicCode;
     private String patientCode;

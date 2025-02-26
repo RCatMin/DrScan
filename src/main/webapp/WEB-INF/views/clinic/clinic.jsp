@@ -33,10 +33,7 @@
         </tbody>
         </table>
     </div>
-    <form id="clinic-form" action="/clinic/add" method="GET">
-        <input type="hidden" name="patientCode" id="hiddenPatientCode">
-        <button type="submit">진료 등록</button>
-    </form>
+        <button type="button" id="add-button">진료 등록</button>
 </div>
 </body>
 <c:import url="/footer" />
