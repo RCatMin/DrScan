@@ -62,4 +62,16 @@ public class User extends Timestamp {
         this.status = status;
         this.accountType = accountType;
     }
+
+    public void incrementFailCountAndSuspended() {
+        this.failCount++;
+
+        if (this.failCount >= 5) {
+            this.status = "suspended";
+        }
+    }
+
+    public void resetFailCount() {
+        this.failCount = 0;
+    }
 }

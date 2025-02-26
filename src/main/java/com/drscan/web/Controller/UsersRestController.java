@@ -1,5 +1,6 @@
 package com.drscan.web.Controller;
 
+import com.drscan.web.primary.permission.service.PermissionService;
 import com.drscan.web.primary.users.domain.User;
 import com.drscan.web.primary.users.domain.UserRequestDto;
 import com.drscan.web.primary.users.service.UserService;
@@ -19,6 +20,7 @@ import java.util.List;
 public class UsersRestController {
 
     private final UserService userService;
+    private final PermissionService permissionService;
 
     @GetMapping("/list")
     public ResponseEntity<List<User>> findUserAll(){
@@ -49,6 +51,8 @@ public class UsersRestController {
 
         String isSuccess = userService.createUser(user);
 
+        permissionService.save(userService.findUserByUsername(username));
+
         if(!isSuccess.equals("success")){
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST.value())
@@ -65,9 +69,9 @@ public class UsersRestController {
     public ResponseEntity<ResponseDto> signin(@RequestBody UserRequestDto userRequestDto, HttpServletRequest request) {
         User user = userService.findUserByUsername(userRequestDto.getUsername());
 
-        if(!userRequestDto.getPassword().equals(user.getPassword())){
-            if(userRequestDto.getFailCount()<5){
-                userRequestDto.setFailCount(userRequestDto.getFailCount() + 1);
+        if(user == null || !userRequestDto.getPassword().equals(user.getPassword())){
+            if(user.getFailCount()<5){
+                userService.incrementFailCountAndCheckSuspension(userRequestDto);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
                         .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "아이디 혹은 비밀번호가 일치하지 않습니다."));
             } else{
@@ -77,7 +81,7 @@ public class UsersRestController {
             }
         }
 
-        if(userRequestDto.getStatus().equals("suspended")){
+        if(user.getStatus().equals("suspended")){
             return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
                     .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "정지된 계정입니다."));
         }
@@ -93,7 +97,7 @@ public class UsersRestController {
                     .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "인증코드가 일치하지 않습니다."));
         }
 
-        userRequestDto.setFailCount(0);
+        userService.resetFailCount(userRequestDto);
         session = request.getSession();
         session.setAttribute("authUser", user);
 
@@ -106,5 +110,10 @@ public class UsersRestController {
         session.invalidate();
 
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "로그아웃 완료"));
+    }
+
+    @PutMapping("/edit")
+    public ResponseEntity<ResponseDto> edit(@RequestBody UserRequestDto userRequestDto, HttpServletRequest request) {
+        return null;
     }
 }

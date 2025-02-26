@@ -9,6 +9,9 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findUserByUserCode(Integer userCode);
 
+    boolean existsByUsernameAndUserCodeNot(String username, Integer userCode);
+    boolean existsByEmailAndUserCodeNot(String email, Integer userCode);
+
     User findUserByUsername(String username);
     User findUserByEmail(String email);
     User findUserByPhone(String phone);

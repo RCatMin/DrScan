@@ -20,6 +20,18 @@ public class UserService {
         return userRepository.findUserByUsername(username);
     }
 
+    public boolean existsByUsernameAndUserCodeNot(String username, Integer userCode){
+        return userRepository.existsByUsernameAndUserCodeNot(username, userCode);
+    }
+
+    public boolean existsByEmailAndUserCodeNot(String email, Integer userCode){
+        return userRepository.existsByEmailAndUserCodeNot(email, userCode);
+    }
+
+    public User findUserByUserCode(String userCode) {
+        return userRepository.findUserByUserCode(Integer.valueOf(userCode));
+    }
+
     public List<User> findAllByAccountType(String accountType) {
         return userRepository.findAllByAccountType(accountType);
     }
@@ -68,13 +80,29 @@ public class UserService {
 
         if(accountType.equals("temporary") && status.equals("pending")) {
             target.approve("user", "active");
+            return true;
         } else if(accountType.equals("user") && status.equals("pending")) {
             userRepository.delete(target);
+            return true;
         }
+        return false;
+    }
 
-        if(target == null)
-            return false;
+    public void incrementFailCountAndCheckSuspension(UserRequestDto userDto) {
+        User target = userRepository.findUserByUsername(userDto.getUsername());
 
-        return true;
+        if (target != null) {
+            target.incrementFailCountAndSuspended();
+            userRepository.save(target);
+        }
+    }
+
+    public void resetFailCount(UserRequestDto userDto) {
+        User target = userRepository.findUserByUsername(userDto.getUsername());
+
+        if (target != null) {
+            target.resetFailCount();
+            userRepository.save(target);
+        }
     }
 }

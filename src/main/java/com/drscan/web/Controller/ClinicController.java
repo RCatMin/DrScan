@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/clinic")
 public class ClinicController {
 
-   @GetMapping({"/",""})
-    public String clinic() {
+   @GetMapping("/{patientCode}")
+    public String clinic(@PathVariable String patientCode) {
        return "clinic/clinic";
    }
 
-   @GetMapping("/add")
-   public String addClinic(){
+   @GetMapping("/add/{patientCode}")
+   public String addClinic(@PathVariable String patientCode){
        return "clinic/addClinic";
    }
 
-    @GetMapping("/detail")
-    public String clinicDetail(){
-        return "";
+    @GetMapping("/detail/{clinicCode}")
+    public String clinicDetail(@PathVariable Long clinicCode) {
+        return "clinic/clinicDetail";
     }
 }

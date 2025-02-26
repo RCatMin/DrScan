@@ -13,7 +13,10 @@ public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long permissionCode;
+
+    @Column(name = "user_code")
     private long userCode;
+
     private String permission;
 
     public Permission(long userCode, String permission) {
