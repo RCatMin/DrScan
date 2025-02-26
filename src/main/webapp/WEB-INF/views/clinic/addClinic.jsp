@@ -7,24 +7,30 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
-<%
-    String patientCode = request.getParameter("patientCode");
-%>
+
 <html>
 <head>
     <title>진료등록페이지</title>
+    <link rel="stylesheet" href="/style/clinic.css">
+    <script src="/script/add-clinic.js" type="module"></script>
 </head>
 <c:import url="/header" />
 <body>
 <div id ="content-container">
+    <h1 id ="patient-code"></h1>
     <form id="addClinic-form" action="/clinic/action" method="POST">
-        <input type="text" name="patientCode" value="<%= patientCode %>">
-        <input type="text" name="userCode" value="1005">
-        <label for="context">진료 내용:</label>
-        <textarea id="context" name="context"></textarea>
-        <label for="clinicDate">진료 날짜:</label>
-        <input type="date" id="clinicDate" name="clinicDate">
-        <button type="submit">등록</button>
+        <label for="userCode">의사 ID:</label>
+<%--        log에서 username으로 자동저장 필요--%>
+        <input type="text" id="userCode" name="userCode" value="1005" disabled>
+        <div class="input-group">
+            <label for="clinicDate">진료 날짜:</label>
+            <input type="date" id="clinicDate" name="clinicDate" required>
+        </div>
+        <div class="input-group">
+            <label for="context">진료 내용:</label>
+            <textarea id="context" name="context" required></textarea>
+        </div>
+        <button type="submit">진료등록</button>
     </form>
 </div>
 </body>
