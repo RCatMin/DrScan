@@ -14,4 +14,7 @@ public class UsersController {
     @GetMapping("/signup")
     public String signup() { return "users/signup"; }
 
+    @GetMapping("/me")
+    public String me() { return "users/me"; }
+
 }
