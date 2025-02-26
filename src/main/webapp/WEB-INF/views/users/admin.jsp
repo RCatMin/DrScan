@@ -36,11 +36,13 @@
                 <form data-id="${list.index}" id="first-tab">
                     <input type="hidden" id="userCode-tab1-${list.index}" name="userCode" value="${user.userCode}">
 
-                    <label for="username-${list.index}">ID:</label>
+                    <label for="username-tab1-${list.index}">ID:</label>
                     <input type="text" id="username-tab1-${list.index}" name="username" value="${user.username}">
+                    <p class="error-msg" id="error-message-username-${list.index}">아이디가 중복됩니다.</p>
 
-                    <label for="email-${list.index}">Email:</label>
+                    <label for="email-tab1-${list.index}">Email:</label>
                     <input type="email" id="email-tab1-${list.index}" name="email" value="${user.email}">
+                    <p class="error-msg" id="error-message-email-${list.index}">이메일이 중복됩니다.</p>
 
                     <div id="dropdown-container">
                         <label for="status-tab1-${list.index}">Status:</label>
@@ -79,13 +81,13 @@
                 <form data-id="${list.index}" id="second-tab">
                     <input type="hidden" id="userCode-tab2-${list.index}" name="userCode" value="${temporary.userCode}">
 
-                    <label for="userCode-${list.index}">UserCode:</label>
+                    <label for="userCode-tab2-${list.index}">UserCode:</label>
                     <input type="text" id="userCode-tab2-${list.index}" name="userCode" value="${temporary.userCode}" disabled>
 
-                    <label for="username-${list.index}">ID:</label>
+                    <label for="username-tab2-${list.index}">ID:</label>
                     <input type="text" id="username-tab2-${list.index}" name="username" value="${temporary.username}" disabled>
 
-                    <label for="name-${list.index}">NAME:</label>
+                    <label for="name-tab2-${list.index}">NAME:</label>
                     <input type="text" id="name-tab2-${list.index}" name="name" value="${temporary.name}" disabled>
 
                     <button class="temporary-submit" type="submit">승인</button>
@@ -107,13 +109,13 @@
                 <form data-id="${list.index}" id="third-tab">
                     <input type="hidden" id="userCode-tab3-${list.index}" name="userCode" value="${delete.userCode}">
 
-                    <label for="name-${list.index}">UserCode: </label>
+                    <label for="name-tab3-${list.index}">UserCode: </label>
                     <input type="text" id="name-tab3-${list.index}" name="name" value="${delete.userCode}" disabled>
 
-                    <label for="email-${list.index}">ID: </label>
+                    <label for="email-tab3-${list.index}">ID: </label>
                     <input type="email" id="email-tab3-${list.index}" name="email" value="${delete.username}" disabled>
 
-                    <label for="phone-${list.index}">NAME: </label>
+                    <label for="phone-tab3-${list.index}">NAME: </label>
                     <input type="text" id="phone-tab3-${list.index}" name="phone" value="${delete.name}" disabled>
 
                     <button class="delete-submit" type="submit">승인</button>

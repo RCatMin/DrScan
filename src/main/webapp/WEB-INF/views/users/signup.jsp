@@ -17,48 +17,50 @@
 <body>
 
 <form class="form-box" id="signup-form" action="/users/action/signup" method="POST">
-    <div class="input-group">
-        <label for="username">ID : </label>
-        <input type="text" id="username" name="username" required>
+    <div class="input-group" id="input-username">
+        <label id="label-username" for="username">ID : </label>
+        <input type="text" id="username" name="username">
     </div>
-    <p class="error-msg" id="error-username">사용할 수 없는 아이디입니다.</p>
-    <div class="input-group">
-        <label for="password">PW : </label>
-        <input type="password" id="password" name="password" required>
+    <p class="error-msg" id="error-username">&nbsp6~20자리의 영문, 숫자로 입력해주세요.</p>
+    <div class="input-group" id="input-password">
+        <label id="label-password" for="password">PW : </label>
+        <input type="password" id="password" name="password">
     </div>
-    <p class="error-msg" id="error-password">사용할 수 없는 비밀번호입니다.</p>
-    <div class="input-group">
+    <p class="error-msg" id="error-password">&nbsp특수기호를 포함한 8~16자리의 비밀번호를 입력해주세요.</p>
+    <div class="input-group" id="input-hospital-department">
         <div class="hospital-department">
-            <div class="hospital">
-                <label for="hospital">HN : </label>
-                <input type="text" id="hospital" name="hospital" required>
+            <div class="hospital" id="input-hospital">
+                <label id="label-hospital" for="hospital">HN : </label>
+                <input type="text" id="hospital" name="hospital">
             </div>
-            <div class="department">
-                <label id="department-label"  for="department">DP : </label>
-                <input type="text" id="department" name="department" required>
+            <div class="department" id="input-department">
+                <label id="label-department"  for="department">DP : </label>
+                <input type="text" id="department" name="department">
             </div>
         </div>
     </div>
-    <div class="input-group">
-        <label for="name">NAME : </label>
-        <input type="text" id="name" name="name" required>
+    <p class="error-msg" id="error-hospital-department">&nbsp병원이름 혹은 진료과를 입력해주세요.</p>
+    <div class="input-group" id="input-name">
+        <label id="label-name"  for="name">NAME : </label>
+        <input type="text" id="name" name="name">
     </div>
-    <p class="error-msg" id="error-name">사용할 수 없는 이름입니다.</p>
-    <div class="input-group">
-        <label for="email">EMAIL : </label>
+    <p class="error-msg" id="error-name">&nbsp2~5글자의 한글로 입력해주세요.</p>
+    <div class="input-group" id="input-email">
+        <label id="label-email" for="email">EMAIL : </label>
         <div class="email-container">
-            <input type="text" id="email" name="email" required>
+            <input type="text" id="email" name="email">
             <button type="button" id="email-verify-btn">Verify</button>
         </div>
     </div>
-    <p class="error-msg" id="error-email">사용할 수 없는 이메일입니다.</p>
+    <p class="error-msg" id="error-email">이메일 형식에 맞게 입력해주세요.</p>
     <div class="input-group" id="verification-code-container" style="display: none;">
-        <label for="verification-code">Verification Code:</label>
-        <input type="text" id="verification-code" name="verification-code" required>
+        <label id="label-verification" for="verification-code">Verification Code:</label>
+        <input type="text" id="verification-code" name="verification-code">
     </div>
-    <div class="input-group">
-        <label for="phone">PHONE : </label>
-        <input type="text" id="phone" name="phone" required>
+    <p class="error-msg" id="error-verification">인증코드를 입력해주세요.</p>
+    <div class="input-group" id="input-phone">
+        <label id="label-phone" for="phone">PHONE : </label>
+        <input type="text" id="phone" name="phone">
     </div>
     <p class="error-msg" id="error-phone">사용할 수 없는 전화번호입니다.</p>
     <div class="privacy-consent">
@@ -158,8 +160,9 @@ IP 주소는 인터넷 망 사업자가 인터넷에 접속하는 이용자의 P
         </div>
     </div>
     <button type="submit">Sign Up</button>
-    <a href="/users/signin">Sign In</a>
+    <a id="url-signin" href="/users/signin">Sign In</a>
 </form>
+
 
 </body>
 <c:import url="/footer" />

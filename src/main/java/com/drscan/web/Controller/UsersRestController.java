@@ -50,7 +50,7 @@ public class UsersRestController {
         User user = new User(username, password, hospital, department, name, email, phone, otpKey);
 
         String isSuccess = userService.createUser(user);
-        System.out.println(userService.findUserByUsername(username));
+
         permissionService.save(userService.findUserByUsername(username));
 
         if(!isSuccess.equals("success")){
@@ -69,7 +69,7 @@ public class UsersRestController {
     public ResponseEntity<ResponseDto> signin(@RequestBody UserRequestDto userRequestDto, HttpServletRequest request) {
         User user = userService.findUserByUsername(userRequestDto.getUsername());
 
-        if(!userRequestDto.getPassword().equals(user.getPassword())){
+        if(user == null || !userRequestDto.getPassword().equals(user.getPassword())){
             if(user.getFailCount()<5){
                 userService.incrementFailCountAndCheckSuspension(userRequestDto);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
@@ -110,5 +110,10 @@ public class UsersRestController {
         session.invalidate();
 
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "로그아웃 완료"));
+    }
+
+    @PutMapping("/edit")
+    public ResponseEntity<ResponseDto> edit(@RequestBody UserRequestDto userRequestDto, HttpServletRequest request) {
+        return null;
     }
 }
