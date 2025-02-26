@@ -31,6 +31,42 @@
     display: none;
 }
 
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.edit-btn {
+    background-color: #888;
+    color: white;
+    width: 70%;
+}
+
+.edit-btn:hover {
+    background-color: #777;
+}
+
+.withdraw-btn {
+    background-color: #f44336;
+    color: white;
+    width: 30%;
+}
+
+.withdraw-btn:hover {
+    background-color: #e53935;
+}
+
 .error-msg {
     display: none;
     color: red;
@@ -40,11 +76,15 @@
 button {
     width: 350px;
     padding: 10px;
-    background: darkgray;
+    background-color: #888;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+button:hover {
+    background-color: #777;
 }
 
 .hospital-department {
@@ -86,7 +126,7 @@ button {
     width: 170px;
 }
 
-#department-label {
+#label-department {
     left: 190px;
 }
 
@@ -104,4 +144,12 @@ button {
 
 #phone {
     padding: 10px 10px 10px 73px;
+}
+
+#url-signin {
+    margin-left: 85%;
+}
+
+#url-signup {
+    margin-left: 83%;
 }
