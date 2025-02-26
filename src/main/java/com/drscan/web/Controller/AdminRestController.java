@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RequestMapping("/admin")
@@ -59,4 +60,24 @@ public class AdminRestController {
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "성공적으로 승인되었습니다."));
     }
 
+    @PostMapping("/check")
+    public ResponseEntity<ResponseDto> check(@RequestBody Map<String, String> request) {
+        String type = request.get("type");
+        String value = request.get("value");
+        String code = request.get("code");
+
+        User user = userService.findUserByUserCode(code);
+
+        if(type.equals("username") && userService.existsByUsernameAndUserCodeNot(value, user.getUserCode())){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST.value())
+                    .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "ID가 중복됩니다."));
+        } else if(type.equals("email") && userService.existsByEmailAndUserCodeNot(value, user.getUserCode())) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST.value())
+                    .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "이메일이 중복됩니다."));
+        }
+
+        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "성공적으로 승인되었습니다."));
+    }
 }
