@@ -77,4 +77,22 @@ public class UserService {
 
         return true;
     }
+
+    public void incrementFailCountAndCheckSuspension(UserRequestDto userDto) {
+        User target = userRepository.findUserByUsername(userDto.getUsername());
+
+        if (target != null) {
+            target.incrementFailCountAndSuspended();
+            userRepository.save(target);
+        }
+    }
+
+    public void resetFailCount(UserRequestDto userDto) {
+        User target = userRepository.findUserByUsername(userDto.getUsername());
+
+        if (target != null) {
+            target.resetFailCount();
+            userRepository.save(target);
+        }
+    }
 }
