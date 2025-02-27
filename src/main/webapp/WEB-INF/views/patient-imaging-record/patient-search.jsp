@@ -16,14 +16,20 @@
 <c:import url="/header" />
 <body>
 <div class="container">
-    <div class="search-box">
-        <h2>환자 코드를 입력하세요</h2>
-        <input type="text" id="patientCode" placeholder="환자 코드 입력">
-        <button onclick="searchPatient()">검색</button>
+    <div class="search-container">
+        <label for="patientCode" class="search-label">환자 코드를 입력하세요.</label>
+
+        <input type="text" id="patientCode" placeholder="환자 코드 입력 (예: MS0010)"/>
+
+        <div class="button-group">
+            <button id="btn-search" class="btn" onclick="searchPatient()">검색</button>
+            <span id="recordButtonContainer"></span>
+        </div>
     </div>
 
+
     <div id="resultSection" style="display: none;">
-        <h3>검색 결과</h3>
+        <h3 id="result-head">검색 결과</h3>
         <table>
             <thead>
             <tr>
@@ -35,7 +41,6 @@
                 <th>설명</th>
                 <th>촬영날짜</th>
                 <th>촬영시간</th>
-                <th>진료 기록</th>
                 <th>영상 판독</th>
             </tr>
             </thead>
