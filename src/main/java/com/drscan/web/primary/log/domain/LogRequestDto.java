@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LogRequestDto {
 
-    private long userCode;
-    private long reportCode;
+    private Long userCode;
+    private Long reportCode;
     private String event;
 
 }
