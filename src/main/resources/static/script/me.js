@@ -121,7 +121,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    confirm.addEventListener("click", async e => {
+    confirm.addEventListener("click", async () => {
         const rePassword = document.getElementById("rewrite-password");
 
         if (rePassword.value) {
@@ -174,6 +174,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         if(!checkPhone && await checkDuplPhone(userCode.value, formatPhoneString(phone.value))) {
+            const msg = document.getElementById("error-phone");
             const msg2 = document.getElementById("error-phone2");
             const inputPhone = document.getElementById("input-phone");
             const labelPhone = document.getElementById("label-phone");
@@ -189,6 +190,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         if(!checkPhone && !await checkDuplPhone(userCode.value, formatPhoneString(phone.value))) {
             const msg = document.getElementById("error-phone");
+            const msg2 = document.getElementById("error-phone2");
             const inputPhone = document.getElementById("input-phone");
             const labelPhone = document.getElementById("label-phone");
 
