@@ -55,7 +55,7 @@ public class ClinicRestController {
     }
 
 
-    // 진료 수정
+    // 진료 목록수정
     @PutMapping("/detail/{clinicCode}")
     public ResponseEntity<Clinic> updateClinic(@PathVariable Long clinicCode, @RequestBody Clinic clinic) {
         return ResponseEntity.ok(clinicService.updateClinic(clinicCode, clinic));
