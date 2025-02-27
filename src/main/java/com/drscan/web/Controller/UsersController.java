@@ -17,4 +17,7 @@ public class UsersController {
     @GetMapping("/me")
     public String me() { return "users/me"; }
 
+    @GetMapping("/admin")
+    public String admin() { return "users/admin"; }
+
 }
