@@ -80,4 +80,18 @@ public class AdminRestController {
 
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "성공적으로 승인되었습니다."));
     }
+
+    @PostMapping("/withdraw")
+    public ResponseEntity<ResponseDto> withdraw(@RequestBody UserRequestDto userRequestDto) {
+        User user = userService.findUserByUserCode(userRequestDto.getCode());
+
+        boolean isSuccess = userService.deleteUserByUserCode(user.getUserCode());
+
+        if(!isSuccess)
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST.value())
+                    .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "탈퇴신청에 실패하였습니다."));
+
+        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "탈퇴신청을 성공적으로 수정되었습니다."));
+    }
 }
