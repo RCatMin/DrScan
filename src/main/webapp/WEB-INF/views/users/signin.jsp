@@ -17,26 +17,27 @@
 <body>
 
 <form class="form-box" id="signin-form" action="/users/action/signin" method="POST">
-    <div class="input-group">
-        <label for="username">ID : </label>
+    <div class="input-group" id="input-username">
+        <label id="label-username" for="username">ID : </label>
         <div class="email-container">
-            <input type="text" id="username" name="username" required>
+            <input type="text" id="username" name="username">
             <button type="button" id="email-verify-btn">Verify</button>
         </div>
     </div>
-    <p class="error-msg" id="error-username">잘못된 입력입니다.</p>
+    <p class="error-msg" id="error-username">아이디를 입력해주세요.</p>
 
-    <div class="input-group">
-        <label for="password">PW : </label>
-        <input type="password" id="password" name="password" required>
+    <div class="input-group" id="input-password">
+        <label id="label-password" for="password">PW : </label>
+        <input type="password" id="password" name="password">
     </div>
-    <p class="error-msg" id="error-password">잘못된 입력입니다.</p>
+    <p class="error-msg" id="error-password">비밀번호를 입력해주세요.</p>
     <div class="input-group" id="verification-code-container" style="display: none;">
-        <label for="verification-code">Verification Code:</label>
-        <input type="text" id="verification-code" name="verification-code" required>
+        <label id="label-verification" for="verification-code">Verification Code:</label>
+        <input type="text" id="verification-code" name="verification-code">
     </div>
+    <p class="error-msg" id="error-verification">인증코드를 입력해주세요.</p>
     <button type="submit">Sign In</button>
-    <a href="/users/signup">Sign Up</a>
+    <a id="url-signup" href="/users/signup">Sign Up</a>
 </form>
 
 </body>
