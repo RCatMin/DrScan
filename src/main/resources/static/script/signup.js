@@ -267,7 +267,7 @@ window.addEventListener('DOMContentLoaded', () => {
         else if(checkUsername && checkPassword && checkHospitalDepartment && checkName && checkEmail && !checkVerification && checkPhone){
             alert("이메일 인증을 진행해주세요.");
         } else if(checkUsername && checkPassword && checkHospitalDepartment && checkName && checkEmail && checkVerification && checkPhone){
-            await registAction(username.value, password.value, hospital.value, department.value, name.value, email.value, phone.value, code.value);
+            await registAction(username.value, password.value, hospital.value, department.value, name.value, email.value, phone.value, verification.value);
         }
     });
 
