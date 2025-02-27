@@ -20,18 +20,18 @@
     <input type="hidden" id="userCode" name="userCode" value="${authUser.userCode}">
     <div class="input-group" id="input-username">
         <label id="label-username" for="username">ID : </label>
-        <input type="text" id="username" name="username" disabled>
+        <input type="text" id="username" name="username" value="${authUser.username}" disabled>
     </div>
     <div class="input-group" id="input-password">
         <label id="label-password" for="password">PW : </label>
-        <input type="password" id="password" name="password">
+        <input type="password" id="password" name="password" value="00000000">
     </div>
     <p class="error-msg" id="error-password">&nbsp특수기호를 포함한 8~16자리의 비밀번호를 입력해주세요.</p>
     <div class="input-group" id="input-hospital-department">
         <div class="hospital-department">
             <div class="hospital" id="input-hospital">
                 <label id="label-hospital" for="hospital">HN : </label>
-                <input type="text" id="hospital" name="hospital" value="${authUser.hospital}">
+                <input type="text" id="hospital" name="hospital" value="${authUser.hospitalName}">
             </div>
             <div class="department" id="input-department">
                 <label id="label-department"  for="department">DP : </label>
@@ -56,12 +56,24 @@
         <input type="text" id="phone" name="phone" value="${authUser.phone}">
     </div>
     <p class="error-msg" id="error-phone">전화번호 형식에 맞게 입력해주세요.</p>
+    <p class="error-msg" id="error-phone2">전화번호가 중복됩니다.</p>
     <div class="button-container">
         <button type="submit" class="btn edit-btn">Edit</button>
         <button type="button" id="withdraw-btn" class="btn withdraw-btn">Withdraw</button>
     </div>
 </form>
 
+<div class="modal" id="myModal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>탈퇴신청을 위해 비밀번호를 다시 입력해주세요.</p>
+        <div class="input-group">
+            <label for="rewrite-password">Password : </label>
+            <input type="password" id="rewrite-password" name="rewrite-password">
+        </div>
+        <button id="confirm-btn">확인</button>
+    </div>
+</div>
 
 </body>
 <c:import url="/footer" />
