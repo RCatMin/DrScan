@@ -9,13 +9,13 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <html>
 <head>
-    <link rel="stylesheet" href="/style/global.css">
+    <link rel="stylesheet" href="/style/userForm.css">
     <title>Main</title>
 </head>
 <c:import url="/header" />
 <body>
     <div id ="content-container">
-        DrScan Home
+        <div id="logo"></div>
     </div>
 </body>
 <c:import url="/footer" />

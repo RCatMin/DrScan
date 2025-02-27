@@ -27,17 +27,17 @@
         </h1>
     </div>
 
-    <c:if test="${empty admin && empty log }">
+    <c:if test="${empty admin && empty authUser }">
         <div class="btn">
             <input type="button" value="로그인" onclick="location.href='/users/signin'">
             <input type="button" value="회원가입" onclick="location.href='/users/signup'">
         </div>
     </c:if>
 
-    <c:if test="${not empty log }">
+    <c:if test="${not empty authUser }">
         <div class="btn">
-            <input type="button" value="회원정보" onclick="location.href='/service/users?command=view'">
-            <input type="button" id="btn-logout" value="로그아웃" onclick="location.href='/service/users?command=logout'">
+            <input type="button" value="회원정보" onclick="location.href='/users/me'">
+            <input type="button" id="btn-logout" value="로그아웃" onclick="location.href='/users/action/signout'">
         </div>
     </c:if>
 
