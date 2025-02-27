@@ -33,10 +33,10 @@
 
     <div id="patientInfo">
         <p class="title">환자 정보</p>
-        <p>ID: <span id="patientId">-</span></p>
-        <p>이름: <span id="patientName">-</span></p>
-        <p>성별: <span id="patientSex">-</span></p>
-        <p>생년월일: <span id="patientBirth">-</span></p>
+        <p>ID : <span id="patientId">-</span></p>
+        <p>이름 : <span id="patientName">-</span></p>
+        <p>성별 : <span id="patientSex">-</span></p>
+        <p>생년월일 : <span id="patientBirth">-</span></p>
     </div>
 </div>
 

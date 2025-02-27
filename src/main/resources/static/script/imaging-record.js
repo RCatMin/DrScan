@@ -13,11 +13,43 @@ window.onload = function () {
     initializeCornerstone();
 };
 
+document.addEventListener("DOMContentLoaded", () => {
+    loadPatientInfo();
+});
+
 async function initializeCornerstone() {
     await coreInit(); // cornerstone.js를 초기화
     await dicomImageLoaderInit(); // DICOM 이미지를 불러오기
     loadDicomImages(); // DICOM 이미지를 가져오기
 }
+
+async function loadPatientInfo() {
+    try {
+        const urlParts = window.location.pathname.split("/");
+
+        const pid = urlParts[3];
+
+        let response = await fetch(`/patientScan/action/${pid}`);
+        let patientData = await response.json();
+
+        if (!patientData || patientData.length === 0 || patientData[0].error) {
+            console.error("환자 정보를 불러올 수 없습니다!");
+            return;
+        }
+
+        const patient = patientData[0];
+        document.getElementById("patientName").innerText = patient.pname || "N/A";
+        document.getElementById("patientId").innerText = patient.pid || "N/A";
+        document.getElementById("patientSex").innerText = patient.psex || "N/A";
+        document.getElementById("patientBirth").innerText = patient.pbirthdate || "N/A";
+    } catch (error) {
+        console.error("환자 정보 불러오는 중 오류 발생:", error);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadPatientInfo();
+});
 
 // DICOM 이미지 리스트 로드
 async function loadDicomImages() {
