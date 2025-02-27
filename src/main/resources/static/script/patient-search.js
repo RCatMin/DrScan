@@ -43,6 +43,12 @@ function searchPatient() {
                 return;
             }
 
+            // 진료 기록 조회 버튼 추가
+            var recordButtonContainer = document.getElementById("recordButtonContainer");
+            recordButtonContainer.innerHTML = `
+                <button class="btn btn-record" onclick="viewMedicalRecords('${patient.pid}')">진료 기록 조회</button>
+            `;
+
             studyDetails.forEach(function (study) {
                 var seriesList = study.series || []; // undefined 방지
                 seriesList.forEach(function (series) {
@@ -92,7 +98,6 @@ function displayPage(page) {
                 <td>${item.studydesc}</td>
                 <td>${item.studydate}</td>
                 <td>${item.studytime}</td>
-                <td><div><button class="btn btn-record" onclick="viewMedicalRecords('${item.pid}')">진료 기록 조회</button></div></td>
                 <td><div><button class="btn btn-analysis" onclick="analyzeImage('${item.pid}', '${item.studykey}', '${item.serieskey}')">영상 판독</button></div></td>
             </tr>
         `;

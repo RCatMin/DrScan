@@ -42,8 +42,8 @@ public class PatientScanRESTController {
         return ResponseEntity.ok(patientScanService.getPatientByPid(pid));
     }
 
-    // DICOM 파일
-    private final String DICOM_STORAGE_PATH = "Z:/"; // 실제 DICOM 파일 저장소 경로
+    // 실제 DICOM 파일 저장소 경로
+    private final String DICOM_STORAGE_PATH = "Z:/";
 
     @GetMapping("/getDicomFile")
     public ResponseEntity<Resource> getDicomFile(@RequestParam String path) {
