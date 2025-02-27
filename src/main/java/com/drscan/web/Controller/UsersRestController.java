@@ -87,7 +87,7 @@ public class UsersRestController {
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "로그인에 성공했습니다."));
     }
 
-    @GetMapping("/signout")
+    @DeleteMapping("/signout")
     public ResponseEntity<ResponseDto> signout(HttpSession session) {
         session.removeAttribute("authUser");
         session.invalidate();
@@ -95,8 +95,49 @@ public class UsersRestController {
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "로그아웃 완료"));
     }
 
+    @PostMapping("/checkDuplication-phone")
+    public ResponseEntity<ResponseDto> checkDuplicationPhone(@RequestBody UserRequestDto userRequestDto) {
+        String code = userRequestDto.getCode();
+        String phone = userRequestDto.getPhone();
+
+        boolean check = userService.existsByPhoneAndUserCodeNot(phone, code);
+
+        if(check) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST.value())
+                    .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "전화번호가 중복됩니다."));
+        }
+        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "사용가능한 전화번호입니다"));
+    }
+
     @PutMapping("/edit")
-    public ResponseEntity<ResponseDto> edit(@RequestBody UserRequestDto userRequestDto, HttpServletRequest request) {
-        return null;
+    public ResponseEntity<ResponseDto> edit(@RequestBody UserRequestDto userRequestDto) {
+        boolean isSuccess = userService.updateUser2(userRequestDto);
+
+        if(!isSuccess)
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST.value())
+                    .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "회원정보 수정에 실패하였습니다."));
+
+        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "회원정보가 성공적으로 수정되었습니다."));
+    }
+
+    @PostMapping("/withdraw")
+    public ResponseEntity<ResponseDto> withdraw(@RequestBody UserRequestDto userRequestDto) {
+        User user = userService.findUserByUserCode(userRequestDto.getCode());
+
+        if(!user.getPassword().equals(userRequestDto.getPassword()))
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST.value())
+                    .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "탈퇴신청에 실패하였습니다."));
+
+        boolean isSuccess = userService.updateUser3(user);
+
+        if(!isSuccess)
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST.value())
+                    .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "탈퇴신청에 실패하였습니다."));
+
+        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "탈퇴신청을 성공적으로 수정되었습니다."));
     }
 }
