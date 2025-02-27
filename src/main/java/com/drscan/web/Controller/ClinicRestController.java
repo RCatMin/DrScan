@@ -26,7 +26,7 @@ public class ClinicRestController {
     }
 
 
-    // clinic_code로 진료 조회
+    // patient_code로 진료 조회
     @GetMapping("/{patientCode}")
     public ResponseEntity<?> getClinic(@PathVariable String patientCode) {
         List<Clinic> clinics = clinicService.getClinicByPatientCode(patientCode);
@@ -38,7 +38,7 @@ public class ClinicRestController {
         return ResponseEntity.ok(clinics);
 
     }
-    // 진료 상세
+    // 진료 상세 조회
     @GetMapping("/detail/{clinicCode}")
     public ResponseEntity<?> getClinicByCode(@PathVariable Long clinicCode) {
         Clinic clinic = clinicService.getClinicByClinicCode(clinicCode);
