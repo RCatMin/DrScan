@@ -38,16 +38,31 @@ async function loadStudyAndSeriesInfo() {
             return;
         }
 
+        // Study 정보
         document.getElementById("studyDesc").innerText = data.study.studydesc || "N/A";
         document.getElementById("modality").innerText = data.study.modality || "N/A";
         document.getElementById("bodyPart").innerText = data.study.bodypart || "N/A";
+        document.getElementById("accessNum").innerText = data.study.accessnum || "N/A";
+        document.getElementById("studyDate").innerText = data.study.studydate || "N/A";
+        document.getElementById("seriesCnt").innerText = data.study.seriescnt || "N/A";
+
+        // Series 정보
         document.getElementById("seriesDesc").innerText = data.series.seriesdesc || "N/A";
         document.getElementById("seriesModality").innerText = data.series.modality || "N/A";
         document.getElementById("seriesDate").innerText = data.series.seriesdate || "N/A";
+        document.getElementById("imageCnt").innerText = data.series.imagecnt || "N/A";
+        document.getElementById("seriesNum").innerText = data.series.seriesnum || "N/A";
+
+        // 판독 결과
+        if (data.report) {
+            document.getElementById("severityLevel").innerText = data.report.severityLevel || "N/A";
+            document.getElementById("reportStatus").innerText = data.report.reportStatus || "N/A";
+        }
     } catch (error) {
         console.error("Study/Series 정보 불러오는 중 오류 발생:", error);
     }
 }
+
 
 // 환자정보 불러오기
 async function loadPatientInfo() {
