@@ -111,8 +111,8 @@ public class UsersRestController {
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<ResponseDto> edit(@RequestBody UserRequestDto userRequestDto) {
-        boolean isSuccess = userService.updateUser2(userRequestDto);
+    public ResponseEntity<ResponseDto> edit(@RequestBody UserRequestDto userRequestDto, HttpServletRequest request) {
+        boolean isSuccess = userService.updateUser2(userRequestDto, request);
 
         if(!isSuccess)
             return ResponseEntity
