@@ -51,6 +51,7 @@ public class User extends Timestamp {
         this.failCount = 0;
     }
 
+    // 관리자가 사용자 계정 수정
     public void update(UserRequestDto userDto) {
         this.username = userDto.getUsername();
         this.email = userDto.getEmail();
@@ -58,6 +59,7 @@ public class User extends Timestamp {
         this.accountType = userDto.getAccountType();
     }
 
+    // 사용자가 자신의 정보 수정
     public void update2(UserRequestDto userDto) {
         this.password = userDto.getPassword();
         this.hospitalName = userDto.getHospital();
@@ -66,6 +68,7 @@ public class User extends Timestamp {
         this.phone = userDto.getPhone();
     }
 
+    // 사용자 탈퇴 신청
     public void update3() {
         this.status = "pending";
     }
