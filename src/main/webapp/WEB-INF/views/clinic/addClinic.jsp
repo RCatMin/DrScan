@@ -21,7 +21,7 @@
     <form id="addClinic-form" action="/clinic/action" method="POST">
         <label for="userCode">의사 ID:</label>
 <%--        log에서 username으로 자동저장 필요--%>
-        <input type="text" id="userCode" name="userCode" value="1005" disabled>
+        <input type="text" id="userCode" name="userCode" value="${sessionScope.authUser.userCode}" disabled>
         <div class="input-group">
             <label for="clinicDate">진료 날짜:</label>
             <input type="date" id="clinicDate" name="clinicDate" required>

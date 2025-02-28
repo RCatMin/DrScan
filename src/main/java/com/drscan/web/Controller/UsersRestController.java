@@ -1,5 +1,6 @@
 package com.drscan.web.Controller;
 
+import com.drscan.web.primary.log.service.LogService;
 import com.drscan.web.primary.permission.service.PermissionService;
 import com.drscan.web.primary.users.domain.User;
 import com.drscan.web.primary.users.domain.UserRequestDto;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class UsersRestController {
 
     private final UserService userService;
     private final PermissionService permissionService;
+    private final LogService logService;
 
     @GetMapping("/list")
     public ResponseEntity<List<User>> findUserAll(){
@@ -62,6 +65,8 @@ public class UsersRestController {
         session.removeAttribute("authCode");
         session.invalidate();
 
+        logService.saveLog(user,"회원가입");
+
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "회원가입 요청이 완료되었습니다."));
     }
 
@@ -69,7 +74,12 @@ public class UsersRestController {
     public ResponseEntity<ResponseDto> signin(@RequestBody UserRequestDto userRequestDto, HttpServletRequest request) {
         User user = userService.findUserByUsername(userRequestDto.getUsername());
 
-        if(user == null || !userRequestDto.getPassword().equals(user.getPassword())){
+        if(user == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
+                    .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "아이디 혹은 비밀번호가 일치하지 않습니다."));
+        }
+
+        if(!userRequestDto.getPassword().equals(user.getPassword())){
             if(user.getFailCount()<5){
                 userService.incrementFailCountAndCheckSuspension(userRequestDto);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
@@ -98,6 +108,7 @@ public class UsersRestController {
         }
 
         userService.resetFailCount(userRequestDto);
+        logService.saveLog(user,"로그인");
         session = request.getSession();
         session.setAttribute("authUser", user);
 
@@ -105,15 +116,60 @@ public class UsersRestController {
     }
 
     @GetMapping("/signout")
-    public ResponseEntity<ResponseDto> signout(HttpSession session) {
+    public RedirectView signout(HttpSession session) {
+        User user = (User) session.getAttribute("authUser");
+
         session.removeAttribute("authUser");
         session.invalidate();
 
-        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "로그아웃 완료"));
+        logService.saveLog(user, "로그아웃");
+
+        return new RedirectView("/");
+    }
+
+    @PostMapping("/checkDuplication-phone")
+    public ResponseEntity<ResponseDto> checkDuplicationPhone(@RequestBody UserRequestDto userRequestDto) {
+        String code = userRequestDto.getCode();
+        String phone = userRequestDto.getPhone();
+
+        boolean check = userService.existsByPhoneAndUserCodeNot(phone, code);
+
+        if(check) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST.value())
+                    .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "전화번호가 중복됩니다."));
+        }
+        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "사용가능한 전화번호입니다"));
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<ResponseDto> edit(@RequestBody UserRequestDto userRequestDto, HttpServletRequest request) {
-        return null;
+    public ResponseEntity<ResponseDto> edit(@RequestBody UserRequestDto userRequestDto) {
+        boolean isSuccess = userService.updateUser2(userRequestDto);
+
+        if(!isSuccess)
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST.value())
+                    .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "회원정보 수정에 실패하였습니다."));
+
+        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "회원정보가 성공적으로 수정되었습니다."));
+    }
+
+    @PostMapping("/withdraw")
+    public ResponseEntity<ResponseDto> withdraw(@RequestBody UserRequestDto userRequestDto) {
+        User user = userService.findUserByUserCode(userRequestDto.getCode());
+
+        if(!user.getPassword().equals(userRequestDto.getPassword()))
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST.value())
+                    .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "탈퇴신청에 실패하였습니다."));
+
+        boolean isSuccess = userService.updateUser3(user);
+
+        if(!isSuccess)
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST.value())
+                    .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "탈퇴신청에 실패하였습니다."));
+
+        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "탈퇴신청을 성공적으로 수정되었습니다."));
     }
 }

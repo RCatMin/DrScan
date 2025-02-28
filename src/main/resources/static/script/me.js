@@ -1,17 +1,37 @@
-import { validateUsername, validatePassword, validateEmail, validateName, validatePhone, formatPhoneString } from "./validation.js";
+import { validatePassword, validateName, validatePhone, formatPhoneString } from "./validation.js";
 
 window.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById("me-form");
+    const userCode = document.getElementById("userCode");
     const password = document.getElementById("password")
     const hospital = document.getElementById("hospital")
     const department = document.getElementById("department")
     const name = document.getElementById("name")
     const phone = document.getElementById("phone")
+    const modal = document.getElementById("myModal");
+    const withdrawBtn = document.getElementById("withdraw-btn");
+    const closeModalButton = document.getElementsByClassName("close")[0];
+
+    const confirm = document.getElementById("confirm-btn");
+
+    withdrawBtn.onclick = function() {
+        modal.style.display = "flex";
+    }
+
+    closeModalButton.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
 
     let checkPassword = false;
-    let checkHospitalDepartment = false;
-    let checkName = false;
-    let checkPhone = false;
+    let checkHospitalDepartment = true;
+    let checkName = true;
+    let checkPhone = true;
 
     password.addEventListener("focusout", async () => {
         let target = password.value;
@@ -67,6 +87,7 @@ window.addEventListener('DOMContentLoaded', () => {
     phone.addEventListener("focusout", async () => {
         let target = phone.value;
         const msg = document.getElementById("error-phone");
+        const msg2 = document.getElementById("error-phone2");
         const inputPhone = document.getElementById("input-phone");
         const labelPhone = document.getElementById("label-phone");
 
@@ -79,13 +100,34 @@ window.addEventListener('DOMContentLoaded', () => {
             inputPhone.style.marginBottom = "0";
             labelPhone.style.top = "45%";
             checkPhone = false;
+        } else if(await checkDuplPhone(userCode.value, formatPhoneString(target))) {
+            msg.style.display = "none";
+            msg.style.marginBottom = "0";
+            msg2.style.display = "block";
+            msg2.style.marginBottom = "15px";
+            phone.style.marginBottom = "5px";
+            inputPhone.style.marginBottom = "0";
+            labelPhone.style.top = "45%";
+            checkPhone = false;
         } else {
             msg.style.display = "none";
             msg.style.marginBottom = "0";
+            msg2.style.display = "none";
+            msg2.style.marginBottom = "0";
             phone.style.marginBottom = "0";
             inputPhone.style.marginBottom = "15px";
             labelPhone.style.top = "50%";
             checkPhone = true;
+        }
+    });
+
+    confirm.addEventListener("click", async () => {
+        const rePassword = document.getElementById("rewrite-password");
+
+        if (rePassword.value) {
+            await applyWithdraw(userCode.value, rePassword.value);
+        } else {
+            alert("비밀번호를 입력해주세요.");
         }
     });
 
@@ -131,11 +173,29 @@ window.addEventListener('DOMContentLoaded', () => {
             labelName.style.top = "45%";
         }
 
-        if(!checkPhone) {
+        if(!checkPhone && await checkDuplPhone(userCode.value, formatPhoneString(phone.value))) {
             const msg = document.getElementById("error-phone");
+            const msg2 = document.getElementById("error-phone2");
             const inputPhone = document.getElementById("input-phone");
             const labelPhone = document.getElementById("label-phone");
 
+            msg.style.display = "none";
+            msg.style.marginBottom = "0";
+            msg2.style.display = "block";
+            msg2.style.marginBottom = "15px";
+            phone.style.marginBottom = "5px";
+            inputPhone.style.marginBottom = "0";
+            labelPhone.style.top = "45%";
+        }
+
+        if(!checkPhone && !await checkDuplPhone(userCode.value, formatPhoneString(phone.value))) {
+            const msg = document.getElementById("error-phone");
+            const msg2 = document.getElementById("error-phone2");
+            const inputPhone = document.getElementById("input-phone");
+            const labelPhone = document.getElementById("label-phone");
+
+            msg2.style.display = "none";
+            msg2.style.marginBottom = "0";
             msg.style.display = "block";
             msg.style.marginBottom = "15px";
             phone.style.marginBottom = "5px";
@@ -144,8 +204,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         else if(checkPassword && checkHospitalDepartment && checkName && checkPhone){
-            await edit(password.value, hospital.value, department.value, name.value, phone.value);
-            alert("test");
+            await edit(userCode.value, password.value, hospital.value, department.value, name.value, phone.value);
         }
     });
 
@@ -177,13 +236,29 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-async function edit(password, hospital, department, name, phone) {
-    const response = await fetch("/edit", {
+async function checkDuplPhone(code, phone) {
+    const response = await fetch("/users/action/checkDuplication-phone", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
+            "code" : code,
+            "phone": phone
+        })
+    });
+
+    return !response.ok;
+}
+
+async function edit(code, password, hospital, department, name, phone) {
+    const response = await fetch("/users/action/edit", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "code" : code,
             "password": password,
             "hospital": hospital,
             "department": department,
@@ -192,6 +267,37 @@ async function edit(password, hospital, department, name, phone) {
 
         })
     });
-    const json = await response.json();
-    return json.isValid;
+    
+    if (response.ok) {
+        window.location.href = "/";
+        alert("회원정보 수정 성공!");
+        return true;
+    } else {
+        const json = await response.json();
+        alert(`오류 : ${json.message}`);
+        return json.isValid;
+    }
+}
+
+async function applyWithdraw(code, password) {
+    const response = await fetch("/users/action/withdraw", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "code" : code,
+            "password": password
+        })
+    });
+
+    if (response.ok) {
+        window.location.href = "/";
+        alert("탈퇴신청 성공!");
+        return true;
+    } else {
+        const json = await response.json();
+        alert(`오류 : ${json.message}`);
+        return json.isValid;
+    }
 }

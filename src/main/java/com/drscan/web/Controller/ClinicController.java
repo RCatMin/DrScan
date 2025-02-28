@@ -1,10 +1,6 @@
 package com.drscan.web.Controller;
 
-import com.drscan.web.primary.clinic.domain.Clinic;
 
-import com.drscan.web.primary.clinic.service.ClinicService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
