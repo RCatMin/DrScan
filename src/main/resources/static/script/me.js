@@ -274,7 +274,7 @@ async function edit(code, password, hospital, department, name, phone) {
         return true;
     } else {
         const json = await response.json();
-        alert(`오류 : ${json.message}`);
+        alert(`오류 : 잘못된 입력입니다.`);
         return json.isValid;
     }
 }
@@ -297,7 +297,7 @@ async function applyWithdraw(code, password) {
         return true;
     } else {
         const json = await response.json();
-        alert(`오류 : ${json.message}`);
+        alert(`오류 : 잘못된 입력입니다.`);
         return json.isValid;
     }
 }
