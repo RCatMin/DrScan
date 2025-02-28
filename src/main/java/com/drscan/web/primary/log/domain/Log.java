@@ -21,15 +21,19 @@ public class Log {
 
     @Column(name = "report_code")
     private Long reportCode;
+
     private String event;
 
     @Column(name = "event_date")
     private Timestamp eventDate;
 
+    @Column(name = "clinic_code")
+    private Long clinicCode;
+
     @PrePersist
     public void prePersist() {
         if (this.eventDate == null) {
-            this.eventDate = new Timestamp(System.currentTimeMillis()); // set current timestamp
+            this.eventDate = new Timestamp(System.currentTimeMillis());
         }
     }
 
@@ -38,9 +42,4 @@ public class Log {
         this.event = event;
     }
 
-    public Log(long userCode, long reportCode, String event) {
-        this.userCode = userCode;
-        this.reportCode = reportCode;
-        this.event = event;
-    }
 }

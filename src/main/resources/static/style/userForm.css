@@ -213,3 +213,93 @@ button:hover {
 .close:hover {
     color: black;
 }
+
+#content-container > #logo {
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/logo.jpg');
+    background-size: 100% auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+}
+
+privacy-consent{
+    margin-bottom: 15px;
+}
+
+.privacy-consent {
+    font-size: 14px;
+    color: #333;
+    margin-top: 15px;
+}
+
+.privacy-consent a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.privacy-consent a:hover {
+    text-decoration: underline;
+}
+
+#privacy-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding-top: 100px;
+}
+
+.privacy-modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.privacy-modal-content h2 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.privacy-modal-content pre {
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #555;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.privacy-modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 25px;
+    color: #333;
+    cursor: pointer;
+}
+
+#privacy-link {
+    text-decoration: none;
+    color: #0066cc;
+    font-weight: bold;
+}
+
+#privacy-link:hover {
+    text-decoration: underline;
+}

@@ -4,6 +4,7 @@ import com.drscan.web.primary.users.util.Timestamp;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @NoArgsConstructor
 @Getter
@@ -59,7 +60,9 @@ public class User extends Timestamp {
     }
 
     public void update2(UserRequestDto userDto) {
-        this.password = userDto.getPassword();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        this.password = passwordEncoder.encode(userDto.getPassword());
         this.hospitalName = userDto.getHospital();
         this.department = userDto.getDepartment();
         this.name = userDto.getName();
