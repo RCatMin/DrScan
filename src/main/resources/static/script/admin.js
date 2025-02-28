@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     const tabs = document.querySelectorAll('.tab');
     tabs.forEach((tab, index) => {
         tab.addEventListener('click', () => openTab(index));
+        let max = document.getElementById("max-length").value;
+        let maxList = document.getElementById(`member-${max}`);
+        maxList.style.marginBottom = '0';
     });
 
     document.querySelectorAll("input[id^='username-tab1-']").forEach(input => {
@@ -130,15 +133,34 @@ function openTab(tabIndex) {
 
 function initializeDropdowns() {
     const buttons = document.querySelectorAll('.showDropdown');
+    const spans = document.querySelectorAll('.showDropdown-span');
 
     buttons.forEach(button => {
         button.removeEventListener('click', dropdownClickHandler);
         button.addEventListener('click', dropdownClickHandler);
     });
+
+    spans.forEach(span => {
+        span.removeEventListener('click', spanClickHandler);
+        span.addEventListener('click', spanClickHandler);
+    });
 }
 
 function dropdownClickHandler(event) {
     toggleDropdown(event.target);
+}
+
+function spanClickHandler(event) {
+    const span = event.target;
+    const button = span.closest('.showDropdown');
+
+    button.click();
+    const index = button.getAttribute('data-id');
+    const dropdown = document.getElementById(`dropdownMenu-${index}`);
+
+    if (dropdown) {
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
 }
 
 function toggleDropdown(button) {
@@ -150,7 +172,7 @@ function toggleDropdown(button) {
     }
 }
 
-async function createSession() {
+export async function createSession() {
     try {
         const response = await fetch('/admin/session', { method: 'GET' });
         const json = await response.json();
@@ -226,7 +248,7 @@ async function requestDeleteApprove(code) {
         return true;
     } else {
         const json = await response.json();
-        alert(`오류 : ${json.message}`);
+        alert(`오류 : 탈퇴승인 실패`);
         return json.isValid;
     }
 }

@@ -1,6 +1,32 @@
 .form-box {
     width: 350px;
     padding: 20px;
+    margin: 80px auto 80px auto;
+    background: #333;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 1);
+}
+
+.form-title {
+    font-size: 30px;
+    font-weight : bold;
+    color: white;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.input-box {
+    font-size: 14px !important; /* 글자 크기 강제 적용 */
+    color: black;
+    font-family: Arial, sans-serif;
+    text-align: left;
+    border: 1px solid #666;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.input-box:disabled {
+    background: #B0B0B0;
 }
 
 .input-group {
@@ -48,6 +74,9 @@
 }
 
 .edit-btn {
+    display: block; !important;
+    margin-right: 0 !important;
+    text-align: center !important;
     background-color: #888;
     color: white;
     width: 70%;
@@ -58,6 +87,8 @@
 }
 
 .withdraw-btn {
+    display: block; !important;
+    margin-right: 0 !important;
     background-color: #f44336;
     color: white;
     width: 30%;
@@ -69,14 +100,14 @@
 
 .error-msg {
     display: none;
-    color: red;
+    color: #ff4d4d;
     font-size: 12px;
 }
 
 button {
     width: 350px;
     padding: 10px;
-    background-color: #888;
+    background-color: #777;
     color: white;
     border: none;
     border-radius: 5px;
@@ -84,7 +115,7 @@ button {
 }
 
 button:hover {
-    background-color: #777;
+    background-color: #555;
 }
 
 .hospital-department {
@@ -168,7 +199,7 @@ button:hover {
 }
 
 .modal-content {
-    background-color: white;
+    background-color: #333;
     width: 350px;
     padding: 20px;
     border-radius: 8px;
@@ -179,7 +210,7 @@ button:hover {
 
 .modal-content p {
     font-size: 14px;
-    color: #666;
+    color: white;
     margin-bottom: 15px;
 }
 

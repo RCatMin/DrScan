@@ -148,8 +148,8 @@ public class UsersRestController {
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<ResponseDto> edit(@RequestBody UserRequestDto userRequestDto, HttpSession session) {
-        boolean isSuccess = userService.updateUser2(userRequestDto);
+    public ResponseEntity<ResponseDto> edit(@RequestBody UserRequestDto userRequestDto, HttpSession session, HttpServletRequest request) {
+        boolean isSuccess = userService.updateUser2(userRequestDto, request);
         User user = (User) session.getAttribute("authUser");
 
         if (!isSuccess)

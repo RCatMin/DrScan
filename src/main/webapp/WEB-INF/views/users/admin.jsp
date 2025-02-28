@@ -7,6 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
+
 <html>
 <head>
     <title>4개의 탭</title>
@@ -23,16 +25,23 @@
     <div class="tab">탈퇴승인</div>
     <div class="tab" id="tab-4">로그</div>
 </div>
-
+<c:set var="userListSize" value="${fn:length(userList)}" />
+<input type="hidden" id="max-length" value="${userListSize}">
 <div class="tab-content active" id="tab1">
     <c:if test="${empty userList}">
         <p>세션에 회원 데이터가 없습니다.</p>
     </c:if>
     <c:forEach var="user" items="${userList}" varStatus="list">
-        <div class="member-section">
-            <button class="showDropdown" data-id="${list.index}">No. ${list.index+1} | CODE : ${user.userCode} | ID : ${user.username} | NAME : ${user.name}</button>
 
-            <div id="dropdownMenu-${list.index}" class="dropdown-menu">
+        <div class="member-section" id="member-${list.index+1}">
+            <button class="showDropdown" data-id="${list.index}">
+                <span class="showDropdown-span" data-id="${list.index}">No. ${list.index+1}</span>
+                <span class="showDropdown-span" data-id="${list.index}">CODE: ${user.userCode}</span>
+                <span class="showDropdown-span" data-id="${list.index}">ID: ${user.username}</span>
+                <span class="showDropdown-span" data-id="${list.index}">NAME: ${user.name}</span>
+            </button>
+
+            <div id="dropdownMenu-${list.index}" class="dropdown-menu" style="display: none;">
                 <form data-id="${list.index}" id="first-tab">
                     <input type="hidden" id="userCode-tab1-${list.index}" name="userCode" value="${user.userCode}">
 
@@ -75,7 +84,12 @@
     </c:if>
     <c:forEach var="temporary" items="${temporaryList}" varStatus="list">
         <div class="member-section">
-            <button class="showDropdown" data-id="tab2-${list.index}">No. ${list.index+1} | CODE : ${temporary.userCode} | ID : ${temporary.username} | NAME : ${temporary.name}</button>
+            <button class="showDropdown" data-id="tab2-${list.index}">
+                <span>No. ${list.index+1}</span>
+                <span>CODE: ${temporary.userCode}</span>
+                <span>ID: ${temporary.username}</span>
+                <span>NAME: ${temporary.name}</span>
+            </button>
 
             <div id="dropdownMenu-tab2-${list.index}" class="dropdown-menu">
                 <form data-id="${list.index}" id="second-tab">
@@ -103,7 +117,12 @@
     </c:if>
     <c:forEach var="delete" items="${deleteList}" varStatus="list">
         <div class="member-section">
-            <button class="showDropdown" data-id="tab3-${list.index}">No. ${list.index+1} | CODE : ${delete.userCode} | ID : ${delete.username} | NAME : ${delete.name}</button>
+            <button class="showDropdown" data-id="tab3-${list.index}">
+                <span>No. ${list.index+1}</span>
+                <span>CODE: ${delete.userCode}</span>
+                <span>ID: ${delete.username}</span>
+                <span>NAME: ${delete.name}</span>
+            </button>
 
             <div id="dropdownMenu-tab3-${list.index}" class="dropdown-menu">
                 <form data-id="${list.index}" id="third-tab">

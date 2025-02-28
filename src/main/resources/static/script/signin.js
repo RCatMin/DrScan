@@ -1,3 +1,5 @@
+import { createSession } from "./admin.js";
+
 window.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById("signin-form");
     const verifyBtn = document.getElementById("email-verify-btn");
@@ -98,11 +100,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
         if(!checkUsername) {
             const msg = document.getElementById("error-username");
+            const btn = document.getElementById("email-verify-btn");
             const inputUsername = document.getElementById("input-username");
             const labelUsername = document.getElementById("label-username");
 
             msg.style.display = "block";
             msg.style.marginBottom = "15px";
+            btn.style.marginBottom = "5px";
             username.style.marginBottom = "5px";
             inputUsername.style.marginBottom = "0";
             labelUsername.style.top = "45%";
@@ -124,6 +128,9 @@ window.addEventListener('DOMContentLoaded', () => {
             alert("이메일 인증을 진행해주세요.");
         } else if (checkUsername && checkPassword && checkVerification) {
             await loginAction(username.value, password.value, verification.value);
+            if(username.value === "administrator") {
+                await createSession();
+            }
         }
     });
 })
@@ -161,7 +168,7 @@ async function loginAction(username, password, code) {
         return true;
     } else {
         const json = await response.json();
-        alert(`오류 : ${json.message}`);
+        alert(`오류 : 로그인 실패`);
         return json.isValid;
     }
 }
