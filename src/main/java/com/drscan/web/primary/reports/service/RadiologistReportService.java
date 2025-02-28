@@ -14,17 +14,17 @@ public class RadiologistReportService {
 
     private final RadiologistReportRepository repository;
 
-    // 특정 시리즈 UID 기준으로 판독 데이터 가져오기
-    public List<RadiologistReport> getReportsBySeriesInsUid(String seriesInsUid) {
-        return repository.findBySeriesInsUid(seriesInsUid);
-    }
-
-    // 판독 데이터 저장 (등록/수정)
-    public RadiologistReport saveReport(RadiologistReport report) {
-        report.setModDate(LocalDateTime.parse(LocalDateTime.now().toString()));
-        if (report.getReportCode() == null) {
-            report.setRegDate(LocalDateTime.parse(LocalDateTime.now().toString()));
-        }
-        return repository.save(report);
-    }
+//    // 특정 시리즈 UID 기준으로 판독 데이터 가져오기
+//    public List<RadiologistReport> getReportsBySeriesInsUid(String seriesInsUid) {
+//        return repository.findBySeriesInsUid(seriesInsUid);
+//    }
+//
+//    // 판독 데이터 저장 (등록/수정)
+//    public RadiologistReport saveReport(RadiologistReport report) {
+//        report.setModDate(LocalDateTime.parse(LocalDateTime.now().toString()));
+//        if (report.getReportCode() == null) {
+//            report.setRegDate(LocalDateTime.parse(LocalDateTime.now().toString()));
+//        }
+//        return repository.save(report);
+//    }
 }
