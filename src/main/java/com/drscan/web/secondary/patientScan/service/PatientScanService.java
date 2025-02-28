@@ -1,5 +1,6 @@
 package com.drscan.web.secondary.patientScan.service;
 
+import com.drscan.web.primary.reports.domain.RadiologistReport;
 import com.drscan.web.secondary.image.domain.Image;
 
 import com.drscan.web.secondary.image.domain.ImageRepository;
@@ -77,7 +78,9 @@ public class PatientScanService {
         return imageRepository.findByStudykeyAndSerieskey(studykey, serieskey);
     }
 
+    // 환자 정보 불러오기
     public List<Patient> getPatientByPid(String pid) {
         return patientRepository.findByPid(pid);
     }
+
 }
