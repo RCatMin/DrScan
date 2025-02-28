@@ -1,0 +1,109 @@
+/* 전체 페이지 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* 컨텐츠 전체 감싸는 컨테이너 */
+#content-container {
+    width: 80%;
+    margin: auto;
+    padding: 30px;
+    text-align: center;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 진료 상세 제목 */
+#title-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* 입력 그룹 스타일 */
+.input-group {
+    display: flex;
+    justify-content: flex-start; /* 왼쪽 정렬 */
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* 진료 내용 입력 부분은 따로 정렬 */
+.input-group.textarea-group {
+    align-items: flex-start; /* 상단 정렬 */
+}
+
+/* 라벨 스타일 */
+label {
+    width: 160px; /* 모든 라벨의 너비를 통일 */
+    font-weight: bold;
+    color: #555;
+    text-align: right;
+}
+
+/* 입력 필드 스타일 */
+#clinicCode, #patientCode, #clinicDate, #context {
+    width: calc(100% - 170px); /* 전체 컨테이너에서 라벨 부분을 제외한 크기 */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    transition: border 0.3s ease;
+    margin-left: auto; /* 라벨 오른쪽에 정렬 */
+}
+
+/* 진료 내용 부분은 textarea의 너비를 맞춰주는 스타일 */
+#context {
+    width: calc(100% - 170px); /* 다른 입력 필드들과 동일한 너비로 설정 */
+}
+
+/* textarea 높이 조정 */
+textarea {
+    height: 120px; /* 적절한 높이 설정 */
+    resize: none; /* 크기 조정 비활성화 */
+}
+
+/* 포커스 시 입력 필드 스타일 */
+input:focus, textarea:focus {
+    border-color: #4a90e2;
+    outline: none;
+    background-color: white;
+}
+
+/* 버튼 스타일 */
+button {
+    width: 30%;
+    padding: 14px;
+    font-size: 18px;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 5px;
+}
+
+/* 수정 버튼 (파란색) */
+#update-button {
+    background: #2973B2;
+}
+
+#update-button:hover {
+    background: #063c6a;
+}
+
+/* 삭제 버튼 (빨간색) */
+#delete-button {
+    background: #e74c3c;
+}
+
+#delete-button:hover {
+    background: #c0392b;
+}
