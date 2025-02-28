@@ -31,12 +31,38 @@
         <div id="dicomViewport"></div>
     </div>
 
-    <div id="patientInfo">
-        <p class="title">환자 정보</p>
-        <p>ID : <span id="patientId">-</span></p>
-        <p>이름 : <span id="patientName">-</span></p>
-        <p>성별 : <span id="patientSex">-</span></p>
-        <p>생년월일 : <span id="patientBirth">-</span></p>
+    <div id="info">
+        <div class="info-container">
+            <h3 class="title">환자 정보</h3>
+            <p>ID : <span id="patientId">-</span></p>
+            <p>이름 : <span id="patientName">-</span></p>
+            <p>성별 : <span id="patientSex">-</span></p>
+            <p>생년월일 : <span id="patientBirth">-</span></p>
+        </div>
+
+        <div class="info-container">
+            <h3>Study 정보</h3>
+            <p><strong>검사명:</strong> <span id="studyDesc">로딩 중...</span></p>
+            <p><strong>모달리티:</strong> <span id="modality">로딩 중...</span></p>
+            <p><strong>검사 부위:</strong> <span id="bodyPart">로딩 중...</span></p>
+        </div>
+
+        <div class="info-container">
+            <h3>Series 정보</h3>
+            <p><strong>시리즈명:</strong> <span id="seriesDesc">로딩 중...</span></p>
+            <p><strong>모달리티:</strong> <span id="seriesModality">로딩 중...</span></p>
+            <p><strong>시리즈 날짜:</strong> <span id="seriesDate">로딩 중...</span></p>
+        </div>
+
+        <h3>판독 결과</h3>
+        <textarea id="reportText" rows="4"></textarea>
+
+        <div class="button-group">
+            <button id="saveReportBtn">저장</button>
+            <button id="editReportBtn">수정</button>
+        </div>
+
+        <p id="autoSaveStatus"></p>
     </div>
 </div>
 
