@@ -17,14 +17,21 @@ public class Log {
     private long code;
 
     @Column(name = "user_code")
-    private long userCode;
+    private Long userCode;
 
     @Column(name = "report_code")
-    private long reportCode;
+    private Long reportCode;
     private String event;
 
     @Column(name = "event_date")
     private Timestamp eventDate;
+
+    @PrePersist
+    public void prePersist() {
+        if (this.eventDate == null) {
+            this.eventDate = new Timestamp(System.currentTimeMillis()); // set current timestamp
+        }
+    }
 
     public Log(long userCode, String event) {
         this.userCode = userCode;

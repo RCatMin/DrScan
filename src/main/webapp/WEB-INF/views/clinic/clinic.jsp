@@ -27,11 +27,13 @@
                 <th>진료내용</th>
                 <th>등록일시</th>
                 <th>수정일시</th>
+                <th>상세보기</th>
             </tr>
         </thead>
         <tbody id="clinic-body">
         </tbody>
         </table>
+        <div id="pagination"></div>
     </div>
         <button type="button" id="add-button">진료 등록</button>
 </div>

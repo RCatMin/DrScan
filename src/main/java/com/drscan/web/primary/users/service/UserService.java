@@ -28,6 +28,10 @@ public class UserService {
         return userRepository.existsByEmailAndUserCodeNot(email, userCode);
     }
 
+    public boolean existsByPhoneAndUserCodeNot(String phone, String userCode){
+        return userRepository.existsByPhoneAndUserCodeNot(phone, Integer.valueOf(userCode));
+    }
+
     public User findUserByUserCode(String userCode) {
         return userRepository.findUserByUserCode(Integer.valueOf(userCode));
     }
@@ -71,6 +75,30 @@ public class UserService {
     }
 
     @Transactional
+    public boolean updateUser2(UserRequestDto userDto) {
+        Integer code = Integer.valueOf(userDto.getCode());
+
+        User target = userRepository.findUserByUserCode(code);
+
+        if(target == null)
+            return false;
+
+        target.update2(userDto);
+        return true;
+    }
+
+    @Transactional
+    public boolean updateUser3(User user) {
+        User target = userRepository.findUserByUserCode(user.getUserCode());
+
+        if(target == null)
+            return false;
+
+        target.update3();
+        return true;
+    }
+
+    @Transactional
     public boolean approveUser(UserRequestDto userDto) {
         Integer code = Integer.valueOf(userDto.getCode());
         User target = userRepository.findUserByUserCode(code);
@@ -95,6 +123,17 @@ public class UserService {
             target.incrementFailCountAndSuspended();
             userRepository.save(target);
         }
+    }
+
+    @Transactional
+    public boolean deleteUserByUserCode(Integer userCode) {
+        User target = userRepository.findUserByUserCode(userCode);
+
+        if(target == null)
+            return false;
+
+        userRepository.delete(target);
+        return true;
     }
 
     public void resetFailCount(UserRequestDto userDto) {

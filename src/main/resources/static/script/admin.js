@@ -60,8 +60,12 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             } else if (activeTab === "tab2") {
                 const code = document.getElementById(`userCode-tab2-${index}`).value;
-
                 await requestTemporaryApprove(code);
+
+            } else if (activeTab === "tab3") {
+                const code = document.getElementById(`userCode-tab3-${index}`).value;
+                await requestDeleteApprove(code);
+
             }
         });
     });
@@ -195,6 +199,28 @@ async function requestTemporaryApprove(code) {
     });
     if (response.ok) {
         alert("가입 승인 완료!");
+        await createSession();
+        window.location.reload()
+        return true;
+    } else {
+        const json = await response.json();
+        alert(`오류 : ${json.message}`);
+        return json.isValid;
+    }
+}
+
+async function requestDeleteApprove(code) {
+    const response = await fetch("/admin/withdraw", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "code": code,
+        })
+    });
+    if (response.ok) {
+        alert("탈퇴 승인 완료!");
         await createSession();
         window.location.reload()
         return true;

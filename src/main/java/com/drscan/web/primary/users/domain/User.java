@@ -58,6 +58,18 @@ public class User extends Timestamp {
         this.accountType = userDto.getAccountType();
     }
 
+    public void update2(UserRequestDto userDto) {
+        this.password = userDto.getPassword();
+        this.hospitalName = userDto.getHospital();
+        this.department = userDto.getDepartment();
+        this.name = userDto.getName();
+        this.phone = userDto.getPhone();
+    }
+
+    public void update3() {
+        this.status = "pending";
+    }
+
     public void approve(String accountType, String status) {
         this.status = status;
         this.accountType = accountType;
