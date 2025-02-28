@@ -337,7 +337,7 @@ async function registAction(username, password, hospital, department, name, emai
         return true;
     } else {
         const json = await response.json();
-        alert(`오류 : ${json.message}`);
+        alert(`오류 : 회원가입 실패`);
         return json.isValid;
     }
 }
