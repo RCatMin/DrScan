@@ -3,6 +3,8 @@ package com.drscan.web.primary.users.service;
 import com.drscan.web.primary.users.domain.User;
 import com.drscan.web.primary.users.domain.UserRepository;
 import com.drscan.web.primary.users.domain.UserRequestDto;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -75,7 +77,7 @@ public class UserService {
     }
 
     @Transactional
-    public boolean updateUser2(UserRequestDto userDto) {
+    public boolean updateUser2(UserRequestDto userDto, HttpServletRequest request) {
         Integer code = Integer.valueOf(userDto.getCode());
 
         User target = userRepository.findUserByUserCode(code);
@@ -84,6 +86,10 @@ public class UserService {
             return false;
 
         target.update2(userDto);
+
+        HttpSession session = request.getSession();
+        session.setAttribute("authUser", target);
+
         return true;
     }
 

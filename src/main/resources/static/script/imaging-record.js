@@ -13,16 +13,58 @@ window.onload = function () {
     initializeCornerstone();
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-    loadPatientInfo();
-});
-
 async function initializeCornerstone() {
     await coreInit(); // cornerstone.js를 초기화
     await dicomImageLoaderInit(); // DICOM 이미지를 불러오기
     loadDicomImages(); // DICOM 이미지를 가져오기
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    loadStudyAndSeriesInfo();
+    loadPatientInfo();
+});
+
+async function loadStudyAndSeriesInfo() {
+    try {
+        const urlParts = window.location.pathname.split("/");
+        const studyKey = urlParts[4];
+        const seriesKey = urlParts[5];
+
+        let response = await fetch(`/patientScan/action/study-series/${studyKey}/${seriesKey}`);
+        let data = await response.json();
+
+        if (!data || data.error) {
+            console.error("Study/Series 정보를 불러올 수 없습니다!");
+            return;
+        }
+
+        // Study 정보
+        document.getElementById("studyDesc").innerText = data.study.studydesc || "N/A";
+        document.getElementById("modality").innerText = data.study.modality || "N/A";
+        document.getElementById("bodyPart").innerText = data.study.bodypart || "N/A";
+        document.getElementById("accessNum").innerText = data.study.accessnum || "N/A";
+        document.getElementById("studyDate").innerText = data.study.studydate || "N/A";
+        document.getElementById("seriesCnt").innerText = data.study.seriescnt || "N/A";
+
+        // Series 정보
+        document.getElementById("seriesDesc").innerText = data.series.seriesdesc || "N/A";
+        document.getElementById("seriesModality").innerText = data.series.modality || "N/A";
+        document.getElementById("seriesDate").innerText = data.series.seriesdate || "N/A";
+        document.getElementById("imageCnt").innerText = data.series.imagecnt || "N/A";
+        document.getElementById("seriesNum").innerText = data.series.seriesnum || "N/A";
+
+        // 판독 결과
+        if (data.report) {
+            document.getElementById("severityLevel").innerText = data.report.severityLevel || "N/A";
+            document.getElementById("reportStatus").innerText = data.report.reportStatus || "N/A";
+        }
+    } catch (error) {
+        console.error("Study/Series 정보 불러오는 중 오류 발생:", error);
+    }
+}
+
+
+// 환자정보 불러오기
 async function loadPatientInfo() {
     try {
         const urlParts = window.location.pathname.split("/");
@@ -46,10 +88,6 @@ async function loadPatientInfo() {
         console.error("환자 정보 불러오는 중 오류 발생:", error);
     }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    loadPatientInfo();
-});
 
 // DICOM 이미지 리스트 로드
 async function loadDicomImages() {
@@ -242,3 +280,54 @@ document.getElementById("viewerContainer").addEventListener("wheel", (event) => 
         displayImage(currentIndex - 1);
     }
 });
+
+
+// ///////////////////////////
+// // MySQL에서 판독 데이터 가져오기
+// async function loadRadiologistReport() {
+//     try {
+//         const urlParts = window.location.pathname.split("/");
+//         const seriesInsUid = urlParts[5];
+//
+//         let response = await fetch(`/patientScan/action/reports/${seriesInsUid}`);
+//         let reports = await response.json();
+//
+//         if (reports.length > 0) {
+//             document.getElementById("reportText").value = reports[0].reportText || "";
+//         }
+//     } catch (error) {
+//         console.error("판독 데이터 불러오기 오류:", error);
+//     }
+// }
+//
+// // 판독 데이터 저장 (MySQL)
+// async function saveRadiologistReport() {
+//     const reportText = document.getElementById("reportText").value;
+//     const seriesInsUid = window.location.pathname.split("/")[5];
+//
+//     const reportData = {
+//         seriesInsUid: seriesInsUid,
+//         reportText: reportText,
+//         reportStatus: "Draft" // 기본 저장 시 초안 상태
+//     };
+//
+//     try {
+//         await fetch("/patientScan/action/reports/save", {
+//             method: "POST",
+//             headers: { "Content-Type": "application/json" },
+//             body: JSON.stringify(reportData),
+//         });
+//
+//         document.getElementById("autoSaveStatus").innerText = "자동 저장 완료!";
+//     } catch (error) {
+//         console.error("저장 오류:", error);
+//     }
+// }
+//
+// // 1분마다 자동 저장
+// function setupAutoSave() {
+//     setInterval(saveRadiologistReport, 60000);
+// }
+//
+// // 저장 버튼 클릭 이벤트
+// document.getElementById("saveReportBtn").addEventListener("click", saveRadiologistReport);

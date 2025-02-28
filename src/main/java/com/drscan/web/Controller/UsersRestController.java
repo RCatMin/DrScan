@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -25,8 +26,10 @@ public class UsersRestController {
     private final PermissionService permissionService;
     private final LogService logService;
 
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     @GetMapping("/list")
-    public ResponseEntity<List<User>> findUserAll(){
+    public ResponseEntity<List<User>> findUserAll() {
         return ResponseEntity.ok(userService.findUserAll());
     }
 
@@ -44,19 +47,21 @@ public class UsersRestController {
         HttpSession session = request.getSession();
         String code = (String) session.getAttribute("authCode");
 
-        if(!otpKey.equals(code)){
+        if (!otpKey.equals(code)) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST.value())
                     .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "인증코드가 일치하지 않습니다."));
         }
 
-        User user = new User(username, password, hospital, department, name, email, phone, otpKey);
+        String HashPassword = passwordEncoder.encode(password);
+
+        User user = new User(username, HashPassword, hospital, department, name, email, phone, otpKey);
 
         String isSuccess = userService.createUser(user);
 
         permissionService.save(userService.findUserByUsername(username));
 
-        if(!isSuccess.equals("success")){
+        if (!isSuccess.equals("success")) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST.value())
                     .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), isSuccess));
@@ -65,7 +70,7 @@ public class UsersRestController {
         session.removeAttribute("authCode");
         session.invalidate();
 
-        logService.saveLog(user,"회원가입");
+        logService.saveLog(user, "회원가입");
 
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "회원가입 요청이 완료되었습니다."));
     }
@@ -74,24 +79,24 @@ public class UsersRestController {
     public ResponseEntity<ResponseDto> signin(@RequestBody UserRequestDto userRequestDto, HttpServletRequest request) {
         User user = userService.findUserByUsername(userRequestDto.getUsername());
 
-        if(user == null){
+        if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
                     .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "아이디 혹은 비밀번호가 일치하지 않습니다."));
         }
 
-        if(!userRequestDto.getPassword().equals(user.getPassword())){
-            if(user.getFailCount()<5){
+        if (!passwordEncoder.matches(userRequestDto.getPassword(), user.getPassword())) {
+            if (user.getFailCount() < 5) {
                 userService.incrementFailCountAndCheckSuspension(userRequestDto);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
                         .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "아이디 혹은 비밀번호가 일치하지 않습니다."));
-            } else{
+            } else {
                 userRequestDto.setStatus("suspended");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
                         .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "로그인 5회 실패로 계정이 정지됐습니다."));
             }
         }
 
-        if(user.getStatus().equals("suspended")){
+        if (user.getStatus().equals("suspended")) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
                     .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "정지된 계정입니다."));
         }
@@ -101,14 +106,14 @@ public class UsersRestController {
         HttpSession session = request.getSession();
         String code = (String) session.getAttribute("authCode");
 
-        if(!otpCode.equals(code)){
+        if (!otpCode.equals(code)) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST.value())
                     .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "인증코드가 일치하지 않습니다."));
         }
 
         userService.resetFailCount(userRequestDto);
-        logService.saveLog(user,"로그인");
+        logService.saveLog(user, "로그인");
         session = request.getSession();
         session.setAttribute("authUser", user);
 
@@ -134,7 +139,7 @@ public class UsersRestController {
 
         boolean check = userService.existsByPhoneAndUserCodeNot(phone, code);
 
-        if(check) {
+        if (check) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST.value())
                     .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "전화번호가 중복됩니다."));
@@ -143,13 +148,16 @@ public class UsersRestController {
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<ResponseDto> edit(@RequestBody UserRequestDto userRequestDto) {
-        boolean isSuccess = userService.updateUser2(userRequestDto);
+    public ResponseEntity<ResponseDto> edit(@RequestBody UserRequestDto userRequestDto, HttpSession session, HttpServletRequest request) {
+        boolean isSuccess = userService.updateUser2(userRequestDto, request);
+        User user = (User) session.getAttribute("authUser");
 
-        if(!isSuccess)
+        if (!isSuccess)
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST.value())
                     .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "회원정보 수정에 실패하였습니다."));
+
+        logService.saveLog(user, "회원정보수정");
 
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "회원정보가 성공적으로 수정되었습니다."));
     }
@@ -158,14 +166,15 @@ public class UsersRestController {
     public ResponseEntity<ResponseDto> withdraw(@RequestBody UserRequestDto userRequestDto) {
         User user = userService.findUserByUserCode(userRequestDto.getCode());
 
-        if(!user.getPassword().equals(userRequestDto.getPassword()))
+        if (!passwordEncoder.matches(userRequestDto.getPassword(), user.getPassword())) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST.value())
                     .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "탈퇴신청에 실패하였습니다."));
+        }
 
         boolean isSuccess = userService.updateUser3(user);
 
-        if(!isSuccess)
+        if (!isSuccess)
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST.value())
                     .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "탈퇴신청에 실패하였습니다."));

@@ -35,7 +35,7 @@
         </table>
         <div id="pagination"></div>
     </div>
-        <button type="button" id="add-button">진료 등록</button>
+        <button type="button" id="add-button">진료 추가</button>
 </div>
 </body>
 <c:import url="/footer" />
