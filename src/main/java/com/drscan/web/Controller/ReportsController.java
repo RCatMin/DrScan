@@ -19,10 +19,8 @@ public class ReportsController {
 
     private final PatientScanService patientScanService;
 
-    @GetMapping("/views/{studykey}/{serieskey}")
-    public String reportsPatient(@PathVariable Integer studykey, @PathVariable Integer serieskey, Model model) {
-        List<Image> patientReport = patientScanService.getImagesByStudyAndSeries(studykey, serieskey);
-        model.addAttribute("patientReport", patientReport);
+    @GetMapping("/views/{pid}/{studykey}/{serieskey}")
+    public String reportsPatient(@PathVariable String pid, @PathVariable Integer studykey, @PathVariable Integer serieskey) {
 
         return "reports/viewer";
     }
