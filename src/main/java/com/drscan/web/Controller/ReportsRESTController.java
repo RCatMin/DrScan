@@ -22,13 +22,21 @@ public class ReportsRESTController {
 
     private final PatientScanService patientScanService;
 
-    @GetMapping("/checking/{studykey}/{serieskey}")
-    public ResponseEntity<?> getImagesByStudyAndSeries(@PathVariable Integer studykey, @PathVariable Integer serieskey) {
-        List<Image> patientReport = patientScanService.getImagesByStudyAndSeries(studykey, serieskey);
-
-        return ResponseEntity.ok(patientReport);
+    // 환자 정보 가져오기
+    @GetMapping("/{pid}")
+    public ResponseEntity<?> getPatient(@PathVariable String pid) {
+        return ResponseEntity.ok(patientScanService.getPatientByPid(pid));
     }
 
+    // 환자 이미지 가져오기
+    @GetMapping("/checking/{studykey}/{serieskey}")
+    public ResponseEntity<?> getImagesByStudyAndSeries(@PathVariable Integer studykey, @PathVariable Integer serieskey) {
+        List<Image> patientImage = patientScanService.getImagesByStudyAndSeries(studykey, serieskey);
+
+        return ResponseEntity.ok(patientImage);
+    }
+
+    // DICOM Path
     private final String DICOMStoragePath = "Z:/";
 
     @GetMapping ("/getDicomImage")
@@ -36,8 +44,10 @@ public class ReportsRESTController {
         try{
             String normalizedPath = path.replace("\\", "/");
 
+            // DICOM 파일을 절대 경로로 Return
             Path filePath = Paths.get(DICOMStoragePath, normalizedPath).normalize();
 
+            // 파일 존재유무 확인
             if (!Files.exists(filePath)) {
                 System.out.println ("해당 위치에 파일이 존재하지 않습니다. : " + filePath);
                 return ResponseEntity.notFound().build();

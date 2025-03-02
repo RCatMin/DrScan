@@ -17,10 +17,11 @@
 <body>
 
 <form class="form-box" id="signin-form" action="/users/action/signin" method="POST">
+    <h1 class="form-title">Sign In</h1>
     <div class="input-group" id="input-username">
         <label id="label-username" for="username">ID : </label>
         <div class="email-container">
-            <input type="text" id="username" name="username">
+            <input class="input-box" type="text" id="username" name="username">
             <button type="button" id="email-verify-btn">Verify</button>
         </div>
     </div>
@@ -28,16 +29,15 @@
 
     <div class="input-group" id="input-password">
         <label id="label-password" for="password">PW : </label>
-        <input type="password" id="password" name="password">
+        <input class="input-box" type="password" id="password" name="password">
     </div>
     <p class="error-msg" id="error-password">비밀번호를 입력해주세요.</p>
     <div class="input-group" id="verification-code-container" style="display: none;">
         <label id="label-verification" for="verification-code">Verification Code:</label>
-        <input type="text" id="verification-code" name="verification-code">
+        <input class="input-box" type="text" id="verification-code" name="verification-code">
     </div>
     <p class="error-msg" id="error-verification">인증코드를 입력해주세요.</p>
     <button type="submit">Sign In</button>
-    <a id="url-signup" href="/users/signup">Sign Up</a>
 </form>
 
 </body>

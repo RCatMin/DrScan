@@ -4,7 +4,7 @@ export function validateUsername(username) {
 }
 
 export function validatePassword(password) {
-    const regex = /^(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,16}$/;
+    const regex = /^(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/;
     return regex.test(password);
 }
 
