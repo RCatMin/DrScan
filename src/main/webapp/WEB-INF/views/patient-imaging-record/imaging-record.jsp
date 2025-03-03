@@ -28,6 +28,12 @@
     </div>
 
     <div id="viewerContainer">
+        <div id="toolButtons">
+            <button id="zoomBtn">Zoom</button>
+            <button id="panBtn">Pan</button>
+            <button id="stackScrollBtn">Stack Scroll</button>
+        </div>
+
         <div id="dicomViewport"></div>
     </div>
 

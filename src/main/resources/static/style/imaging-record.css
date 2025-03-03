@@ -133,15 +133,67 @@ body {
 }
 
 /* 중앙 DICOM 이미지 컨테이너 */
+/*#viewerContainer {*/
+/*    flex-grow: 1;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    background-color: black;*/
+/*    border-radius: 8px;*/
+/*    margin: 0 20px;*/
+/*}*/
+
+/* viewerContainer 내부에서 정렬 */
 #viewerContainer {
-    flex-grow: 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 90vh;
     background-color: black;
     border-radius: 8px;
-    margin: 0 20px;
+    padding: 10px;
 }
+
+/* 도구 버튼을 DICOM 뷰어 위쪽에 배치 */
+#toolButtons {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    background: rgba(50, 50, 50, 0.8);
+    padding: 8px;
+    border-radius: 8px;
+    z-index: 10;
+}
+
+/* 버튼 스타일 */
+#toolButtons button {
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#toolButtons button:hover {
+    background-color: #666;
+}
+
+/* DICOM 뷰포트 */
+#dicomViewport {
+    width: 512px;
+    height: 512px;
+    background-color: black;
+    margin-top: 40px; /* 버튼과 간격 조정 */
+}
+
 
 /* 중앙에서 DICOM을 랜더링하는 공간 */
 #dicomViewport {
