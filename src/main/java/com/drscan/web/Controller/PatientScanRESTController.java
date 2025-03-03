@@ -121,8 +121,9 @@ public class PatientScanRESTController {
 //    }
 //
 //    // MySQL 판독 데이터 저장
-//    @PostMapping("/reports/save")
-//    public ResponseEntity<?> saveRadiologistReport(@RequestBody RadiologistReport report) {
-//        return ResponseEntity.ok(radiologistReportService.saveReport(report));
-//    }
+    @PostMapping("/reports/save")
+    public ResponseEntity<?> saveRadiologistReport(@RequestBody RadiologistReport report) {
+        RadiologistReport savedReport = radiologistReportService.saveReport(report);
+        return ResponseEntity.ok(savedReport);
+    }
 }

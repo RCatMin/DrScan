@@ -2,6 +2,7 @@ package com.drscan.web.primary.reports.service;
 
 import com.drscan.web.primary.reports.domain.RadiologistReport;
 import com.drscan.web.primary.reports.domain.RadiologistReportRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +21,15 @@ public class RadiologistReportService {
 //    }
 //
 //    // 판독 데이터 저장 (등록/수정)
-//    public RadiologistReport saveReport(RadiologistReport report) {
-//        report.setModDate(LocalDateTime.parse(LocalDateTime.now().toString()));
-//        if (report.getReportCode() == null) {
-//            report.setRegDate(LocalDateTime.parse(LocalDateTime.now().toString()));
-//        }
-//        return repository.save(report);
-//    }
+    @Transactional
+    public RadiologistReport saveReport(RadiologistReport report) {
+        report.setModDate(LocalDateTime.now());
+
+        // 새 데이터인 경우 등록일도 추가
+        if (report.getReportCode() == null) {
+            report.setRegDate(LocalDateTime.now());
+        }
+
+        return repository.save(report);
+    }
 }
