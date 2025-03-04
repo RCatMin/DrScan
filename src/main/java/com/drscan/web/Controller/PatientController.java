@@ -1,7 +1,7 @@
 package com.drscan.web.Controller;
 
 import com.drscan.web.secondary.patientScan.domain.Patient;
-import com.drscan.web.secondary.patientScan.domain.PatientSearchRepository;
+import com.drscan.web.secondary.patientScan.domain.PatientRepository;
 import com.drscan.web.secondary.patientScan.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/patients")
 @Controller
 public class PatientController {
-   private final PatientSearchRepository patientSearchRepository;
+   private final PatientRepository patientRepository;
     private final PatientService patientService;
 
     @GetMapping({"","/"})
