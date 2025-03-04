@@ -6,6 +6,8 @@ import com.drscan.web.primary.users.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class LogService {
@@ -18,4 +20,5 @@ public class LogService {
         logRepository.save(log);
     }
 
+    public List<Log> findLogAll() { return logRepository.findAll(); };
 }
