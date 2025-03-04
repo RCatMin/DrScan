@@ -41,10 +41,10 @@ function setupSelectToolGroups(){
         console.log("화면 이동 활성화됨");
     });
 
-    // document.getElementById("stackScrollBtn").addEventListener('click', () => {
-    //     ctToolGroup.setToolActive(StackScrollTool.toolName, { bindings: [] });
-    //     console.log("StackScrollTool 활성화됨");
-    // });
+    document.getElementById("stackScrollBtn").addEventListener('click', () => {
+        ctToolGroup.setToolActive(StackScrollTool.toolName, { bindings: [] });
+        console.log("StackScrollTool 활성화됨");
+    });
 
     // 측정 도구
     ctToolGroup.addTool(LengthTool.toolName); // 두 점 사이의 거리를 측정
