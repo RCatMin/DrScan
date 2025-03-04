@@ -1,5 +1,17 @@
 import { init as coreInit, RenderingEngine, Enums } from '@cornerstonejs/core';
 import { init as dicomImageLoaderInit } from '@cornerstonejs/dicom-image-loader';
+// import {
+//     addTool,
+//     ZoomTool,
+//     PanTool,
+//     ToolGroupManager,
+//     StackScrollTool,
+//     LengthTool,
+//     AngleTool,
+//     BidirectionalTool,
+//     ProbeTool
+// } from '@cornerstonejs/tools';
+
 
 let images = []; //이미지 정보 저장
 let currentIndex = 0; //현재 이미지 인덱스
@@ -11,6 +23,8 @@ let paginationStart = 0;
 
 window.onload = function () {
     initializeCornerstone();
+    addTools();
+    setupSelectToolGroups();
 };
 
 async function initializeCornerstone() {
@@ -282,52 +296,205 @@ document.getElementById("viewerContainer").addEventListener("wheel", (event) => 
 });
 
 
-// ///////////////////////////
-// // MySQL에서 판독 데이터 가져오기
-// async function loadRadiologistReport() {
-//     try {
-//         const urlParts = window.location.pathname.split("/");
-//         const seriesInsUid = urlParts[5];
+// MySQL에서 판독 데이터 가져오기
+async function loadRadiologistReport() {
+    try {
+        const seriesInsUid = window.location.pathname.split("/")[5];
+
+        let response = await fetch(`/patientScan/action/reports/${seriesInsUid}`);
+        let reports = await response.json();
+
+        if (reports.length > 0) {
+            document.getElementById("reportText").value = reports[0].reportText || "";
+            document.getElementById("severityLevel").innerText = reports[0].severityLevel || "N/A";
+            document.getElementById("reportStatus").innerText = reports[0].reportStatus || "N/A";
+        }
+    } catch (error) {
+        console.error("판독 데이터 불러오기 오류:", error);
+    }
+}
+
+/////////////////////////////
+// 판독 도구
+// function addTools(){
+//     // 도구 등록
+//     addTool(PanTool);
+//     addTool(ZoomTool);
+//     addTool(StackScrollTool);
+//     addTool(LengthTool);
+//     addTool(AngleTool);
+//     addTool(BidirectionalTool);
+//     addTool(ProbeTool);
+// }
 //
-//         let response = await fetch(`/patientScan/action/reports/${seriesInsUid}`);
-//         let reports = await response.json();
+// // 기능 활성화
+// function setupSelectToolGroups(){
+//     const toolGroupId = 'ctToolGroup';
+//     const ctToolGroup = ToolGroupManager.createToolGroup(toolGroupId);
 //
-//         if (reports.length > 0) {
-//             document.getElementById("reportText").value = reports[0].reportText || "";
+//     // 영상 탐색 도구
+//     ctToolGroup.addTool(PanTool.toolName); // 영상을 상하좌우로 이동시키는 도구
+//     ctToolGroup.addTool(ZoomTool.toolName); // 영상 확대 및 축소 도구
+//     ctToolGroup.addTool(StackScrollTool.toolName); // 마우스 휠로 영상 움직임
+//
+//     // 기본 활성화
+//     ctToolGroup.setToolActive(StackScrollTool.toolName, {
+//         bindings: []
+//     });
+//
+//     const zoomBtn = document.getElementById("zoomBtn");
+//     let zoomActive = false;
+//     zoomBtn.addEventListener('click', () => {
+//         if (!zoomActive) {
+//             ctToolGroup.setToolActive(ZoomTool.toolName, { bindings: [{ mouseButton: 1 }] });
+//             zoomActive = true;
+//             console.log("Zoom 도구 활성화됨");
+//         } else {
+//             ctToolGroup.setToolDisabled(ZoomTool.toolName);
+//             zoomActive = false;
+//             console.log("Zoom 도구 비활성화됨");
 //         }
-//     } catch (error) {
-//         console.error("판독 데이터 불러오기 오류:", error);
-//     }
+//     });
+//
+//     const panBtn = document.getElementById("panBtn");
+//     let panActive = false;
+//     panBtn.addEventListener('click', () => {
+//         if (!panActive){
+//             ctToolGroup.setToolActive(PanTool.toolName, { bindings: [{mouseButton: 1}]});
+//             panActive = true;
+//             console.log ("Pan 도구 활성화됨");
+//         } else {
+//             ctToolGroup.setToolDisabled(PanTool.toolName);
+//             panActive = false;
+//             console.log("Pan 도구 비활성화됨");
+//         }
+//     });
+//
+//     // 측정 도구
+//     ctToolGroup.addTool(LengthTool.toolName); // 두 점 사이의 거리를 측정
+//     ctToolGroup.addTool(AngleTool.toolName); // 각도 측정
+//
+//     const calLengthBtn = document.getElementById("calLengthBtn");
+//     let calLengthActive = false;
+//     calLengthBtn.addEventListener('click', () => {
+//         if (!calLengthActive){
+//             ctToolGroup.setToolActive(LengthTool.toolName, {bindings : [{mouseButton: 1}]});
+//             calLengthActive = true;
+//             console.log("거리 측정 도구 활성화");
+//         } else {
+//             ctToolGroup.setToolDisabled(LengthTool.toolName);
+//             calLengthActive = false;
+//             console.log("거리 측정 도구 비활성화");
+//         }
+//     });
+//
+//     const calAngleBtn = document.getElementById("calAngleBtn")
+//     let calAngleActive = false;
+//     calAngleBtn.addEventListener('click', () => {
+//         if (!calAngleActive){
+//             ctToolGroup.setToolActive(AngleTool.toolName, {bindings : [{mouseButton : 1}]});
+//             calAngleActive = true;
+//             console.log ("각도 측정 도구 활성화");
+//         } else {
+//             ctToolGroup.setToolDisabled(AngleTool.toolName);
+//             calAngleActive = false;
+//             console.log("각도 측정 도구 비활성화");
+//         }
+//     });
 // }
-//
-// // 판독 데이터 저장 (MySQL)
-// async function saveRadiologistReport() {
-//     const reportText = document.getElementById("reportText").value;
-//     const seriesInsUid = window.location.pathname.split("/")[5];
-//
-//     const reportData = {
-//         seriesInsUid: seriesInsUid,
-//         reportText: reportText,
-//         reportStatus: "Draft" // 기본 저장 시 초안 상태
-//     };
-//
-//     try {
-//         await fetch("/patientScan/action/reports/save", {
-//             method: "POST",
-//             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify(reportData),
-//         });
-//
-//         document.getElementById("autoSaveStatus").innerText = "자동 저장 완료!";
-//     } catch (error) {
-//         console.error("저장 오류:", error);
-//     }
-// }
-//
-// // 1분마다 자동 저장
-// function setupAutoSave() {
-//     setInterval(saveRadiologistReport, 60000);
-// }
-//
-// // 저장 버튼 클릭 이벤트
-// document.getElementById("saveReportBtn").addEventListener("click", saveRadiologistReport);
+
+/////////////////////////////
+// MySQL에 판독 데이터 저장
+async function saveRadiologistReport() {
+
+    // 요소 존재 여부 확인
+    const requiredIds = [
+        "patientId", "patientName", "patientSex", "patientBirth",
+        "studyDate", "studyDesc", "modality", "bodyPart",
+        "severityLevel", "reportStatus", "reportText",
+        "userCode", "approveUserCode", "approveStudyDate"
+    ];
+
+    requiredIds.forEach(id => {
+        const elem = document.getElementById(id);
+        console.log(id, ":", elem ? elem.innerText || elem.value : " 없음 (null)");
+    });
+
+    // 필수 요소 체크
+    // for (let id of requiredIds) {
+    //     if (!document.getElementById(id)) {
+    //         console.error(` 필수 요소 ${id}가 존재하지 않습니다!`);
+    //         return; // 실행 중단
+    //     }
+    // }
+
+    const reportText = document.getElementById("reportText").value;
+    const severityLevelElem = document.getElementById("severityLevel");
+    const reportStatusElem = document.getElementById("reportStatus");
+
+    const severityLevel = severityLevelElem ? severityLevelElem.value : "1";
+    const reportStatus = reportStatusElem ? reportStatusElem.value : "Draft";
+
+    const patientId = document.getElementById("patientId").innerText;
+    const patientName = document.getElementById("patientName").innerText;
+    const patientSex = document.getElementById("patientSex").innerText;
+    const patientBirthDate = document.getElementById("patientBirth").innerText;
+    const patientAge = document.getElementById("patientAge").innerText;
+    const studyDate = document.getElementById("studyDate").innerText;
+    const studyName = document.getElementById("studyDesc").innerText;
+    const modality = document.getElementById("modality").innerText;
+    const bodyPart = document.getElementById("bodyPart").innerText;
+    const userCode = document.getElementById("userCode").innerText; // 판독 의사 ID
+    const approveUserCode = document.getElementById("approveUserCode").innerText; // 승인 의사 ID
+    const approveStudyDate = document.getElementById("approveStudyDate").innerText; // 판독 승인 날짜
+
+    const seriesInsUid = window.location.pathname.split("/")[5];
+
+    const reportData = {
+        seriesInsUid: seriesInsUid,
+        patientId: patientId,
+        patientName: patientName,
+        patientSex: patientSex,
+        patientBirthDate: patientBirthDate,
+        patientAge: patientAge,
+        studyDate: studyDate,
+        studyName: studyName,
+        modality: modality,
+        bodyPart: bodyPart,
+        severityLevel: severityLevel,
+        reportStatus: reportStatus,
+        reportText: reportText,
+        userCode: userCode,
+        approveUserCode: approveUserCode,
+        approveStudyDate: approveStudyDate,
+        regDate: new Date().toISOString(),
+        modDate: new Date().toISOString()
+    };
+
+    try {
+        let response = await fetch("/patientScan/action/reports/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(reportData),
+        });
+
+        let result = await response.json();
+        console.log("저장 완료:", result);
+        document.getElementById("autoSaveStatus").innerText = "자동 저장 완료!";
+    } catch (error) {
+        console.error("저장 오류:", error);
+    }
+}
+
+// 자동 저장 기능 (1분마다 저장)
+function setupAutoSave() {
+    console.log("자동 저장 기능 활성화됨!");
+    setInterval(saveRadiologistReport, 60000);
+}
+
+// 저장 버튼 클릭 이벤트 연결 & 자동 저장 설정
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("saveReportBtn").addEventListener("click", saveRadiologistReport);
+    loadRadiologistReport(); // 페이지 로드 시 자동으로 데이터 불러오기
+    setupAutoSave(); // **자동 저장 기능 실행**
+});
