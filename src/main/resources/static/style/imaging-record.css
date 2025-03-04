@@ -15,7 +15,7 @@ body {
 
 /* 왼쪽 패널: 시리즈 목록 */
 #leftPanel {
-    width: 250px;
+    width: 350px;
     display: flex;
     flex-direction: column;
     align-items: center;
