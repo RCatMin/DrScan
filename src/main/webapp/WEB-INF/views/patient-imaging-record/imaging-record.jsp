@@ -10,7 +10,10 @@
 <html>
 <head>
     <link rel="stylesheet" href="/style/imaging-record.css">
+<%--    <script type="module" src ="/script/dicomViewer.js"></script>--%>
+<%--    <script type="module" src ="/script/mysqlReport.js"></script>--%>
     <script type="module" src="/dist/bundle.js"></script>
+
     <title>영상 판독 페이지</title>
 </head>
 <c:import url="/header" />
@@ -28,6 +31,12 @@
     </div>
 
     <div id="viewerContainer">
+        <div id="toolButtons">
+            <button id="zoomBtn">Zoom</button>
+            <button id="panBtn">Pan</button>
+            <button id="stackScrollBtn">Stack Scroll</button>
+        </div>
+
         <div id="dicomViewport"></div>
     </div>
 
@@ -63,19 +72,21 @@
             <h3>판독 결과</h3>
 
             <p><strong>중증도 레벨:</strong></p>
-            <div class="severity-level">
-                <label><input type="radio" name="severityLevel" value="1"> 1</label>
-                <label><input type="radio" name="severityLevel" value="2"> 2</label>
-                <label><input type="radio" name="severityLevel" value="3"> 3</label>
-                <label><input type="radio" name="severityLevel" value="4"> 4</label>
-                <label><input type="radio" name="severityLevel" value="5"> 5</label>
-            </div>
+            <select id="severityLevel">
+                <option value="1">1 - Low</option>
+                <option value="2">2 - Mild</option>
+                <option value="3">3 - Moderate</option>
+                <option value="4">4 - Severe</option>
+                <option value="5">5 - Critical</option>
+            </select>
+
             <p><strong>보고서 상태:</strong></p>
-            <div class="report-status">
-                <label><input type="radio" name="reportStatus" value="Draft"> Draft</label>
-                <label><input type="radio" name="reportStatus" value="Finalized"> Finalized</label>
-                <label><input type="radio" name="reportStatus" value="Needs Revision"> Needs Revision</label>
-            </div>
+            <select id="reportStatus">
+                <option value="Draft">Draft</option>
+                <option value="Finalized">Finalized</option>
+                <option value="Needs Revision">Needs Revision</option>
+            </select>
+
 
             <p><strong>판독 내용:</strong></p>
             <textarea id="reportText" rows="4"></textarea>

@@ -130,15 +130,7 @@ body {
     margin-left: 100px;
 }
 
-#tab1 {
-    width: 900px;
-}
-
-#tab2 {
-    width: 900px;
-}
-
-#tab3 {
+#tab1, #tab2, #tab3, #tab4 {
     width: 900px;
 }
 
@@ -228,12 +220,60 @@ body {
     text-align: center;
 }
 
-/* 드롭다운 숨기기 */
 .dropdown-menu {
     display: none;
 }
 
-/* 드롭다운이 열릴 때 보이도록 */
 .showDropdown.active + .dropdown-menu {
     display: table-row;
+}
+
+.log-list {
+    display: flex;
+    list-style: none;
+    background-color: black;
+    border-radius:10px;
+    padding: 10px;
+}
+
+.log-list li {
+    margin-right: auto;
+    color: white;
+}
+
+.log-content {
+    display: flex;
+    list-style: none;
+    background-color: #ddd;
+    border-radius:10px;
+    padding: 10px;
+}
+
+.log-content li {
+    color: black;
+}
+
+.log-content li:nth-child(1) {
+    flex: 0 0 175px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.log-content li:nth-child(2) {
+    flex: 0 0 165px;
+    margin-right: 10px;
+}
+
+.log-content li:nth-child(3) {
+    flex: 0 0 165px;
+    margin-right: 10px;
+}
+
+.log-content li:nth-child(4) {
+    flex: 0 0 140px;
+    margin-right: 10px;
+}
+
+.log-content li:nth-child(5) {
+    flex: 0 0 300px;
 }
