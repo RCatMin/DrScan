@@ -108,15 +108,19 @@ function setupSelectToolGroups(){
         }
     });
 
-    document.getElementById("panBtn").addEventListener('click', () => {
-        ctToolGroup.setToolActive(PanTool.toolName, {bindings : []});
-        console.log("화면 이동 활성화됨");
+    const panBtn = document.getElementById("panBtn");
+    let panActive = false;
+    panBtn.addEventListener('click', () => {
+        if (!panActive){
+            ctToolGroup.setToolActive(PanTool.toolName, { bindings: [{mouseButton: 1}]});
+            panActive = true;
+            console.log ("Pan 도구 활성화됨");
+        } else {
+            ctToolGroup.setToolDisabled(PanTool.toolName);
+            panActive = false;
+            console.log("Pan 도구 비활성화됨");
+        }
     });
-
-    // document.getElementById("stackScrollBtn").addEventListener('click', () => {
-    //     ctToolGroup.setToolActive(StackScrollTool.toolName, { bindings: [] });
-    //     console.log("StackScrollTool 활성화됨");
-    // });
 
     // 측정 도구
     ctToolGroup.addTool(LengthTool.toolName); // 두 점 사이의 거리를 측정
@@ -124,24 +128,60 @@ function setupSelectToolGroups(){
     ctToolGroup.addTool(BidirectionalTool.toolName); // 두 방향의 선을 이용해 거리를 측정
     ctToolGroup.addTool(ProbeTool.toolName);
 
-    document.getElementById("calLengthBtn").addEventListener('click', () => {
-        ctToolGroup.setToolActive(LengthTool.toolName, {bindings : []});
-        console.log("거리 측정 도구 활성화");
+    const calLengthBtn = document.getElementById("calLengthBtn");
+    let calLengthActive = false;
+    calLengthBtn.addEventListener('click', () => {
+        if (!calLengthActive){
+            ctToolGroup.setToolActive(LengthTool.toolName, {bindings : [{mouseButton: 1}]});
+            calLengthActive = true;
+            console.log("거리 측정 도구 활성화");
+        } else {
+            ctToolGroup.setToolDisabled(LengthTool.toolName);
+            calLengthActive = false;
+            console.log("거리 측정 도구 비활성화");
+        }
     });
 
-    document.getElementById("calAngleBtn").addEventListener('click', () => {
-        ctToolGroup.setToolActive(AngleTool.toolName, {bindings : []});
-        console.log("각도 측정 도구 활성화");
+    const calAngleBtn = document.getElementById("calAngleBtn")
+        let calAngleActive = false;
+        calAngleBtn.addEventListener('click', () => {
+            if (!calAngleActive){
+                ctToolGroup.setToolActive(AngleTool.toolName, {bindings : [{mouseButton : 1}]});
+                calAngleActive = true;
+                console.log ("각도 측정 도구 활성화");
+            } else {
+                ctToolGroup.setToolDisabled(AngleTool.toolName);
+                calAngleActive = false;
+                console.log("각도 측정 도구 비활성화");
+            }
     });
 
-    document.getElementById("calBidirectionalBtn").addEventListener('click', () => {
-        ctToolGroup.setToolActive(BidirectionalTool.toolName, {bindings : []});
-        console.log("양방향 거리 측정 도구 활성화");
+    const calBidirectionalBtn = document.getElementById("calBidirectionalBtn")
+        let calBidirectionalActive = false;
+        calBidirectionalBtn.addEventListener('click', () => {
+            if (!calBidirectionalActive){
+                ctToolGroup.setToolActive(BidirectionalTool.toolName, {bindings : [{mouseButton : 1 }]});
+                calBidirectionalActive = true;
+                console.log("양방향 거리 측정 도구 활성화");
+            } else {
+                ctToolGroup.setToolDisabled(BidirectionalTool.toolName);
+                calBidirectionalActive = false;
+                console.log("양방향 거리 측정 도구 비활성화");
+            }
     });
 
-    document.getElementById ("probeBtn").addEventListener('click', () => {
-        ctToolGroup.setToolActive(ProbeTool.toolName, {bindings : []});
-        console.log("Probe 도구 활성화");
+    const probeBtn= document.getElementById ("probeBtn")
+        let probeActive = false;
+        probeBtn.addEventListener('click', () => {
+            if (!probeActive){
+                ctToolGroup.setToolActive(ProbeTool.toolName, {bindings : [{mouseButton : 1}]});
+                probeActive = true;
+                console.log("Probe 도구 활성화");
+            } else {
+                ctToolGroup.setToolDisabled(ProbeTool.toolName);
+                probeActive = false;
+                console.log ("Probe 도구 비활성화");
+            }
     });
 }
 
@@ -181,13 +221,16 @@ async function loadImages() {
 
 function fetchDicomImageFileAndRendering(dicomImagePath, viewportId) {
     fetch(`/reports/getDicomImage?path=${encodeURIComponent(dicomImagePath)}`)
-        .then(response => response.arrayBuffer())
+        .then(response => {
+            console.log(`[${viewportId}] 서버 응답 : `, response); // 서버 응답 전체 출력
+            return response.arrayBuffer();
+        })
         .then(arraybuffer => {
             if (arraybuffer.byteLength === 0){
                 console.log(`[${viewportId}]`);
-                throw new Error ("서버에서 받아온 DICOM 파일이 비어있습니다.");
+                throw new Error("서버에서 받아온 DICOM 파일이 비어있습니다.");
             }
-            console.log (`[${viewportId}]`, arraybuffer.byteLength, `byte DICOM 파일을 불러왔습니다.`);
+            console.log(`[${viewportId}]`, arraybuffer.byteLength, `byte DICOM 파일을 불러왔습니다.`);
 
             // DICOM RENDERING
             renderDicomImage(arraybuffer, viewportId);
