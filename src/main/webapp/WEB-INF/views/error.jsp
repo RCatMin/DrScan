@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <html>
 <head>
-  <title>Title</title>
+  <title>Error</title>
 </head>
 <c:import url="/header" />
   <body>

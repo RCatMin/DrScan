@@ -20,6 +20,4 @@ public class AuthUser {
     private String otpKey;
     private String status;
     private Integer failCount;
-    private Timestamp regDate;
-    private Timestamp modDate;
 }
