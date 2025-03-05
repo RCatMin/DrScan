@@ -2,6 +2,8 @@ package com.drscan.web.primary.reports.service;
 
 import com.drscan.web.primary.reports.domain.RadiologistReport;
 import com.drscan.web.primary.reports.domain.RadiologistReportRepository;
+import com.drscan.web.secondary.patientScan.domain.PatientRepository;
+import com.drscan.web.secondary.series.domain.SeriesRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,23 +15,23 @@ import java.util.List;
 @Service
 public class RadiologistReportService {
 
-    private final RadiologistReportRepository repository;
+    private final PatientRepository patientRepository;
+    private final SeriesRepository seriesRepository;
+    private final RadiologistReportRepository radiologistReportRepository;
 
-//    // 특정 시리즈 UID 기준으로 판독 데이터 가져오기
+    //    // 특정 시리즈 UID 기준으로 판독 데이터 가져오기
 //    public List<RadiologistReport> getReportsBySeriesInsUid(String seriesInsUid) {
 //        return repository.findBySeriesInsUid(seriesInsUid);
 //    }
 //
 //    // 판독 데이터 저장 (등록/수정)
-    @Transactional
     public RadiologistReport saveReport(RadiologistReport report) {
-        report.setModDate(LocalDateTime.now());
-
-        // 새 데이터인 경우 등록일도 추가
+        report.setModDate(LocalDateTime.parse(LocalDateTime.now().toString()));
         if (report.getReportCode() == null) {
-            report.setRegDate(LocalDateTime.now());
+            report.setRegDate(LocalDateTime.parse(LocalDateTime.now().toString()));
         }
-
-        return repository.save(report);
+        return radiologistReportRepository.save(report);
     }
+
+
 }

@@ -1,17 +1,5 @@
 import { init as coreInit, RenderingEngine, Enums } from '@cornerstonejs/core';
 import { init as dicomImageLoaderInit } from '@cornerstonejs/dicom-image-loader';
-// import {
-//     addTool,
-//     ZoomTool,
-//     PanTool,
-//     ToolGroupManager,
-//     StackScrollTool,
-//     LengthTool,
-//     AngleTool,
-//     BidirectionalTool,
-//     ProbeTool
-// } from '@cornerstonejs/tools';
-
 
 let images = []; //이미지 정보 저장
 let currentIndex = 0; //현재 이미지 인덱스
@@ -297,179 +285,95 @@ document.getElementById("viewerContainer").addEventListener("wheel", (event) => 
 
 
 // MySQL에서 판독 데이터 가져오기
-async function loadRadiologistReport() {
-    try {
-        const seriesInsUid = window.location.pathname.split("/")[5];
-
-        let response = await fetch(`/patientScan/action/reports/${seriesInsUid}`);
-        let reports = await response.json();
-
-        if (reports.length > 0) {
-            document.getElementById("reportText").value = reports[0].reportText || "";
-            document.getElementById("severityLevel").innerText = reports[0].severityLevel || "N/A";
-            document.getElementById("reportStatus").innerText = reports[0].reportStatus || "N/A";
-        }
-    } catch (error) {
-        console.error("판독 데이터 불러오기 오류:", error);
-    }
-}
-
-/////////////////////////////
-// 판독 도구
-// function addTools(){
-//     // 도구 등록
-//     addTool(PanTool);
-//     addTool(ZoomTool);
-//     addTool(StackScrollTool);
-//     addTool(LengthTool);
-//     addTool(AngleTool);
-//     addTool(BidirectionalTool);
-//     addTool(ProbeTool);
-// }
+// async function loadRadiologistReport() {
+//     try {
+//         const seriesInsUid = window.location.pathname.split("/")[5];
 //
-// // 기능 활성화
-// function setupSelectToolGroups(){
-//     const toolGroupId = 'ctToolGroup';
-//     const ctToolGroup = ToolGroupManager.createToolGroup(toolGroupId);
+//         let response = await fetch(`/patientScan/action/reports/${seriesInsUid}`);
+//         let reports = await response.json();
 //
-//     // 영상 탐색 도구
-//     ctToolGroup.addTool(PanTool.toolName); // 영상을 상하좌우로 이동시키는 도구
-//     ctToolGroup.addTool(ZoomTool.toolName); // 영상 확대 및 축소 도구
-//     ctToolGroup.addTool(StackScrollTool.toolName); // 마우스 휠로 영상 움직임
-//
-//     // 기본 활성화
-//     ctToolGroup.setToolActive(StackScrollTool.toolName, {
-//         bindings: []
-//     });
-//
-//     const zoomBtn = document.getElementById("zoomBtn");
-//     let zoomActive = false;
-//     zoomBtn.addEventListener('click', () => {
-//         if (!zoomActive) {
-//             ctToolGroup.setToolActive(ZoomTool.toolName, { bindings: [{ mouseButton: 1 }] });
-//             zoomActive = true;
-//             console.log("Zoom 도구 활성화됨");
-//         } else {
-//             ctToolGroup.setToolDisabled(ZoomTool.toolName);
-//             zoomActive = false;
-//             console.log("Zoom 도구 비활성화됨");
+//         if (reports.length > 0) {
+//             document.getElementById("reportText").value = reports[0].reportText || "";
+//             document.getElementById("severityLevel").innerText = reports[0].severityLevel || "N/A";
+//             document.getElementById("reportStatus").innerText = reports[0].reportStatus || "N/A";
 //         }
-//     });
-//
-//     const panBtn = document.getElementById("panBtn");
-//     let panActive = false;
-//     panBtn.addEventListener('click', () => {
-//         if (!panActive){
-//             ctToolGroup.setToolActive(PanTool.toolName, { bindings: [{mouseButton: 1}]});
-//             panActive = true;
-//             console.log ("Pan 도구 활성화됨");
-//         } else {
-//             ctToolGroup.setToolDisabled(PanTool.toolName);
-//             panActive = false;
-//             console.log("Pan 도구 비활성화됨");
-//         }
-//     });
-//
-//     // 측정 도구
-//     ctToolGroup.addTool(LengthTool.toolName); // 두 점 사이의 거리를 측정
-//     ctToolGroup.addTool(AngleTool.toolName); // 각도 측정
-//
-//     const calLengthBtn = document.getElementById("calLengthBtn");
-//     let calLengthActive = false;
-//     calLengthBtn.addEventListener('click', () => {
-//         if (!calLengthActive){
-//             ctToolGroup.setToolActive(LengthTool.toolName, {bindings : [{mouseButton: 1}]});
-//             calLengthActive = true;
-//             console.log("거리 측정 도구 활성화");
-//         } else {
-//             ctToolGroup.setToolDisabled(LengthTool.toolName);
-//             calLengthActive = false;
-//             console.log("거리 측정 도구 비활성화");
-//         }
-//     });
-//
-//     const calAngleBtn = document.getElementById("calAngleBtn")
-//     let calAngleActive = false;
-//     calAngleBtn.addEventListener('click', () => {
-//         if (!calAngleActive){
-//             ctToolGroup.setToolActive(AngleTool.toolName, {bindings : [{mouseButton : 1}]});
-//             calAngleActive = true;
-//             console.log ("각도 측정 도구 활성화");
-//         } else {
-//             ctToolGroup.setToolDisabled(AngleTool.toolName);
-//             calAngleActive = false;
-//             console.log("각도 측정 도구 비활성화");
-//         }
-//     });
-// }
+//     } catch (error) {
+//         console.error("판독 데이터 불러오기 오류:", error);
+//     }
+//}
 
 /////////////////////////////
 // MySQL에 판독 데이터 저장
+// yyyyMMdd → YYYY-MM-DDTHH:mm:ss 변환 (LocalDateTime 대응)
+function formatTimestampString(dateString) {
+    if (!dateString || dateString.length < 10) {
+        return new Date().toISOString().substring(0, 19); // 현재 시간 ISO 형식
+    }
+    return `${dateString}T00:00:00`; // 🔥 LocalDateTime 대응
+}
+
 async function saveRadiologistReport() {
+    console.log("판독 데이터 저장 시도!");
 
-    // 요소 존재 여부 확인
-    const requiredIds = [
-        "patientId", "patientName", "patientSex", "patientBirth",
-        "studyDate", "studyDesc", "modality", "bodyPart",
-        "severityLevel", "reportStatus", "reportText",
-        "userCode", "approveUserCode", "approveStudyDate"
-    ];
-
-    requiredIds.forEach(id => {
+    function getElementValue(id, defaultValue = "N/A") {
         const elem = document.getElementById(id);
-        console.log(id, ":", elem ? elem.innerText || elem.value : " 없음 (null)");
-    });
+        return elem ? (elem.value || elem.innerText || defaultValue) : defaultValue;
+    }
 
-    // 필수 요소 체크
-    // for (let id of requiredIds) {
-    //     if (!document.getElementById(id)) {
-    //         console.error(` 필수 요소 ${id}가 존재하지 않습니다!`);
-    //         return; // 실행 중단
-    //     }
-    // }
+    function parseIntegerValue(id, defaultValue = 0) {
+        const value = getElementValue(id, defaultValue);
+        return isNaN(parseInt(value)) ? defaultValue : parseInt(value);
+    }
 
-    const reportText = document.getElementById("reportText").value;
-    const severityLevelElem = document.getElementById("severityLevel");
-    const reportStatusElem = document.getElementById("reportStatus");
+    function calculateAge(birthDateString) {
+        if (!birthDateString || birthDateString.length !== 8) {
+            return "Unknown"; // 잘못된 입력값 처리
+        }
 
-    const severityLevel = severityLevelElem ? severityLevelElem.value : "1";
-    const reportStatus = reportStatusElem ? reportStatusElem.value : "Draft";
+        const birthYear = parseInt(birthDateString.substring(0, 4), 10);
+        const birthMonth = parseInt(birthDateString.substring(4, 6), 10) - 1; // JS는 0부터 시작
+        const birthDay = parseInt(birthDateString.substring(6, 8), 10);
 
-    const patientId = document.getElementById("patientId").innerText;
-    const patientName = document.getElementById("patientName").innerText;
-    const patientSex = document.getElementById("patientSex").innerText;
-    const patientBirthDate = document.getElementById("patientBirth").innerText;
-    const patientAge = document.getElementById("patientAge").innerText;
-    const studyDate = document.getElementById("studyDate").innerText;
-    const studyName = document.getElementById("studyDesc").innerText;
-    const modality = document.getElementById("modality").innerText;
-    const bodyPart = document.getElementById("bodyPart").innerText;
-    const userCode = document.getElementById("userCode").innerText; // 판독 의사 ID
-    const approveUserCode = document.getElementById("approveUserCode").innerText; // 승인 의사 ID
-    const approveStudyDate = document.getElementById("approveStudyDate").innerText; // 판독 승인 날짜
+        const today = new Date();
+        const birthDate = new Date(birthYear, birthMonth, birthDay);
+
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        const dayDiff = today.getDate() - birthDate.getDate();
+
+        // 생일이 지나지 않았으면 나이 -1
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            age--;
+        }
+
+        return age;
+    }
+
 
     const seriesInsUid = window.location.pathname.split("/")[5];
 
     const reportData = {
         seriesInsUid: seriesInsUid,
-        patientId: patientId,
-        patientName: patientName,
-        patientSex: patientSex,
-        patientBirthDate: patientBirthDate,
-        patientAge: patientAge,
-        studyDate: studyDate,
-        studyName: studyName,
-        modality: modality,
-        bodyPart: bodyPart,
-        severityLevel: severityLevel,
-        reportStatus: reportStatus,
-        reportText: reportText,
-        userCode: userCode,
-        approveUserCode: approveUserCode,
-        approveStudyDate: approveStudyDate,
+        patientId: getElementValue("patientId"),
+        patientName: getElementValue("patientName"),
+        patientSex: getElementValue("patientSex"),
+        patientBirthDate: formatTimestampString(getElementValue("patientBirth")),
+        patientAge: calculateAge(getElementValue("patientBirth")),
+        studyDate: formatTimestampString(getElementValue("studyDate")),
+        studyName: getElementValue("studyDesc"),
+        modality: getElementValue("modality"),
+        bodyPart: getElementValue("bodyPart"),
+        severityLevel: getElementValue("severityLevel"),
+        reportStatus: getElementValue("reportStatus"),
+        reportText: getElementValue("reportText"),
+        userCode: parseIntegerValue("userCode"),
+        approveUserCode: parseIntegerValue("approveUserCode"),
+        approveStudyDate: formatTimestampString(getElementValue("approveStudyDate")),
         regDate: new Date().toISOString(),
         modDate: new Date().toISOString()
     };
+
+    console.log("보낼 데이터:", reportData);
 
     try {
         let response = await fetch("/patientScan/action/reports/save", {
