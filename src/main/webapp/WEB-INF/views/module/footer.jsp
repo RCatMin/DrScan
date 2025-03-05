@@ -32,7 +32,7 @@
     <div class="footer-section">
         <h3>문의 및 지원</h3>
         <p>회사주소 : 서울 강남구 강남대로78길 8 한국빌딩</p>
-        <p>github : https://github.com/bang9859/health_compass</p>
+        <p>github : https://github.com/RCatMin/DrScan</p>
         <p>개발자명 : 이민수, 박현균, 김현창, 방서준, 이준호</p>
         <p>전화 : 123-123-1234</p>
         <p>&copy; 2025 DrScan. All Rights Reserved.</p>
