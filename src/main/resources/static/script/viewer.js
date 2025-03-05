@@ -9,7 +9,11 @@ import {
     LengthTool,
     AngleTool,
     BidirectionalTool,
-    ProbeTool
+    ProbeTool,
+    WindowLevelTool,
+    ArrowAnnotateTool,
+    // PlanarFreehandROITool,
+    AnnotationTool
     } from '@cornerstonejs/tools';
 
 let image = [];
@@ -77,6 +81,9 @@ function addTools(){
     addTool(AngleTool);
     addTool(BidirectionalTool);
     addTool(ProbeTool);
+    addTool(WindowLevelTool);
+    addTool(ArrowAnnotateTool);
+    addTool(AnnotationTool);
 }
 
 // 기능 활성화
@@ -142,47 +149,90 @@ function setupSelectToolGroups(){
         }
     });
 
-    const calAngleBtn = document.getElementById("calAngleBtn")
-        let calAngleActive = false;
-        calAngleBtn.addEventListener('click', () => {
-            if (!calAngleActive){
-                ctToolGroup.setToolActive(AngleTool.toolName, {bindings : [{mouseButton : 1}]});
-                calAngleActive = true;
-                console.log ("각도 측정 도구 활성화");
-            } else {
-                ctToolGroup.setToolDisabled(AngleTool.toolName);
-                calAngleActive = false;
-                console.log("각도 측정 도구 비활성화");
-            }
+    const calAngleBtn = document.getElementById("calAngleBtn");
+    let calAngleActive = false;
+    calAngleBtn.addEventListener('click', () => {
+        if (!calAngleActive){
+            ctToolGroup.setToolActive(AngleTool.toolName, {bindings : [{mouseButton : 1}]});
+            calAngleActive = true;
+            console.log ("각도 측정 도구 활성화");
+        } else {
+            ctToolGroup.setToolDisabled(AngleTool.toolName);
+            calAngleActive = false;
+            console.log("각도 측정 도구 비활성화");
+        }
     });
 
-    const calBidirectionalBtn = document.getElementById("calBidirectionalBtn")
-        let calBidirectionalActive = false;
-        calBidirectionalBtn.addEventListener('click', () => {
-            if (!calBidirectionalActive){
-                ctToolGroup.setToolActive(BidirectionalTool.toolName, {bindings : [{mouseButton : 1 }]});
-                calBidirectionalActive = true;
-                console.log("양방향 거리 측정 도구 활성화");
-            } else {
-                ctToolGroup.setToolDisabled(BidirectionalTool.toolName);
-                calBidirectionalActive = false;
-                console.log("양방향 거리 측정 도구 비활성화");
-            }
+    const calBidirectionalBtn = document.getElementById("calBidirectionalBtn");
+    let calBidirectionalActive = false;
+    calBidirectionalBtn.addEventListener('click', () => {
+        if (!calBidirectionalActive){
+            ctToolGroup.setToolActive(BidirectionalTool.toolName, {bindings : [{mouseButton : 1 }]});
+            calBidirectionalActive = true;
+            console.log("양방향 거리 측정 도구 활성화");
+        } else {
+            ctToolGroup.setToolDisabled(BidirectionalTool.toolName);
+            calBidirectionalActive = false;
+            console.log("양방향 거리 측정 도구 비활성화");
+        }
     });
 
-    const probeBtn= document.getElementById ("probeBtn")
-        let probeActive = false;
-        probeBtn.addEventListener('click', () => {
-            if (!probeActive){
-                ctToolGroup.setToolActive(ProbeTool.toolName, {bindings : [{mouseButton : 1}]});
-                probeActive = true;
-                console.log("Probe 도구 활성화");
-            } else {
-                ctToolGroup.setToolDisabled(ProbeTool.toolName);
-                probeActive = false;
-                console.log ("Probe 도구 비활성화");
-            }
+    const probeBtn= document.getElementById ("probeBtn");
+    let probeActive = false;
+    probeBtn.addEventListener('click', () => {
+        if (!probeActive){
+            ctToolGroup.setToolActive(ProbeTool.toolName, {bindings : [{mouseButton : 1}]});
+            probeActive = true;
+            console.log("Probe 도구 활성화");
+        } else {
+            ctToolGroup.setToolDisabled(ProbeTool.toolName);
+            probeActive = false;
+            console.log ("Probe 도구 비활성화");
+        }
     });
+
+    const windowLevelBtn= document.getElementById ("windowLevelBtn");
+    let windowLevelActive = false;
+    windowLevelBtn.addEventListener('click', () => {
+        if (!windowLevelActive){
+            ctToolGroup.setToolActive(WindowLevelTool.toolName, {bindings : [{mouseButton : 1}]});
+            windowLevelActive = true;
+            console.log("영상 밝기 및 대비 조절 도구 활성화");
+        } else {
+            ctToolGroup.setToolDisabled(WindowLevelTool.toolName);
+            windowLevelActive = false;
+            console.log ("영상 밝기 및 대비 조절 도구 비활성화");
+        }
+    });
+
+    const ArrowAnnotateBtn = document.getElementById("ArrowAnnotateBtn");
+    let ArrowAnnotateActive = false;
+    ArrowAnnotateBtn.addEventListener('click', () => {
+        if (!ArrowAnnotateActive){
+            ctToolGroup.setToolActive(ArrowAnnotateTool.toolName, {bindings : [{mouseButton : 1}]});
+            ArrowAnnotateActive = true;
+            console.log ("화살표 주석 도구 활성화");
+        } else {
+            ctToolGroup.setToolDisabled(ArrowAnnotateTool.toolName);
+            ArrowAnnotateActive = false;
+            console.log ("화살표 주석 도구 비활성화");
+        }
+    });
+
+    const AnnotationBtn = document.getElementById("AnnotationBtn");
+    let AnnotationActive = false;
+    AnnotationBtn.addEventListener('click', () => {
+        if (!AnnotationActive){
+            ctToolGroup.setToolActive(AnnotationTool.toolName, {bindings : [{mouseButton : 1}]});
+            AnnotationActive = true;
+            console.log ("일반 주석 도구 활성화");
+        } else {
+            ctToolGroup.setToolDisabled(AnnotationTool.toolName);
+            AnnotationActive = false;
+            console.log ("일반 주석 도구 비활성화");
+        }
+    });
+
 }
 
 // Oracle DB에서 영상 목록을 가져와 영상을 로드하는 함수
