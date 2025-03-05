@@ -1,5 +1,6 @@
 package com.drscan.web.primary.reports.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,9 +33,11 @@ public class RadiologistReport {
     private Integer approveUserCode; // 승인 의사 ID (FK)
 
     @Column(name = "study_date", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime studyDate; // 검사 날짜
 
     @Column(name = "approve_study_date")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime approveStudyDate; // 판독 승인 날짜
 
     @Column(name = "study_name", nullable = false, length = 50)
@@ -53,6 +56,7 @@ public class RadiologistReport {
     private String patientSex; // 환자 성별 ('M', 'F')
 
     @Column(name = "patient_birth_date", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime patientBirthDate; // 환자 생년월일
 
     @Column(name = "patient_age", length = 4)
