@@ -53,7 +53,7 @@ public class RadiologistReport {
     private String patientSex; // 환자 성별 ('M', 'F')
 
     @Column(name = "patient_birth_date", nullable = false)
-    private LocalDate patientBirthDate; // 환자 생년월일
+    private LocalDateTime patientBirthDate; // 환자 생년월일
 
     @Column(name = "patient_age", length = 4)
     private String patientAge; // 환자 나이
