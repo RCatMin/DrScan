@@ -21,10 +21,10 @@ public class RadiologistReport {
     private Integer reportCode; // 판독 코드 (PK)
 
     @Column(name = "series_ins_uid", nullable = false, length = 100)
-    private String seriesInsUid; // DICOM Series UID (FK)
+    private String seriesInsUid; // DICOM Series UID
 
     @Column(name = "patient_id", nullable = false, length = 6)
-    private String patientId; // 환자 ID (FK)
+    private String patientId; // 환자 ID
 
     @Column(name = "user_code", nullable = false)
     private Integer userCode; // 판독 의사 ID (FK)
