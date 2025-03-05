@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <html>
 <head>
-    <title>me</title>
+    <title>my page</title>
     <link rel="stylesheet" href="/style/userForm.css">
     <script type="module" src="/script/me.js"></script>
 </head>

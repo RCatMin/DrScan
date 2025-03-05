@@ -2,6 +2,7 @@ package com.drscan.web.Controller;
 
 import com.drscan.web.primary.log.service.LogService;
 import com.drscan.web.primary.permission.service.PermissionService;
+import com.drscan.web.primary.users.domain.AuthUser;
 import com.drscan.web.primary.users.domain.User;
 import com.drscan.web.primary.users.domain.UserRequestDto;
 import com.drscan.web.primary.users.service.UserService;
@@ -113,16 +114,20 @@ public class UsersRestController {
         }
 
         userService.resetFailCount(userRequestDto);
-        logService.saveLog(user, "로그인");
         session = request.getSession();
-        session.setAttribute("authUser", user);
+
+        AuthUser authUser = new AuthUser(user.getUserCode(), user.getAccountType(), user.getUsername(), user.getHospitalName(),
+                user.getDepartment(), user.getName(), user.getEmail(), user.getPhone(), user.getOtpKey(), user.getStatus(), user.getFailCount());
+
+        logService.saveLog(authUser, "로그인");
+        session.setAttribute("authUser", authUser);
 
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "로그인에 성공했습니다."));
     }
 
     @GetMapping("/signout")
     public RedirectView signout(HttpSession session) {
-        User user = (User) session.getAttribute("authUser");
+        AuthUser user = (AuthUser) session.getAttribute("authUser");
 
         session.removeAttribute("authUser");
         session.invalidate();
@@ -150,14 +155,14 @@ public class UsersRestController {
     @PutMapping("/edit")
     public ResponseEntity<ResponseDto> edit(@RequestBody UserRequestDto userRequestDto, HttpSession session, HttpServletRequest request) {
         boolean isSuccess = userService.updateUser2(userRequestDto, request);
-        User user = (User) session.getAttribute("authUser");
+        AuthUser authUser = (AuthUser) session.getAttribute("authUser");
 
         if (!isSuccess)
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST.value())
                     .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "회원정보 수정에 실패하였습니다."));
 
-        logService.saveLog(user, "회원정보수정");
+        logService.saveLog(authUser, "회원정보수정");
 
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "회원정보가 성공적으로 수정되었습니다."));
     }

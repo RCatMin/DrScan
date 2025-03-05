@@ -51,25 +51,28 @@
 
         <div class="info-container">
             <h3>Study 정보</h3>
-            <p><strong> 검사명:</strong> <span id="studyDesc"> 로딩 중...</span></p>
-            <p><strong> 모달리티(검사 장비):</strong> <span id="modality"> 로딩 중...</span></p>
-            <p><strong> 검사 부위:</strong> <span id="bodyPart"> 로딩 중...</span></p>
-            <p><strong> 접수번호:</strong> <span id="accessNum"> 로딩 중...</span></p>
-            <p><strong> 검사 날짜:</strong> <span id="studyDate"> 로딩 중...</span></p>
-            <p><strong> 시리즈 개수:</strong> <span id="seriesCnt"> 로딩 중...</span></p>
+            <p><strong> 검사명 : </strong> <span id="studyDesc">-</span></p>
+            <p><strong> 모달리티(검사 장비):</strong> <span id="modality">-</span></p>
+            <p><strong> 검사 부위:</strong> <span id="bodyPart">-</span></p>
+            <p><strong> 접수번호:</strong> <span id="accessNum">-</span></p>
+            <p><strong> 검사 날짜:</strong> <span id="studyDate">-</span></p>
+            <p><strong> 시리즈 개수:</strong> <span id="seriesCnt">-</span></p>
         </div>
 
         <div class="info-container">
             <h3>Series 정보</h3>
-            <p><strong> 시리즈명:</strong> <span id="seriesDesc"> 로딩 중...</span></p>
-            <p><strong> 모달리티:</strong> <span id="seriesModality"> 로딩 중...</span></p>
-            <p><strong> 시리즈 날짜:</strong> <span id="seriesDate"> 로딩 중...</span></p>
-            <p><strong> 이미지 개수:</strong> <span id="imageCnt"> 로딩 중...</span></p>
-            <p><strong> 시리즈 번호:</strong> <span id="seriesNum"> 로딩 중...</span></p>
+            <p><strong> 시리즈명:</strong> <span id="seriesDesc">-</span></p>
+            <p><strong> 모달리티:</strong> <span id="seriesModality">-</span></p>
+            <p><strong> 시리즈 날짜:</strong> <span id="seriesDate">-</span></p>
+            <p><strong> 이미지 개수:</strong> <span id="imageCnt">-</span></p>
+            <p><strong> 시리즈 번호:</strong> <span id="seriesNum">-</span></p>
         </div>
 
         <div class="info-container">
             <h3>판독 결과</h3>
+            <p>판독 의사 : <span id="userCode">1020</span></p>
+            <p>승인 의사 : <span id="approveUserCode">1021</span></p>
+            <p>판독 승인 날짜 : <span id="approveStudyDate">20250305</span></p>
 
             <p><strong>중증도 레벨:</strong></p>
             <select id="severityLevel">
