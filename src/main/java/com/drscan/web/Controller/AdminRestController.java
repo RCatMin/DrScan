@@ -1,5 +1,7 @@
 package com.drscan.web.Controller;
 
+import com.drscan.web.primary.log.domain.Log;
+import com.drscan.web.primary.log.service.LogService;
 import com.drscan.web.primary.users.domain.User;
 import com.drscan.web.primary.users.domain.UserRequestDto;
 import com.drscan.web.primary.users.service.UserService;
@@ -20,18 +22,21 @@ import java.util.Map;
 public class AdminRestController {
 
     private final UserService userService;
+    private final LogService logService;
 
     @GetMapping("/session")
     public ResponseEntity<ResponseDto> createSession(HttpServletRequest request) {
         List<User> userList = userService.findAllByAccountType("user");
         List<User> temporaryList = userService.findAllByAccountTypeAndStatus("temporary", "pending");
         List<User> deleteList = userService.findAllByAccountTypeAndStatus("user", "pending");
+        List<Log> logList = logService.findLogAll();
 
         HttpSession session = request.getSession();
 
         session.setAttribute("userList", userList);
         session.setAttribute("temporaryList", temporaryList);
         session.setAttribute("deleteList", deleteList);
+        session.setAttribute("logList", logList);
 
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "세션 생성 성공!"));
     }
