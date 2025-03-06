@@ -18,7 +18,11 @@ async function loadReports(patientId) {
         console.log(response);
 
         reportsData = await response.json();
-        console.log(reportsData);
+
+        if (reportsData.length === 0) {
+            alert("판독한 내용이 없습니다!");
+            return;
+        }
 
         displayReports();
     } catch (error) {

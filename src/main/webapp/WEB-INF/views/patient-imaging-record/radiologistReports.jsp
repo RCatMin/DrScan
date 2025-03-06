@@ -35,11 +35,7 @@
         </tbody>
     </table>
 
-    <div class="pagination">
-        <button id="prevPage" class="pagination-btn">이전</button>
-        <span id="pageInfo"></span>
-        <button id="nextPage" class="pagination-btn">다음</button>
-    </div>
+    <div class="pagination"></div>
 </div>
 </body>
 <c:import url="/footer" />
