@@ -26,7 +26,7 @@ public class PatientScanController {
 
     @GetMapping("/report-detail/{reportCode}")
     public String reportDetail(@PathVariable Integer reportCode) {
-        return "patient-imaging-record/reportDetail";
+        return "report/reportDetail";
     }
 }
 
