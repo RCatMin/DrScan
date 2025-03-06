@@ -70,7 +70,8 @@ th {
 }
 
 
-.clinic-btn {
+.clinic-btn,
+.report-btn {
     background-color:#48A6A7;
     gap:10px;
     color:white;
