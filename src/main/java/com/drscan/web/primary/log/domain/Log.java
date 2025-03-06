@@ -1,5 +1,6 @@
 package com.drscan.web.primary.log.domain;
 
+import com.drscan.web.primary.reports.domain.RadiologistReport;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,18 @@ public class Log {
 
     public Log(long userCode, String event) {
         this.userCode = userCode;
+        this.event = event;
+    }
+
+    public Log(long userCode, RadiologistReport report, String event) {
+        this.userCode = userCode;
+        this.reportCode = Long.valueOf(report.getReportCode());
+        this.event = event;
+    }
+
+    public Log(long userCode, long clinicCode, String event) {
+        this.userCode = userCode;
+        this.clinicCode = clinicCode;
         this.event = event;
     }
 
