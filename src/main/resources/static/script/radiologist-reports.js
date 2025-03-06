@@ -43,34 +43,50 @@ function displayReports() {
                 <td>${report.reportText}</td>
                 <td>${new Date(report.regDate).toLocaleString()}</td>
                 <td>${new Date(report.modDate).toLocaleString()}</td>
-                <td><button onclick="viewReportDetail(${report.reportCode})">상세보기</button></td>
+                <td><button class="report-btn" onclick="viewReportDetail(${report.reportCode})">상세보기</button></td>
             </tr>
         `;
         reportTableBody.innerHTML += row;
     });
 
     updatePagination();
+    addEventListenersToButtons();
 }
 
 function updatePagination() {
-    document.getElementById("pageInfo").innerText = `${currentPage} / ${Math.ceil(reportsData.length / itemsPerPage)}`;
-    document.getElementById("prevPage").disabled = currentPage === 1;
-    document.getElementById("nextPage").disabled = currentPage * itemsPerPage >= reportsData.length;
-}
+    const totalPages = Math.ceil(reportsData.length / itemsPerPage);
+    const paginationContainer = document.querySelector(".pagination");
+    paginationContainer.innerHTML = "";
 
-document.getElementById("prevPage").addEventListener("click", () => {
+    // 이전 버튼
     if (currentPage > 1) {
-        currentPage--;
-        displayReports();
+        paginationContainer.innerHTML += `<button class="pagination-btn" data-page="${currentPage - 1}">&lt;</button>`;
     }
-});
 
-document.getElementById("nextPage").addEventListener("click", () => {
-    if (currentPage * itemsPerPage < reportsData.length) {
-        currentPage++;
-        displayReports();
+    // 페이지 숫자 버튼 (최대 5개 표시)
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(totalPages, startPage + 4);
+    if (endPage - startPage < 4) {
+        startPage = Math.max(1, endPage - 4);
     }
-});
+
+    for (let i = startPage; i <= endPage; i++) {
+        paginationContainer.innerHTML += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+    }
+
+    // 다음 버튼
+    if (currentPage < totalPages) {
+        paginationContainer.innerHTML += `<button class="pagination-btn" data-page="${currentPage + 1}">&gt;</button>`;
+    }
+
+    // 이벤트 리스너 추가
+    document.querySelectorAll(".pagination-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            currentPage = parseInt(this.getAttribute("data-page"));
+            displayReports();
+        });
+    });
+}
 
 function viewReportDetail(reportCode) {
     window.location.href = `/patientScan/report-detail/${reportCode}`;

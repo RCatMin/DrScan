@@ -82,6 +82,10 @@ th {
     padding:5px 10px;
 }
 
+.clinic-btn:hover,
+.report-btn:hover {
+    background-color: #3B8C8E;
+}
 
 /* 현재 페이지 버튼 (active) 스타일 */
 .pagination-btn.active {
@@ -90,3 +94,4 @@ th {
     font-weight: bold;
     border: 1px solid #23486A !important;
 }
+
