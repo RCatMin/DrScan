@@ -5,6 +5,7 @@ dist/
 ### OS ###
 .DS_Store
 application.*.properties
+application.properties
 
 ### Gradle ###
 HELP.md
