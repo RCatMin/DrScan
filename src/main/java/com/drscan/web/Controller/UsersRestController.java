@@ -102,6 +102,11 @@ public class UsersRestController {
                     .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "정지된 계정입니다."));
         }
 
+        if(user.getAccountType().equals("temporary") && user.getStatus().equals("pending")){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
+                    .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "가입승인 대기 중인 계정입니다."));
+        }
+
         String otpCode = userRequestDto.getCode();
 
         HttpSession session = request.getSession();
@@ -122,7 +127,7 @@ public class UsersRestController {
         logService.saveLog(authUser, "로그인");
         session.setAttribute("authUser", authUser);
 
-        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "로그인에 성공했습니다."));
+        return ResponseEntity.status(HttpStatus.OK.value()).body(new ResponseDto(HttpStatus.OK.value(), "로그인 성공!"));
     }
 
     @GetMapping("/signout")

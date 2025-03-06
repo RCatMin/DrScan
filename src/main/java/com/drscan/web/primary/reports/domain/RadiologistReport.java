@@ -18,6 +18,7 @@ public class RadiologistReport {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "report_code")
     private Integer reportCode; // 판독 코드 (PK)
 
     @Column(name = "series_ins_uid", nullable = false, length = 100)

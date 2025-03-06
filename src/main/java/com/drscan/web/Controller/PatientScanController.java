@@ -18,5 +18,15 @@ public class PatientScanController {
                                     @PathVariable Integer serieskey) {
         return "patient-imaging-record/imaging-record";
     }
+
+    @GetMapping("/radiology/{pid}")
+    public String radiologistReports(@PathVariable String pid) {
+        return "report/radiologistReports";
+    }
+
+    @GetMapping("/report-detail/{reportCode}")
+    public String reportDetail(@PathVariable Integer reportCode) {
+        return "report/reportDetail";
+    }
 }
 

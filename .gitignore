@@ -4,8 +4,8 @@ dist/
 
 ### OS ###
 .DS_Store
-application.datasource.properties
-application.email.properties
+application.*.properties
+application.properties
 
 ### Gradle ###
 HELP.md

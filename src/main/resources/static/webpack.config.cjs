@@ -12,16 +12,5 @@ module.exports = {
             "path" : require.resolve("path-browserify")
         }
     },
-    mode: 'development',
-    experiments: {
-        asyncWebAssembly: true
-    },
-    module: {
-        rules: [
-            {
-                test: /\.wasm$/,
-                type: "webassembly/async",
-            }
-        ]
-    }
+    mode: 'development'
 };
