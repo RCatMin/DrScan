@@ -1,7 +1,9 @@
 package com.drscan.web.Controller;
 
+import com.drscan.web.primary.log.service.LogService;
 import com.drscan.web.primary.reports.domain.RadiologistReport;
 import com.drscan.web.primary.reports.service.RadiologistReportService;
+import com.drscan.web.primary.users.domain.AuthUser;
 import com.drscan.web.secondary.image.domain.Image;
 import com.drscan.web.secondary.patientScan.service.PatientScanService;
 import com.drscan.web.secondary.series.domain.Series;
@@ -9,6 +11,7 @@ import com.drscan.web.secondary.series.domain.SeriesId;
 import com.drscan.web.secondary.series.domain.SeriesRepository;
 import com.drscan.web.secondary.study.domain.Study;
 import com.drscan.web.secondary.study.domain.StudyRepository;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -38,6 +41,7 @@ public class PatientScanRESTController {
 
     // MYSQL
     private final RadiologistReportService radiologistReportService;
+    private final LogService logService;
 
     // 오라클 환자 ID로 조회
     @GetMapping("/{pid}/records")
@@ -122,8 +126,13 @@ public class PatientScanRESTController {
 //
 //    // MySQL 판독 데이터 저장
     @PostMapping("/reports/save")
-    public ResponseEntity<?> saveRadiologistReport(@RequestBody RadiologistReport report) {
+    public ResponseEntity<?> saveRadiologistReport(@RequestBody RadiologistReport report, HttpSession session) {
         RadiologistReport savedReport = radiologistReportService.saveReport(report);
+
+        AuthUser authUser = (AuthUser) session.getAttribute("authUser");
+
+        logService.saveLog(authUser, report, "판독 데이터 저장");
+
         return ResponseEntity.ok(savedReport);
     }
 }
