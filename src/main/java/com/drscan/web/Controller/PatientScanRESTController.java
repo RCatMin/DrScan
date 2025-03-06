@@ -151,12 +151,18 @@ public class PatientScanRESTController {
         return ResponseEntity.notFound().build();
     }
 
-
-
     // 환자 ID로 판독 기록 조회 API
     @GetMapping("/reports/patient/{patientId}")
     public ResponseEntity<List<RadiologistReport>> getReportsByPatient(@PathVariable String patientId) {
         List<RadiologistReport> reports = radiologistReportService.getReportsByPatientId(patientId);
         return ResponseEntity.ok(reports);
+    }
+
+    // 상세페이지에서 불러오기
+    @GetMapping("/reports/{reportCode}")
+    public ResponseEntity<RadiologistReport> getReportById(@PathVariable Integer reportCode) {
+        return radiologistReportRepository.findById(reportCode)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
