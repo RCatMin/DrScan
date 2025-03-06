@@ -54,7 +54,13 @@ function displayReports() {
     });
 
     updatePagination();
-    addEventListenersToButtons();
+    // 이벤트 리스너 추가
+    document.querySelectorAll(".pagination-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            currentPage = parseInt(this.getAttribute("data-page"));
+            displayReports();
+        });
+    });
 }
 
 function updatePagination() {
@@ -82,14 +88,6 @@ function updatePagination() {
     if (currentPage < totalPages) {
         paginationContainer.innerHTML += `<button class="pagination-btn" data-page="${currentPage + 1}">&gt;</button>`;
     }
-
-    // 이벤트 리스너 추가
-    document.querySelectorAll(".pagination-btn").forEach(button => {
-        button.addEventListener("click", function () {
-            currentPage = parseInt(this.getAttribute("data-page"));
-            displayReports();
-        });
-    });
 }
 
 function viewReportDetail(reportCode) {
