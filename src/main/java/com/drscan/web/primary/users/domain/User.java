@@ -58,6 +58,9 @@ public class User extends Timestamp {
         this.email = userDto.getEmail();
         this.status = userDto.getStatus();
         this.accountType = userDto.getAccountType();
+        if(this.failCount==5 && !userDto.getStatus().equals("suspended")){
+            this.failCount = 0;
+        }
     }
 
     // 사용자가 자신의 정보 수정
