@@ -21,8 +21,12 @@ public class PatientScanController {
 
     @GetMapping("/radiology/{pid}")
     public String radiologistReports(@PathVariable String pid) {
-        return "patient-imaging-record/radiologistReports";
+        return "report/radiologistReports";
     }
 
+    @GetMapping("/report-detail/{reportCode}")
+    public String reportDetail(@PathVariable Integer reportCode) {
+        return "patient-imaging-record/reportDetail";
+    }
 }
 
