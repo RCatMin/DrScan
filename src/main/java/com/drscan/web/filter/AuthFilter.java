@@ -77,11 +77,19 @@ public class AuthFilter implements Filter {
             return;
         }
 
-        if (isAdmin) {
-            if (!uri.startsWith("/admin")) {
-                response.sendRedirect("/admin");
-                return;
-            }
+        if (!isAdmin && uri.startsWith("/admin")) {
+            response.sendRedirect("/");
+            return;
+        }
+
+        if(isAdmin && uri.startsWith("/users/me")) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
+        if (isAdmin && !uri.startsWith("/admin")) {
+            response.sendRedirect("/admin");
+            return;
         }
 
         filterChain.doFilter(servletRequest, servletResponse);
