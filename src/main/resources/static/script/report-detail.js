@@ -1,19 +1,32 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const reportCode = getReportCodeFromURL();
-    if (!reportCode) {
-        console.error("URL에서 reportCode를 찾을 수 없습니다.");
-        return;
-    }
-    fetchReportDetail(reportCode);
+document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(() => {
+        const reportCode = getReportCodeFromURL();
+        if (!reportCode) {
+            console.error("URL에서 reportCode를 찾을 수 없습니다.");
+            return;
+        }
+        fetchReportDetail(reportCode);
 
-    document.getElementById("update-button").addEventListener("click", function() {
-        updateReport(reportCode);
-    });
+        const updateButton = document.getElementById("update-button");
+        if (updateButton) {
+            updateButton.addEventListener("click", function () {
+                updateReport(reportCode);
+            });
+        } else {
+            console.error("update-button 요소를 찾을 수 없습니다.");
+        }
 
-    document.getElementById("delete-button").addEventListener("click", function() {
-        deleteReport(reportCode);
-    });
+        const deleteButton = document.getElementById("delete-button");
+        if (deleteButton) {
+            deleteButton.addEventListener("click", function () {
+                deleteReport(reportCode);
+            });
+        } else {
+            console.error("delete-button 요소를 찾을 수 없습니다.");
+        }
+    }, 500);
 });
+
 
 function getReportCodeFromURL() {
     const pathSegments = window.location.pathname.split("/");
@@ -22,18 +35,31 @@ function getReportCodeFromURL() {
 
 function fetchReportDetail(reportCode) {
     fetch(`/patientScan/action/reports/${reportCode}`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`서버 응답 실패: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
-            document.getElementById("patientId").value = data.patientId;
-            document.getElementById("studyDate").value = new Date(data.studyDate).toLocaleString();
-            document.getElementById("studyName").value = data.studyName;
-            document.getElementById("bodyPart").value = data.bodyPart;
+            document.getElementById("reportCode").innerText = data.reportCode;
+            document.getElementById("patientId").innerText = data.patientId;
+            document.getElementById("patientName").innerText = data.patientName;
+            document.getElementById("patientBirthDate").innerText = data.patientBirthDate;
+            document.getElementById("patientAge").innerText = `${data.patientAge} 세`;
+            document.getElementById("doctor").innerText = data.userCode;
+            document.getElementById("approveDate").innerText = new Date(data.approveStudyDate).toLocaleString();
+            document.getElementById("studyName").innerText = data.studyName;
+            document.getElementById("studyDate").innerText = new Date(data.studyDate).toLocaleString();
+            document.getElementById("modality").innerText = data.modality;
+            document.getElementById("bodyPart").innerText = data.bodyPart;
             document.getElementById("severityLevel").value = data.severityLevel;
             document.getElementById("reportStatus").value = data.reportStatus;
             document.getElementById("reportText").value = data.reportText;
         })
         .catch(error => console.error("판독 상세 정보를 가져오는 중 오류 발생:", error));
 }
+
 
 function updateReport(reportCode) {
     const updatedData = {
@@ -48,8 +74,8 @@ function updateReport(reportCode) {
         body: JSON.stringify(updatedData)
     })
         .then(response => response.json())
-        .then(data => {
-            alert("판독 정보가 성공적으로 수정되었습니다.");
+        .then(() => {
+            alert("판독 정보가 성공적으로 수정되었습니다!");
             location.reload();
         })
         .catch(error => console.error("판독 정보 수정 중 오류 발생:", error));
@@ -61,8 +87,8 @@ function deleteReport(reportCode) {
     fetch(`/patientScan/action/reports/${reportCode}`, { method: "DELETE" })
         .then(response => {
             if (response.ok) {
-                alert("판독 정보가 삭제되었습니다.");
-                window.location.href = "/patientScan/radiology";
+                alert("판독 정보가 삭제되었습니다!");
+                window.location.href = "/patientScan/";
             } else {
                 alert("삭제 실패!");
             }
