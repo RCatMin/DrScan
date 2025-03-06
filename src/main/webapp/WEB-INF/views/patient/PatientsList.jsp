@@ -18,6 +18,7 @@
       <th>성별</th>
       <th>생년월일</th>
       <th>진료기록</th> <!-- 진료보기 버튼 추가 -->
+      <th>판독기록</th>
     </tr>
     </thead>
     <tbody>
@@ -29,6 +30,9 @@
         <td>${patient.pbirthdate}</td>
         <td>
           <button class="clinic-btn" data-pid="${patient.pid}">진료보기</button> <!-- data-pid 속성 추가 -->
+        </td>
+        <td>
+          <button class="report-btn" data-pid="${patient.pid}">판독보기</button>
         </td>
       </tr>
     </c:forEach>

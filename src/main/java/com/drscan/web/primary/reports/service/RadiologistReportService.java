@@ -15,8 +15,6 @@ import java.util.List;
 @Service
 public class RadiologistReportService {
 
-    private final PatientRepository patientRepository;
-    private final SeriesRepository seriesRepository;
     private final RadiologistReportRepository radiologistReportRepository;
 
     //    // 특정 시리즈 UID 기준으로 판독 데이터 가져오기
@@ -34,4 +32,8 @@ public class RadiologistReportService {
     }
 
 
+    // 환자 ID로 판독 기록 조회
+    public List<RadiologistReport> getReportsByPatientId(String patientId) {
+        return radiologistReportRepository.findByPatientId(patientId);
+    }
 }
