@@ -1,5 +1,6 @@
 package com.drscan.web.primary.users.service;
 
+import com.drscan.web.primary.users.domain.AuthUser;
 import com.drscan.web.primary.users.domain.User;
 import com.drscan.web.primary.users.domain.UserRepository;
 import com.drscan.web.primary.users.domain.UserRequestDto;
@@ -80,15 +81,18 @@ public class UserService {
     public boolean updateUser2(UserRequestDto userDto, HttpServletRequest request) {
         Integer code = Integer.valueOf(userDto.getCode());
 
-        User target = userRepository.findUserByUserCode(code);
+        User user = userRepository.findUserByUserCode(code);
 
-        if(target == null)
+        if(user == null)
             return false;
 
-        target.update2(userDto);
+        user.update2(userDto);
+
+        AuthUser authUser = new AuthUser(user.getUserCode(), user.getAccountType(), user.getUsername(), user.getHospitalName(),
+                user.getDepartment(), user.getName(), user.getEmail(), user.getPhone(), user.getOtpKey(), user.getStatus(), user.getFailCount());
 
         HttpSession session = request.getSession();
-        session.setAttribute("authUser", target);
+        session.setAttribute("authUser", authUser);
 
         return true;
     }
