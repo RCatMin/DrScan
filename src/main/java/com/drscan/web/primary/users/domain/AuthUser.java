@@ -3,8 +3,6 @@ package com.drscan.web.primary.users.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.security.Timestamp;
-
 @Getter
 @AllArgsConstructor
 public class AuthUser {
