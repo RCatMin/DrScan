@@ -125,7 +125,8 @@ public class PatientScanRESTController {
     @PutMapping("/reports/{reportCode}")
     public ResponseEntity<RadiologistReport> updateReport(
             @PathVariable Integer reportCode,
-            @RequestBody RadiologistReport updatedReport
+            @RequestBody RadiologistReport updatedReport,
+            HttpSession session
     ) {
         return radiologistReportRepository.findById(reportCode).map(report -> {
             report.setSeverityLevel(updatedReport.getSeverityLevel());
@@ -133,6 +134,11 @@ public class PatientScanRESTController {
             report.setReportText(updatedReport.getReportText());
             report.setModDate(LocalDateTime.now());
             radiologistReportRepository.save(report);
+
+            AuthUser authUser = (AuthUser) session.getAttribute("authUser");
+
+            logService.saveLog(authUser, report, "판독 데이터 수정");
+
             return ResponseEntity.ok(report);
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
