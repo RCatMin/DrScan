@@ -8,4 +8,6 @@ import java.util.List;
 @Repository
 public interface RadiologistReportRepository extends JpaRepository<RadiologistReport, Integer> {
     List<RadiologistReport> findBySeriesInsUid(String seriesInsUid);
+
+    List<RadiologistReport> findByPatientId(String patientId);
 }

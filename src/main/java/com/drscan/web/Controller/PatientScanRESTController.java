@@ -2,6 +2,7 @@ package com.drscan.web.Controller;
 
 import com.drscan.web.primary.log.service.LogService;
 import com.drscan.web.primary.reports.domain.RadiologistReport;
+import com.drscan.web.primary.reports.domain.RadiologistReportRepository;
 import com.drscan.web.primary.reports.service.RadiologistReportService;
 import com.drscan.web.primary.users.domain.AuthUser;
 import com.drscan.web.secondary.image.domain.Image;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +43,7 @@ public class PatientScanRESTController {
 
     // MYSQL
     private final RadiologistReportService radiologistReportService;
+    private final RadiologistReportRepository radiologistReportRepository;
     private final LogService logService;
 
     // 오라클 환자 ID로 조회
@@ -117,14 +120,25 @@ public class PatientScanRESTController {
         return ResponseEntity.ok(result);
     }
 
-//
-//    // MYSQL특정 시리즈의 판독 데이터 가져오기
-//    @GetMapping("/reports/{seriesInsUid}")
-//    public ResponseEntity<?> getRadiologistReportsMySQL(@PathVariable String seriesInsUid) {
-//        return ResponseEntity.ok(radiologistReportService.getReportsBySeriesInsUid(seriesInsUid));
-//    }
-//
-//    // MySQL 판독 데이터 저장
+
+    // MYSQL특정 시리즈의 판독 데이터 가져오기
+    @PutMapping("/reports/{reportCode}")
+    public ResponseEntity<RadiologistReport> updateReport(
+            @PathVariable Integer reportCode,
+            @RequestBody RadiologistReport updatedReport
+    ) {
+        return radiologistReportRepository.findById(reportCode).map(report -> {
+            report.setSeverityLevel(updatedReport.getSeverityLevel());
+            report.setReportStatus(updatedReport.getReportStatus());
+            report.setReportText(updatedReport.getReportText());
+            report.setModDate(LocalDateTime.now());
+            radiologistReportRepository.save(report);
+            return ResponseEntity.ok(report);
+        }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
+    // MySQL 판독 데이터 저장
     @PostMapping("/reports/save")
     public ResponseEntity<?> saveRadiologistReport(@RequestBody RadiologistReport report, HttpSession session) {
         RadiologistReport savedReport = radiologistReportService.saveReport(report);
@@ -134,5 +148,30 @@ public class PatientScanRESTController {
         logService.saveLog(authUser, report, "판독 데이터 저장");
 
         return ResponseEntity.ok(savedReport);
+    }
+
+    // MySQL 판독 데이터 삭제
+    @DeleteMapping("/reports/{reportCode}")
+    public ResponseEntity<Void> deleteReport(@PathVariable Integer reportCode) {
+        if (radiologistReportRepository.existsById(reportCode)) {
+            radiologistReportRepository.deleteById(reportCode);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // 환자 ID로 판독 기록 조회 API
+    @GetMapping("/reports/patient/{patientId}")
+    public ResponseEntity<List<RadiologistReport>> getReportsByPatient(@PathVariable String patientId) {
+        List<RadiologistReport> reports = radiologistReportService.getReportsByPatientId(patientId);
+        return ResponseEntity.ok(reports);
+    }
+
+    // 상세페이지에서 불러오기
+    @GetMapping("/reports/{reportCode}")
+    public ResponseEntity<RadiologistReport> getReportById(@PathVariable Integer reportCode) {
+        return radiologistReportRepository.findById(reportCode)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

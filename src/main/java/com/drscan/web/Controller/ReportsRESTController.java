@@ -37,7 +37,7 @@ public class ReportsRESTController {
     }
 
     // DICOM Path
-    private final String DICOMStoragePath = "Z:/";
+    private final String DICOMStoragePath = "Volumes/STS/";
 
     @GetMapping ("/getDicomImage")
     public ResponseEntity<Resource> getDicomImage(@RequestParam String path) {

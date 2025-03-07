@@ -24,6 +24,14 @@ document.addEventListener("DOMContentLoaded", function () {
             goToClinic(pid);
         });
     });
+
+    // 판독보기 버튼 이벤트 추가
+    document.querySelectorAll(".report-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            const pid = this.getAttribute("data-pid"); // data-pid 속성에서 환자 ID 가져오기
+            goToReport(pid);
+        });
+    });
 });
 
 // 페이지 이동 함수
@@ -34,4 +42,9 @@ function goToPage(page) {
 // 진료 페이지 이동 함수
 function goToClinic(pid) {
     window.location.href = "/clinic/" + pid; // /clinic/{pid} 경로로 이동
+}
+
+// 판독 페이지 이동 함수
+function goToReport(pid) {
+    window.location.href = "/patientScan/radiology/" + pid;
 }
