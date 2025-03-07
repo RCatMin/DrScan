@@ -168,7 +168,7 @@ async function loginAction(username, password, code) {
         return true;
     } else {
         const json = await response.json();
-        alert(`오류 : 로그인 실패`);
+        alert(`오류 ${json.message}`);
         return json.isValid;
     }
 }

@@ -3,7 +3,10 @@ package com.drscan.web.Controller;
 import com.drscan.web.primary.clinic.domain.Clinic;
 import com.drscan.web.primary.clinic.domain.ClinicResponseDto;
 import com.drscan.web.primary.clinic.service.ClinicService;
+import com.drscan.web.primary.log.service.LogService;
+import com.drscan.web.primary.users.domain.AuthUser;
 import com.drscan.web.primary.users.util.ResponseDto;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +20,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClinicRestController {
     private final ClinicService clinicService;
+    private final LogService logService;
 
     // 진료 생성
     @PostMapping
-    public ResponseEntity<String> createClinic(@RequestBody Clinic clinic) {
+    public ResponseEntity<String> createClinic(@RequestBody Clinic clinic, HttpSession session) {
         String savedClinic = clinicService.saveClinic(clinic);
+
+        AuthUser authUser = (AuthUser) session.getAttribute("authUser");
+        logService.saveLog(authUser, clinic.getClinicCode(), "진료 작성");
+
         return ResponseEntity.ok(savedClinic);
     }
 
@@ -57,17 +65,26 @@ public class ClinicRestController {
 
     // 진료 목록수정
     @PutMapping("/detail/{clinicCode}")
-    public ResponseEntity<Clinic> updateClinic(@PathVariable Long clinicCode, @RequestBody Clinic clinic) {
+    public ResponseEntity<Clinic> updateClinic(@PathVariable Long clinicCode, @RequestBody Clinic clinic, HttpSession session) {
+
+        AuthUser authUser = (AuthUser) session.getAttribute("authUser");
+        logService.saveLog(authUser, clinicCode, "진료 수정");
+
         return ResponseEntity.ok(clinicService.updateClinic(clinicCode, clinic));
     }
 
     // 진료 삭제
     @DeleteMapping("/{clinicCode}")
-    public ResponseEntity<ResponseDto> deleteClinicByCode(@PathVariable Long clinicCode) {
+    public ResponseEntity<ResponseDto> deleteClinicByCode(@PathVariable Long clinicCode, HttpSession session) {
+
+        AuthUser authUser = (AuthUser) session.getAttribute("authUser");
+        logService.saveLog(authUser, clinicCode, "진료 삭제");
+
         boolean isSuccess = clinicService.deleteClinic(clinicCode);
         if(!isSuccess)
             return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
                     .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "존재하지 않는 진료기록입니다."));
+
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "진료 삭제가 완료되었습니다."));
     }
 }

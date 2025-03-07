@@ -4,7 +4,8 @@ dist/
 
 ### OS ###
 .DS_Store
-application.datasource.properties
+application.*.properties
+application.properties
 
 ### Gradle ###
 HELP.md
@@ -44,6 +45,4 @@ out/
 
 ### VS Code ###
 .vscode/
-
-application.*.properties
 
