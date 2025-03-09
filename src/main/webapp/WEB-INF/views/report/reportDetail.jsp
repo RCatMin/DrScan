@@ -16,10 +16,10 @@
 <c:import url="/header" />
 <body>
 <div id="content-container">
-    <h2>판독 상세 정보</h2>
+    <h1 id="content-head">판독 상세 정보</h1>
 
     <div class="section">
-        <h3>환자 정보</h3>
+        <h2 class="section-head">- 환자 정보</h2>
         <label>판독코드: </label> <span id="reportCode"></span><br>
         <label>환자 ID: </label> <span id="patientId"></span><br>
         <label>환자 이름: </label> <span id="patientName"></span><br>
@@ -28,7 +28,7 @@
     </div>
 
     <div class="section">
-        <h3>검사 정보</h3>
+        <h2 class="section-head">- 검사 정보</h2>
         <label>판독 의사: </label> <span id="doctor"></span><br>
         <label>판독 승인 날짜: </label> <span id="approveDate"></span><br>
         <label>검사 이름: </label> <span id="studyName"></span><br>
