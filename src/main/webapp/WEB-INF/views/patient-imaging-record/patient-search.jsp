@@ -17,14 +17,16 @@
 <body>
 <div class="container">
     <div class="search-container">
-        <label for="patientCode" class="search-label">환자 코드를 입력하세요.</label>
-
-        <input type="text" id="patientCode" placeholder="환자 코드 입력 (예: MS0010)"/>
-
-        <div class="button-group">
-            <button id="btn-search" class="btn" onclick="searchPatient()">검색</button>
-            <span id="recordButtonContainer"></span>
-        </div>
+        <label class="search-label">환자 코드를 입력하세요.</label>
+        <input type="text" id="searchPid" placeholder="환자 코드">
+        <input type="text" id="searchPname" placeholder="환자 이름">
+        <select id="searchPsex">
+            <option value="">전체</option>
+            <option value="M">남</option>
+            <option value="F">여</option>
+        </select>
+        <input type="date" id="searchPbirthdate">
+        <button id="btn-search" onclick="searchPatient()">검색</button>
     </div>
 
 
@@ -33,14 +35,14 @@
         <table>
             <thead>
             <tr>
-                <th>환자성명</th>
-                <th>환자 ID</th>
-                <th>성별</th>
-                <th>생년월일</th>
-                <th>촬영기기</th>
-                <th>설명</th>
-                <th>촬영날짜</th>
-                <th>촬영시간</th>
+                <th onclick="sortTable(0)">환자성명</th>
+                <th onclick="sortTable(1)">환자 ID</th>
+                <th onclick="sortTable(2)">성별</th>
+                <th onclick="sortTable(3)">생년월일</th>
+                <th onclick="sortTable(4)">촬영기기</th>
+                <th onclick="sortTable(5)">설명</th>
+                <th onclick="sortTable(6)">촬영날짜</th>
+                <th onclick="sortTable(7)">촬영시간</th>
                 <th>영상 판독</th>
             </tr>
             </thead>

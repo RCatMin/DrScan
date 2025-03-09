@@ -46,11 +46,27 @@ public class PatientScanRESTController {
     private final RadiologistReportRepository radiologistReportRepository;
     private final LogService logService;
 
+    // 모든 환자 영상 기록 가져오기
+    @GetMapping("/records/all")
+    public ResponseEntity<?> getAllPatientRecords() {
+        return ResponseEntity.ok(patientScanService.getAllPatientRecords());
+    }
+
     // 오라클 환자 ID로 조회
     @GetMapping("/{pid}/records")
     public ResponseEntity<?> getPatientRecords(@PathVariable String pid) {
         return ResponseEntity.ok(patientScanService.getPatientRecords(pid));
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchPatients(
+            @RequestParam(required = false) String pid,
+            @RequestParam(required = false) String pname,
+            @RequestParam(required = false) String psex,
+            @RequestParam(required = false) String pbirthdate) {
+        return ResponseEntity.ok(patientScanService.searchPatients(pid, pname, psex, pbirthdate));
+    }
+
 
     // 오라클 이미지 불러오기
     @GetMapping("/images/{studykey}/{serieskey}")

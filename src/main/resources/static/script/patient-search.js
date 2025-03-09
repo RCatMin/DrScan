@@ -3,106 +3,173 @@ var itemsPerPage = 5; // 한 페이지당 표시할 개수
 var totalPages = 1; // 총 페이지 수
 var allStudies = []; // 전체 데이터를 저장할 배열
 
-function searchPatient() {
-    var patientCode = document.getElementById("patientCode").value.trim();
-    var regex = /^[A-Z]{2}\d{4}$/; // 대문자 2자리 + 숫자 4자리 검사
+document.addEventListener("DOMContentLoaded", function () {
+    fetchAllPatientRecords();
+});
 
-    if (patientCode === "") {
-        alert("환자 코드를 입력해주세요!");
-        return;
-    } else if (patientCode.length !== 6) {
-        alert("올바른 환자 코드를 입력해주세요!");
-        return;
-    } else if (!regex.test(patientCode)) {
-        alert("환자 코드는 대문자 2자리 + 숫자 4자리 형식이어야 합니다!");
-        return;
-    }
+function fetchAllPatientRecords() {
+    console.log("모든 환자 영상 기록을 가져오는 중...");
 
-    fetch(`/patientScan/action/${patientCode}/records`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("환자 정보를 불러오는 중 오류가 발생했습니다.");
-            }
-            return response.json();
-        })
-        .then(response => {
+    fetch("/patientScan/action/records/all")
+        .then(response => response.json())
+        .then(data => {
+            console.log("불러온 데이터:", data);
 
-            console.log("서버 응답 데이터:", response); // 확인용
-
-            document.getElementById("resultSection").style.display = "block";
-            var patientRecords = document.getElementById("patientRecords");
-            patientRecords.innerHTML = ""; // 기존 데이터 삭제
-
-            var patient = response.patient;
-            allStudies = []; // 기존 데이터 초기화
-
-            var studyDetails = response.studyDetails || []; // undefined 방지
-
-            if (!patient || response.studies.length === 0) {
-                patientRecords.innerHTML = "<tr><td colspan='10'>해당 환자의 데이터가 없습니다.</td></tr>";
+            if (!Array.isArray(data) || data.length === 0) {
+                console.error("불러온 데이터가 비어 있습니다!");
                 return;
             }
 
-            // 진료 기록 조회 버튼 추가
-            var recordButtonContainer = document.getElementById("recordButtonContainer");
-            recordButtonContainer.innerHTML = `
-                <button class="btn btn-record" onclick="viewMedicalRecords('${patient.pid}')">진료 기록 조회</button>
-            `;
+            allStudies = [];
 
-            studyDetails.forEach(function (study) {
-                var seriesList = study.series || []; // undefined 방지
-                seriesList.forEach(function (series) {
-                    allStudies.push({
-                        pname: patient.pname,
-                        pid: patient.pid,
-                        psex: patient.psex,
-                        pbirthdate: patient.pbirthdate,
-                        modality: series.modality || "N/A",
-                        studydesc: study.study.studydesc || "N/A",
-                        studydate: study.study.studydate || "N/A",
-                        studytime: study.study.studytime || "N/A",
-                        seriesinsuid: series.seriesinsuid,
-                        studykey: study.study.studykey || study.studykey,
-                        serieskey: series.serieskey || series.serieskey
+            data.forEach(patientData => {
+                var patient = patientData.patient;
+                var studyDetails = patientData.studyDetails || [];
+
+                studyDetails.forEach(study => {
+                    var seriesList = study.series || [];
+                    seriesList.forEach(series => {
+                        allStudies.push({
+                            pname: patient.pname,
+                            pid: patient.pid,
+                            psex: patient.psex,
+                            pbirthdate: patient.pbirthdate,
+                            modality: series.modality || "N/A",
+                            studydesc: study.study.studydesc || "N/A",
+                            studydate: study.study.studydate || "N/A",
+                            studytime: study.study.studytime || "N/A",
+                            studykey: study.study.studykey || study.studykey,
+                            serieskey: series.serieskey || series.serieskey
+                        });
                     });
                 });
             });
 
             totalPages = Math.ceil(allStudies.length / itemsPerPage);
-            currentPage = 1; // 페이지 초기화
-            displayPage(currentPage);
+            console.log("최종 데이터:", allStudies);
+
+            renderPatientTable(allStudies);
+            displayPage(1);
+
+            if (allStudies.length > 0) {
+                document.getElementById("resultSection").style.display = "block";
+            }
         })
-        .catch(error => {
-            alert(error.message);
-        });
+        .catch(error => console.error("API 호출 중 오류 발생:", error));
 }
+
+
+function renderPatientTable(data) {
+    console.log("테이블에 표시할 데이터:", data);
+
+    var patientRecords = document.getElementById("patientRecords");
+    if (!patientRecords) {
+        console.error("테이블 요소를 찾을 수 없습니다!");
+        return;
+    }
+
+    patientRecords.innerHTML = ""; // 기존 데이터 삭제
+
+    data.forEach(study => {
+        var row = `
+            <tr>
+                <td>${study.pname}</td>
+                <td>${study.pid}</td>
+                <td>${study.psex}</td>
+                <td>${study.pbirthdate}</td>
+                <td>${study.modality}</td>
+                <td>${study.studydesc}</td>
+                <td>${study.studydate}</td>
+                <td>${study.studytime}</td>
+                <td>
+                    <button class="btn btn-analysis" 
+                        onclick="analyzeImage('${study.pid}', '${study.studykey}', '${study.serieskey}')">
+                        영상 판독
+                    </button>
+                </td>
+            </tr>
+        `;
+        patientRecords.innerHTML += row;
+    });
+
+    console.log("테이블 렌더링 완료!");
+}
+
+function searchPatient() {
+    var pidField = document.getElementById("searchPid");
+    var pnameField = document.getElementById("searchPname");
+    var psexField = document.getElementById("searchPsex");
+    var pbirthdateField = document.getElementById("searchPbirthdate");
+
+    if (!pidField || !pnameField || !psexField || !pbirthdateField) {
+        console.error("검색 필드가 올바르게 로드되지 않았습니다.");
+        return;
+    }
+
+    var pid = pidField.value.trim();
+    var pname = pnameField.value.trim();
+    var psex = psexField.value;
+    var pbirthdate = pbirthdateField.value;
+
+    var url = `/patientScan/action/search?pid=${pid}&pname=${pname}&psex=${psex}&pbirthdate=${pbirthdate}`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            console.log("검색 결과:", data);
+
+            allStudies = [];
+
+            data.forEach(patientData => {
+                var patient = patientData.patient;
+                var studyDetails = patientData.studyDetails || []; // 🔥 Study 데이터 가져오기!
+
+                studyDetails.forEach(study => {
+                    var seriesList = study.series || []; // 🔥 Series 데이터 가져오기!
+                    seriesList.forEach(series => {
+                        allStudies.push({
+                            pname: patient.pname,
+                            pid: patient.pid,
+                            psex: patient.psex,
+                            pbirthdate: patient.pbirthdate,
+                            modality: series.modality || "N/A",
+                            studydesc: study.study.studydesc || "N/A",
+                            studydate: study.study.studydate || "N/A",
+                            studytime: study.study.studytime || "N/A",
+                            studykey: study.study.studykey || study.studykey,
+                            serieskey: series.serieskey || series.serieskey
+                        });
+                    });
+                });
+            });
+
+            totalPages = Math.ceil(allStudies.length / itemsPerPage);
+
+            renderPatientTable(allStudies);
+            displayPage(1);
+
+            // 🔥 검색 결과가 있으면 resultSection을 보이게 변경
+            if (allStudies.length > 0) {
+                document.getElementById("resultSection").style.display = "block";
+            }
+        })
+        .catch(error => console.error("검색 중 오류 발생:", error));
+}
+
+
+
 
 // 특정 페이지의 데이터 표시 함수
 function displayPage(page) {
-    var patientRecords = document.getElementById("patientRecords");
-    patientRecords.innerHTML = ""; // 기존 데이터 삭제
     currentPage = page; // 현재 페이지 업데이트
 
     var start = (page - 1) * itemsPerPage;
     var end = start + itemsPerPage;
     var paginatedItems = allStudies.slice(start, end);
 
-    paginatedItems.forEach(function (item) {
-        var row = `
-            <tr>
-                <td>${item.pname}</td>
-                <td>${item.pid}</td>
-                <td>${item.psex}</td>
-                <td>${item.pbirthdate}</td>
-                <td>${item.modality}</td>
-                <td>${item.studydesc}</td>
-                <td>${item.studydate}</td>
-                <td>${item.studytime}</td>
-                <td><div><button class="btn btn-analysis" onclick="analyzeImage('${item.pid}', '${item.studykey}', '${item.serieskey}')">영상 판독</button></div></td>
-            </tr>
-        `;
-        patientRecords.innerHTML += row;
-    });
+    console.log(`페이지 ${page}의 데이터:`, paginatedItems);
+
+    renderPatientTable(paginatedItems);
 
     updatePaginationControls();
 }
@@ -129,10 +196,19 @@ function updatePaginationControls() {
     }
 }
 
-function viewMedicalRecords(pid) {
-    window.location.href = "/clinic/" + pid;
-}
-
 function analyzeImage(pid, studykey, serieskey) {
     window.location.href = "/patientScan/imaging-record/" + pid + "/" +studykey + "/" + serieskey;
 }
+
+function sortTable(columnIndex) {
+    allStudies.sort((a, b) => {
+        let valA = Object.values(a)[columnIndex];
+        let valB = Object.values(b)[columnIndex];
+
+        return valA > valB ? 1 : -1;
+    });
+
+    displayPage(1);
+}
+
+
