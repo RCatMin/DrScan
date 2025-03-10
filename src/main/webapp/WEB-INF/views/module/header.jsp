@@ -10,8 +10,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet"  href="/style/reset.css">
+    <link rel="stylesheet" href="/style/reset.css">
     <link rel="stylesheet" href="/style/header.css">
+    <script type="module" src="/script/header.js"></script>
     <link rel="shortcut icon"
           href="https://store-images.s-microsoft.com/image/apps.6418.14364493555984900.9ea956f3-4735-41a8-b265-5c9a29b0fa8c.aa7487ad-5d24-4776-8364-cdfa4576252e">
     <meta property="og:title" content="DrScan">
@@ -23,7 +24,7 @@
 <header>
     <div id="logo">
         <h1>
-            <a href="/">Dr.Sacn</a>
+            <a href="/">Dr.Scan</a>
         </h1>
     </div>
 

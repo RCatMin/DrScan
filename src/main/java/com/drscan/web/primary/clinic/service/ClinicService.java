@@ -27,7 +27,7 @@ public class ClinicService {
     // 환자 id로 진료 전체 내용 조회
     public List<Clinic> getClinicByPatientCode(String patientCode) {
 
-        return (List<Clinic>) clinicRepository.findClinicByPatientCode(patientCode);
+        return clinicRepository.findClinicByPatientCode(patientCode);
     }
 
     // 진료코드로 진료내용 조회
