@@ -22,7 +22,7 @@ public class PatientController {
     private final PatientService patientService;
 
     @GetMapping({"","/"})
-    public ModelAndView list(Pageable pageable, @RequestParam(required = false) Integer page) {
+    public ModelAndView list(@RequestParam(required = false) Integer page) {
         ModelAndView modelAndView = new ModelAndView("patient/PatientsList");
 
         Pageable paging = PageRequest.of(page ==null ? 0:page-1,5);

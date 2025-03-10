@@ -22,9 +22,6 @@ configurations {
 
 repositories {
     mavenCentral()
-    maven{ // repository 등록
-        url "https://maven.scijava.org/content/repositories/public/"
-    }
 }
 
 dependencies {

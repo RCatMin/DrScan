@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class PatientScanController {
 
-    @GetMapping("/search")
-    public String search() { return "patient-imaging-record/patient-search"; }
+    @GetMapping("/list")
+    public String list() { return "patient-imaging-record/viewerList"; }
 
     @GetMapping("/imaging-record/{pid}/{studykey}/{serieskey}")
     public String imagingRecordPage(@PathVariable String pid,

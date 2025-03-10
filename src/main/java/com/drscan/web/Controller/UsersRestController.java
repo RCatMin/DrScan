@@ -113,9 +113,16 @@ public class UsersRestController {
         String code = (String) session.getAttribute("authCode");
 
         if (!otpCode.equals(code)) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST.value())
-                    .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "인증코드가 일치하지 않습니다."));
+            if (user.getFailCount() < 5) {
+                userService.incrementFailCountAndCheckSuspension(userRequestDto);
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "인증코드가 일치하지 않습니다."));
+            } else {
+                userRequestDto.setStatus("suspended");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
+                        .body(new ResponseDto(HttpStatus.NOT_FOUND.value(), "로그인 5회 실패로 계정이 정지됐습니다."));
+            }
         }
 
         userService.resetFailCount(userRequestDto);

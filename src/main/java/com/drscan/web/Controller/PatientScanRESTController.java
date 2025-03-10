@@ -12,6 +12,7 @@ import com.drscan.web.secondary.series.domain.SeriesId;
 import com.drscan.web.secondary.series.domain.SeriesRepository;
 import com.drscan.web.secondary.study.domain.Study;
 import com.drscan.web.secondary.study.domain.StudyRepository;
+import com.drscan.web.secondary.study.service.StudyService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -26,10 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @RequestMapping("/patientScan/action")
@@ -45,11 +43,46 @@ public class PatientScanRESTController {
     private final RadiologistReportService radiologistReportService;
     private final RadiologistReportRepository radiologistReportRepository;
     private final LogService logService;
+    private final StudyService studyService;
+
+    // 모든 환자 영상 기록 가져오기
+    @GetMapping("/records/all")
+    public ResponseEntity<?> getAllPatientRecords() {
+        return ResponseEntity.ok(patientScanService.getAllPatientRecords());
+    }
 
     // 오라클 환자 ID로 조회
     @GetMapping("/{pid}/records")
     public ResponseEntity<?> getPatientRecords(@PathVariable String pid) {
         return ResponseEntity.ok(patientScanService.getPatientRecords(pid));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Map<String, Object>>> searchPatients(
+            @RequestParam(required = false) String pid,
+            @RequestParam(required = false) String pname,
+            @RequestParam(required = false) String studydateStart,
+            @RequestParam(required = false) String studydateEnd,
+            @RequestParam(required = false) String studydesc,
+            @RequestParam(required = false) String modality,
+            @RequestParam(required = false) String accessnum) {
+
+        List<Study> studies = studyService.searchStudies(pid, pname, studydateStart, studydateEnd, studydesc, modality, accessnum);
+        List<Map<String, Object>> resultList = new ArrayList<>();
+
+        for (Study study : studies) {
+            Map<String, Object> studyData = new HashMap<>();
+            studyData.put("study", study);
+            studyData.put("accessnum", study.getAccessnum());
+            studyData.put("modality", study.getModality());
+
+            List<Series> seriesList = seriesRepository.findSeriesByStudykey(study.getStudykey());
+            studyData.put("series", seriesList);
+
+            resultList.add(studyData);
+        }
+
+        return ResponseEntity.ok(resultList);
     }
 
     // 오라클 이미지 불러오기
@@ -125,7 +158,8 @@ public class PatientScanRESTController {
     @PutMapping("/reports/{reportCode}")
     public ResponseEntity<RadiologistReport> updateReport(
             @PathVariable Integer reportCode,
-            @RequestBody RadiologistReport updatedReport
+            @RequestBody RadiologistReport updatedReport,
+            HttpSession session
     ) {
         return radiologistReportRepository.findById(reportCode).map(report -> {
             report.setSeverityLevel(updatedReport.getSeverityLevel());
@@ -133,6 +167,11 @@ public class PatientScanRESTController {
             report.setReportText(updatedReport.getReportText());
             report.setModDate(LocalDateTime.now());
             radiologistReportRepository.save(report);
+
+            AuthUser authUser = (AuthUser) session.getAttribute("authUser");
+
+            logService.saveLog(authUser, report, "판독 데이터 수정");
+
             return ResponseEntity.ok(report);
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
