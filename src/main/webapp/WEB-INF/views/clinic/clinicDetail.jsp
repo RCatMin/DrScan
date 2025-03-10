@@ -28,7 +28,7 @@
     </div>
     <div class="input-group">
       <label for="clinicDate">진료 날짜:</label>
-      <input type="date" id="clinicDate" required>
+      <input type="date" id="clinicDate">
     </div>
     <div class="input-group textarea-group">
       <label for="context">진료 내용:</label>
