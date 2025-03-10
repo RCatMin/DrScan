@@ -74,6 +74,7 @@ public class PatientScanRESTController {
             Map<String, Object> studyData = new HashMap<>();
             studyData.put("study", study);
             studyData.put("accessnum", study.getAccessnum());
+            studyData.put("modality", study.getModality());
 
             List<Series> seriesList = seriesRepository.findSeriesByStudykey(study.getStudykey());
             studyData.put("series", seriesList);

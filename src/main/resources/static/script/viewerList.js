@@ -67,6 +67,11 @@ function searchPatient() {
                 var seriesList = studyItem.series || [];
 
                 seriesList.forEach(series => {
+
+                    if (modality && modality !== "" && modality !== series.modality) {
+                        return;
+                    }
+
                     filteredStudies.push({
                         pname: study.pname,
                         pid: study.pid,

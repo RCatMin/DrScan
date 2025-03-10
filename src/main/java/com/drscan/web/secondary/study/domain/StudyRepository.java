@@ -18,7 +18,7 @@ public interface StudyRepository extends JpaRepository<Study, Integer> {
             "(:studydateStart IS NULL OR s.studydate >= :studydateStart) AND " +
             "(:studydateEnd IS NULL OR s.studydate <= :studydateEnd) AND " +
             "(:studydesc IS NULL OR LOWER(s.studydesc) LIKE LOWER(CONCAT('%', :studydesc, '%'))) AND " +
-            "(:modality IS NULL OR s.modality = :modality) AND " +
+            "(:modality IS NULL OR LOWER(s.modality) = LOWER(:modality)) AND " +
             "(:accessnum IS NULL OR s.accessnum = :accessnum)")
     List<Study> findByCriteria(
             @Param("pid") String pid,
