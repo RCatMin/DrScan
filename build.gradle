@@ -46,11 +46,21 @@ dependencies {
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
     implementation group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
     implementation group: 'io.jsonwebtoken', name: 'jjwt-orgjson', version: '0.11.5'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '3.4.2'
-    implementation group: 'org.springframework.security', name: 'spring-security-crypto', version: '6.4.2'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '3.4.2'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    implementation group: 'org.dcm4che', name: 'dcm4che-imageio', version: '5.31.2'
+    implementation group: 'org.dcm4che', name: 'dcm4che-core', version: '5.31.2'
+    implementation group: 'org.dcm4che.tool', name: 'dcm4che-tool-common', version: '5.31.2'
+    implementation group: 'org.dcm4che', name: 'dcm4che-json', version: '5.31.2'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
