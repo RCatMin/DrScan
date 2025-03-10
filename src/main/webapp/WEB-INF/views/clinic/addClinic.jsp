@@ -21,7 +21,7 @@
     <form id="addClinic-form" action="/clinic/action" method="POST">
         <div class="input-group">
             <label for="userCode">의사 ID:</label>
-            <input type="text" id="userCode" name="userCode" value="${sessionScope.authUser.userCode}" disabled>
+            <input type="text" id="userCode" name="userCode" value="${authUser.userCode}" disabled>
         </div>
 
         <div class="input-group">
