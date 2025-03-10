@@ -1,7 +1,8 @@
 var currentPage = 1; // 현재 페이지
-var itemsPerPage = 5; // 한 페이지당 표시할 개수
+var itemsPerPage = 20; // 한 페이지당 표시할 개수
 var totalPages = 1; // 총 페이지 수
 var allStudies = []; // 전체 데이터를 저장할 배열
+var sortOrder = {}; // 정렬 상태를 저장할 객체
 
 document.addEventListener("DOMContentLoaded", function () {
     fetchAllPatientRecords();
@@ -57,7 +58,6 @@ function fetchAllPatientRecords() {
         })
         .catch(error => console.error("API 호출 중 오류 발생:", error));
 }
-
 
 function renderPatientTable(data) {
     console.log("테이블에 표시할 데이터:", data);
@@ -122,10 +122,10 @@ function searchPatient() {
 
             data.forEach(patientData => {
                 var patient = patientData.patient;
-                var studyDetails = patientData.studyDetails || []; // 🔥 Study 데이터 가져오기!
+                var studyDetails = patientData.studyDetails || []; // Study 데이터 가져오기!
 
                 studyDetails.forEach(study => {
-                    var seriesList = study.series || []; // 🔥 Series 데이터 가져오기!
+                    var seriesList = study.series || []; // Series 데이터 가져오기!
                     seriesList.forEach(series => {
                         allStudies.push({
                             pname: patient.pname,
@@ -148,16 +148,13 @@ function searchPatient() {
             renderPatientTable(allStudies);
             displayPage(1);
 
-            // 🔥 검색 결과가 있으면 resultSection을 보이게 변경
+            // 검색 결과가 있으면 resultSection을 보이게 변경
             if (allStudies.length > 0) {
                 document.getElementById("resultSection").style.display = "block";
             }
         })
         .catch(error => console.error("검색 중 오류 발생:", error));
 }
-
-
-
 
 // 특정 페이지의 데이터 표시 함수
 function displayPage(page) {
@@ -200,15 +197,40 @@ function analyzeImage(pid, studykey, serieskey) {
     window.location.href = "/patientScan/imaging-record/" + pid + "/" +studykey + "/" + serieskey;
 }
 
-function sortTable(columnIndex) {
-    allStudies.sort((a, b) => {
-        let valA = Object.values(a)[columnIndex];
-        let valB = Object.values(b)[columnIndex];
+// 정렬
+function sortTable(columnKey) {
+    if (!sortOrder[columnKey]) {
+        sortOrder[columnKey] = 'asc';  // 첫 클릭은 오름차순
+    } else {
+        sortOrder[columnKey] = sortOrder[columnKey] === 'asc' ? 'desc' : 'asc';
+    }
 
-        return valA > valB ? 1 : -1;
+    allStudies.sort((a, b) => {
+        let valA = a[columnKey];
+        let valB = b[columnKey];
+
+        // null 또는 undefined 처리
+        if (valA == null) valA = "";
+        if (valB == null) valB = "";
+
+        // 숫자인 경우 숫자로 변환 (예: 생년월일, 촬영날짜, 촬영시간)
+        if (!isNaN(valA) && !isNaN(valB) && valA !== "" && valB !== "") {
+            valA = Number(valA);
+            valB = Number(valB);
+        } else {
+            // 문자열 정렬 (대소문자 무시)
+            valA = String(valA).toLowerCase();
+            valB = String(valB).toLowerCase();
+        }
+
+        // 정렬 방향 설정
+        if (sortOrder[columnKey] === 'asc') {
+            return valA > valB ? 1 : valA < valB ? -1 : 0;
+        } else {
+            return valA < valB ? 1 : valA > valB ? -1 : 0;
+        }
     });
 
+    // 첫 번째 페이지부터 다시 표시
     displayPage(1);
 }
-
-

@@ -35,14 +35,14 @@
         <table>
             <thead>
             <tr>
-                <th onclick="sortTable(0)">환자성명</th>
-                <th onclick="sortTable(1)">환자 ID</th>
-                <th onclick="sortTable(2)">성별</th>
-                <th onclick="sortTable(3)">생년월일</th>
-                <th onclick="sortTable(4)">촬영기기</th>
-                <th onclick="sortTable(5)">설명</th>
-                <th onclick="sortTable(6)">촬영날짜</th>
-                <th onclick="sortTable(7)">촬영시간</th>
+                <th onclick="sortTable('pname')">환자성명</th>
+                <th onclick="sortTable('pid')">환자 ID</th>
+                <th onclick="sortTable('psex')">성별</th>
+                <th onclick="sortTable('pbirthdate')">생년월일</th>
+                <th onclick="sortTable('modality')">촬영기기</th>
+                <th onclick="sortTable('studydesc')">설명</th>
+                <th onclick="sortTable('studydate')">촬영날짜</th>
+                <th onclick="sortTable('studytime')">촬영시간</th>
                 <th>영상 판독</th>
             </tr>
             </thead>
