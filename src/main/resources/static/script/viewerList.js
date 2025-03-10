@@ -16,7 +16,7 @@ function fetchAllPatientRecords() {
         .then(response => response.json())
         .then(data => {
             allStudies = [];
-
+            console.log("✅ 초기 테이블 로드 응답 데이터:", data);
             data.forEach(patientData => {
                 var patient = patientData.patient;
                 var studyDetails = patientData.studyDetails || [];
@@ -32,6 +32,7 @@ function fetchAllPatientRecords() {
                             studydate: study.study.studydate || "N/A",
                             studykey: study.study.studykey || study.studykey,
                             serieskey: series.serieskey || series.serieskey,
+                            accessnum: study.accessnum || "N/A",
                             imagecnt: series.imagecnt || 0
                         });
                     });
