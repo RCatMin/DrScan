@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
 @RequestMapping("/reports")
 @Controller
 @RequiredArgsConstructor
@@ -15,7 +14,7 @@ public class ReportsController {
 
     private final PatientScanService patientScanService;
 
-    @GetMapping("/views/{studydate}/{studykey}/{pid}/{modality}/{serieskey}")
+    @GetMapping("/viewer/{studydate}/{studykey}/{pid}/{modality}/{serieskey}")
     public String reportsPatient(@PathVariable String studydate, @PathVariable Integer studykey, @PathVariable String pid, @PathVariable String modality ,@PathVariable Integer serieskey) {
 
         return "reports/viewer";
