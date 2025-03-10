@@ -55,51 +55,29 @@ body {
     text-align: center;
 }
 
-/* 페이징 버튼 스타일 */
-#pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
+/* 🔹 Search 버튼 (노란색) */
+#btn-search {
+    background-color: #E0E0E0 !important;
+    color: black !important;
 }
 
-#pagination button {
-    background-color: #333;
-    color: white;
-    border: 1px solid #555;
-    padding: 8px 12px;
-    margin: 3px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 14px;
+#btn-search:hover {
+    background-color: #BDBDBD !important;
 }
 
-#pagination button:hover {
-    background-color: #555;
-}
-
-#pagination button.active {
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-}
-
-/* ▶ 버튼 스타일 */
+/* 🔹 ▶ 목록 버튼 (노란색) */
 .search-results button {
     border: none;
     background: none;
     cursor: pointer;
     font-size: 18px;
-    color: white;
+    color: #9dfe00;
 }
 
-.search-results button:hover {
-    color: #007bff;
-}
-
-/* Viewer 버튼 스타일 */
+/* 🔹 Viewer 버튼 (노란색) */
 .btn-analysis {
-    background-color: #4b4d50b3 !important;
-    color: white !important;
+    background-color: #E0E0E0 !important;
+    color: black !important;
     border: none !important;
     padding: 6px 12px !important;
     border-radius: 5px !important;
@@ -108,7 +86,35 @@ body {
 }
 
 .btn-analysis:hover {
-    background-color: #3c3b3b;
+    background-color: #BDBDBD !important;
+}
+
+#pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+/* 🔹 페이징 버튼 (노란색) */
+#pagination button {
+    background-color: #E0E0E0  !important;
+    color: black !important;
+    border: 1px solid #E0E0E0 !important;
+    padding: 8px 12px;
+    margin: 3px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#pagination button:hover {
+    background-color: #BDBDBD !important;
+}
+
+#pagination button.active {
+    background-color: #E0E0E0 !important;
+    color: black !important;
+    font-weight: bold;
 }
 
 /* 테이블 셀 스타일 */
