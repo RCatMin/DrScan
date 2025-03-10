@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <html>
 <head>
-    <title>확인용</title>
+    <title>의료 영상 목록</title>
     <link rel="stylesheet" type="text/css" href="/style/viewerList.css">
     <script src="/script/viewerList.js" defer></script>
 </head>

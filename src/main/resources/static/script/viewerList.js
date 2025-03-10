@@ -75,7 +75,7 @@ function searchPatient() {
                         studydate: study.studydate || "N/A",
                         studykey: study.studykey || study.studykey,
                         serieskey: series.serieskey || series.serieskey,
-                        accessnum: study.study.accessnum || "N/A",
+                        accessnum: study.accessnum || "N/A",
                         imagecnt: series.imagecnt || 0
                     });
                 });
