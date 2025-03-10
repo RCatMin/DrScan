@@ -22,4 +22,7 @@ public class StudyService {
         return studyRepository.findAll();
     }
 
+    public List<Study> searchStudies(String pid, String pname, String studydateStart, String studydateEnd, String studydesc, String modality, String accessnum) {
+        return studyRepository.findByCriteria(pid, pname, studydateStart, studydateEnd, studydesc, modality, accessnum);
+    }
 }

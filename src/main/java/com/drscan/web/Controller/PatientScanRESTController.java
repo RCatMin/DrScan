@@ -12,6 +12,7 @@ import com.drscan.web.secondary.series.domain.SeriesId;
 import com.drscan.web.secondary.series.domain.SeriesRepository;
 import com.drscan.web.secondary.study.domain.Study;
 import com.drscan.web.secondary.study.domain.StudyRepository;
+import com.drscan.web.secondary.study.service.StudyService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -26,10 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @RequestMapping("/patientScan/action")
@@ -45,6 +43,7 @@ public class PatientScanRESTController {
     private final RadiologistReportService radiologistReportService;
     private final RadiologistReportRepository radiologistReportRepository;
     private final LogService logService;
+    private final StudyService studyService;
 
     // 모든 환자 영상 기록 가져오기
     @GetMapping("/records/all")
@@ -59,14 +58,30 @@ public class PatientScanRESTController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> searchPatients(
+    public ResponseEntity<List<Map<String, Object>>> searchPatients(
             @RequestParam(required = false) String pid,
             @RequestParam(required = false) String pname,
-            @RequestParam(required = false) String psex,
-            @RequestParam(required = false) String pbirthdate) {
-        return ResponseEntity.ok(patientScanService.searchPatients(pid, pname, psex, pbirthdate));
-    }
+            @RequestParam(required = false) String studydateStart,
+            @RequestParam(required = false) String studydateEnd,
+            @RequestParam(required = false) String studydesc,
+            @RequestParam(required = false) String modality,
+            @RequestParam(required = false) String accessnum) {
 
+        List<Study> studies = studyService.searchStudies(pid, pname, studydateStart, studydateEnd, studydesc, modality, accessnum);
+        List<Map<String, Object>> resultList = new ArrayList<>();
+
+        for (Study study : studies) {
+            Map<String, Object> studyData = new HashMap<>();
+            studyData.put("study", study);
+
+            List<Series> seriesList = seriesRepository.findSeriesByStudykey(study.getStudykey());
+            studyData.put("series", seriesList);
+
+            resultList.add(studyData);
+        }
+
+        return ResponseEntity.ok(resultList);
+    }
 
     // 오라클 이미지 불러오기
     @GetMapping("/images/{studykey}/{serieskey}")
