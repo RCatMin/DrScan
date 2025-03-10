@@ -36,10 +36,21 @@ function fetchClinicDetail(clinicCode) {
 }
 
 function updateClinic(clinicCode) {
+    const clinicDate = document.getElementById("clinicDate").value;
+    const context = document.getElementById("context").value
     const updatedData = {
-        clinicDate: document.getElementById("clinicDate").value,
-        context: document.getElementById("context").value
+        clinicDate: clinicDate,
+        context: context
     };
+
+    if (clinicDate.trim() === "") {
+        alert("진료 날짜를 작성해주세요.");
+        return;
+    }
+    if(context.trim() === ""){
+        alert("진료 내용을 작성해주세요.");
+        return;
+    }
 
     fetch(`/clinic/action/detail/${clinicCode}`, {
         method: "PUT",
