@@ -50,7 +50,7 @@
 </header>
 <nav id="menu">
     <ul>
-        <li><a href="/patientScan/search">환자 검색</a></li>
+        <li><a href="/patientScan/list">의료 영상 목록</a></li>
         <li><a href="/patients/">환자 목록</a></li>
     </ul>
 </nav>
