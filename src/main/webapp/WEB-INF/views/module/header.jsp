@@ -23,7 +23,7 @@
 <header>
     <div id="logo">
         <h1>
-            <a href="/">Dr.Sacn</a>
+            <a href="/">Dr.Scan</a>
         </h1>
     </div>
 
