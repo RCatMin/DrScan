@@ -31,7 +31,7 @@
 
 
     <div id="resultSection" style="display: none;">
-        <h3 id="result-head">검색 결과</h3>
+        <h3 id="result-head">목록</h3>
         <table>
             <thead>
             <tr>
