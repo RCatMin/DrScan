@@ -83,4 +83,49 @@ public class PatientScanService {
         return patientRepository.findByPid(pid);
     }
 
+    // 모든 환자 영상 기록 가져오기
+    public List<Map<String, Object>> getAllPatientRecords() {
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        List<Patient> patients = patientRepository.findAll(); // 모든 환자 가져오기
+
+        for (Patient patient : patients) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("patient", patient);
+
+            List<Study> studies = studyRepository.findByPid(patient.getPid());
+            List<Map<String, Object>> studyDetails = new ArrayList<>();
+
+            for (Study study : studies) {
+                Map<String, Object> studyData = new HashMap<>();
+                studyData.put("study", study);
+
+                List<Series> seriesList = seriesRepository.findSeriesByStudykey(study.getStudykey());
+                studyData.put("series", seriesList);
+
+                studyDetails.add(studyData);
+            }
+
+            result.put("studyDetails", studyDetails);
+            resultList.add(result);
+        }
+
+        return resultList;
+    }
+
+    public List<Patient> searchPatients(String pid, String pname, String psex, String pbirthdate) {
+        if (pid != null && !pid.isEmpty()) {
+            return patientRepository.findByPid(pid);
+        }
+        if (pname != null && !pname.isEmpty()) {
+            return patientRepository.findByPnameContaining(pname);
+        }
+        if (psex != null && !psex.isEmpty()) {
+            return patientRepository.findByPsex(psex);
+        }
+        if (pbirthdate != null && !pbirthdate.isEmpty()) {
+            return patientRepository.findByPbirthdate(pbirthdate);
+        }
+        return patientRepository.findAll();
+    }
+
 }
