@@ -20,17 +20,11 @@ let totalPages = 0;
 let paginationStart = 0;
 let renderingEngine;
 
-let maxActiveViewports = 4; // ✅ 동시에 활성화할 뷰포트 개수 제한
-let activeViewports = new Set(); // 현재 활성화된 뷰포트 추적
-let currentImageIndex = 0; // 현재 페이지의 첫 번째 이미지 인덱스
-
-
 window.onload = function () {
     if (ensureWebGLContext()) {
         initializeCornerstone();
     }
 };
-
 
 document.addEventListener("DOMContentLoaded", () => {
     loadStudyAndSeriesInfo();
@@ -144,7 +138,6 @@ async function initializeCornerstone() {
     loadDicomImages();
 }
 
-
 function initializeRenderingEngine() {
     if (renderingEngine) {
         console.warn("⚠ 기존 WebGL 컨텍스트 제거 후 재생성")
@@ -171,9 +164,6 @@ function initializeRenderingEngine() {
         createToolGroup();
     }, 1000);
 }
-
-
-
 
 function registerAllTools() {
     const tools = [
@@ -226,8 +216,6 @@ function createToolGroup() {
     console.log(`📌 뷰포트 '${viewportId}' 툴 그룹에 추가 완료!`);
 }
 
-
-
 function ensureWebGLContext() {
     const canvas = document.createElement("canvas");
     const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
@@ -276,7 +264,6 @@ function createMultiViewport(rows = 2, cols = 2) {
     renderingEngine.setViewports(viewports);
 }
 
-
 // ✅ 히스토그램 조정 기능
 function adjustHistogram(minValue, maxValue) {
     console.log(`📊 히스토그램 조정: min=${minValue}, max=${maxValue}`);
@@ -302,8 +289,6 @@ function adjustHistogram(minValue, maxValue) {
     viewport.voi.windowCenter = (maxValue + minValue) / 2;
     viewport.render();
 }
-
-
 
 // ✅ 저장 버튼 이벤트 연결
 document.addEventListener("DOMContentLoaded", () => {
@@ -367,7 +352,6 @@ async function loadStudyAndSeriesInfo() {
         console.error("Study/Series 정보 불러오는 중 오류 발생:", error);
     }
 }
-
 
 // 환자정보 불러오기
 async function loadPatientInfo() {
@@ -490,7 +474,6 @@ function fetchDicomFileAndRender(dicomFilePath, viewportId) {
         })
         .catch(error => console.error("❌ DICOM 파일 로딩 중 오류 발생:", error));
 }
-
 
 // 썸네일 리스트 업데이트 시 마우스 이벤트 추가
 function updateThumbnailList() {
@@ -629,7 +612,6 @@ async function saveRadiologistReport() {
 
         return age;
     }
-
 
     const seriesInsUid = window.location.pathname.split("/")[5];
 
