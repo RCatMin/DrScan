@@ -17,22 +17,25 @@ import java.util.List;
 @WebFilter("/*")
 public class AuthFilter implements Filter {
 
-    private final List resources = List.of(
+    private final List<String> resources = List.of(
             "/script",
             "/style",
             "/users/valid",
             "/img"
     );
 
-    private final List urls = List.of(
+    private final List<String> urls = List.of(
             "/",
             "/index",
             "/header",
             "/footer",
-            "/users/action/signout"
+            "/users/action/signout",
+            "/patientScan/imaging-record",
+            "/patientScan/action/search",
+            "/patientScan/action/records/all"
     );
 
-    private final List users = List.of(
+    private final List<String> users = List.of(
             "/users/action",
             "/users/signin",
             "/users/signup",

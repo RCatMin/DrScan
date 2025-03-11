@@ -23,7 +23,7 @@
     <div class="tab active">회원관리</div>
     <div class="tab">가입승인</div>
     <div class="tab">탈퇴승인</div>
-    <div class="tab" id="tab-4">로그</div>
+    <a href="/admin/logs"><div class="tab" id="tab-4">로그</div></a>
 </div>
 <c:set var="userListSize" value="${fn:length(userList)}" />
 <input type="hidden" id="max-length" value="${userListSize}">
@@ -145,37 +145,6 @@
 </div>
 
 <div class="tab-content" id="tab4">
-    <div class="log-list">
-        <li>사용자코드</li>
-        <li>판독코드</li>
-        <li>진료코드</li>
-        <li>내용</li>
-        <li>발생일시</li>
-    </div>
-<c:forEach var="log" items="${logList}" varStatus="list">
-    <div id="log${list.count}" class="log-content">
-        <li>${log.userCode}</li>
-        <c:choose>
-            <c:when test="${not empty log.reportCode }">
-                <li>${log.reportCode}</li>
-            </c:when>
-            <c:otherwise>
-                <li>      </li>
-            </c:otherwise>
-        </c:choose>
-        <c:choose>
-            <c:when test="${not empty log.clinicCode }">
-                <li>${log.clinicCode}</li>
-            </c:when>
-            <c:otherwise>
-                <li>      </li>
-            </c:otherwise>
-        </c:choose>
-        <li>${log.event}</li>
-        <li>${log.eventDate}</li>
-    </div>
-</c:forEach>
-
 </div>
 
 </body>
