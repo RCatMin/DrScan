@@ -1,29 +1,317 @@
+import * as cornerstone from '@cornerstonejs/core';
 import { init as coreInit, RenderingEngine, Enums } from '@cornerstonejs/core';
+import * as cornerstoneTools from '@cornerstonejs/tools';
+import * as cornerstoneDICOMImageLoader from '@cornerstonejs/dicom-image-loader';
+import dicomParser from 'dicom-parser';
 import { init as dicomImageLoaderInit } from '@cornerstonejs/dicom-image-loader';
 
-let images = []; //이미지 정보 저장
-let currentIndex = 0; //현재 이미지 인덱스
-let imagesPerPage = 12; //한 페이지 갯수
-let paginationSize = 5; //버튼 갯 수
+import {
+    PanTool, ZoomTool, WindowLevelTool, PlanarRotateTool,
+    WindowLevelRegionTool, StackScrollTool, LengthTool,
+    AngleTool, RectangleROIThresholdTool, TrackballRotateTool
+} from '@cornerstonejs/tools';
+
+let images = [];
+let currentIndex = 0;
+let imagesPerPage = 12;
+let paginationSize = 5;
 let currentPage = 0;
 let totalPages = 0;
 let paginationStart = 0;
+let renderingEngine;
 
 window.onload = function () {
-    initializeCornerstone();
-    addTools();
-    setupSelectToolGroups();
+    if (ensureWebGLContext()) {
+        initializeCornerstone();
+    }
 };
-
-async function initializeCornerstone() {
-    await coreInit(); // cornerstone.js를 초기화
-    await dicomImageLoaderInit(); // DICOM 이미지를 불러오기
-    loadDicomImages(); // DICOM 이미지를 가져오기
-}
 
 document.addEventListener("DOMContentLoaded", () => {
     loadStudyAndSeriesInfo();
     loadPatientInfo();
+
+    // 이미지 초기화
+    const resetBtn = document.getElementById("resetBtn");
+    if (resetBtn) {
+        resetBtn.addEventListener("click", resetImage);
+    }
+
+    // 다중 뷰포트
+    const multiViewportBtn = document.getElementById("multiViewportBtn");
+    if (multiViewportBtn) {
+        multiViewportBtn.addEventListener("click", createMultiViewport);
+    }
+
+    // 히스토그램
+    const histogramAdjustBtn = document.getElementById("histogramAdjustBtn");
+    if (histogramAdjustBtn) {
+        histogramAdjustBtn.addEventListener("click", () => adjustHistogram(30, 200));
+    }
+
+    // 🛠 뷰어 툴 버튼들 가져오기
+    // 🛠 툴 버튼 이벤트 연결
+    const toolMappings = {
+        "zoomBtn": ZoomTool.toolName,
+        "panBtn": PanTool.toolName,
+        "windowLevelBtn": WindowLevelTool.toolName,
+        "lengthMeasureBtn": LengthTool.toolName,
+        "angleMeasureBtn": AngleTool.toolName
+    };
+
+    for (const [buttonId, toolName] of Object.entries(toolMappings)) {
+        const btn = document.getElementById(buttonId);
+        if (btn) {
+            btn.addEventListener("click", () => activateTool(toolName));
+            console.log(`🔗 버튼 연결 완료: ${buttonId} → ${toolName}`);
+        } else {
+            console.error(`❌ 버튼을 찾을 수 없음: ${buttonId}`);
+        }
+    }
+});
+
+// 🛠 툴 활성화 함수
+function activateTool(toolName) {
+    const toolGroupId = "DEFAULT_TOOLGROUP";
+    const toolGroup = cornerstoneTools.ToolGroupManager.getToolGroup(toolGroupId);
+
+    if (!toolGroup) {
+        console.error("🔴 툴 그룹을 찾을 수 없습니다!");
+        return;
+    }
+
+    // ✅ cornerstone 엔진 확인
+    const renderingEngine = cornerstone.getRenderingEngine("cornerstoneRenderingEngine");
+    if (!renderingEngine) {
+        console.error("❌ 렌더링 엔진이 활성화되지 않음!");
+        return;
+    }
+
+    const viewport = renderingEngine.getViewport("dicomViewport");
+    if (!viewport) {
+        console.error("❌ 뷰포트를 찾을 수 없음!");
+        return;
+    }
+
+    // ✅ 툴이 등록되었는지 확인
+    if (!toolGroup.getToolInstance(toolName)) {
+        console.error(`❌ 툴이 ToolGroup에 등록되지 않음: ${toolName}`);
+        return;
+    }
+
+    // 기존 활성화된 툴 모두 비활성화
+    ["Pan", "Zoom", "WindowLevel", "Length", "Angle"].forEach(tool => {
+        if (toolGroup.getToolInstance(tool)) {
+            toolGroup.setToolPassive(tool);
+        }
+    });
+
+    console.log(`🔧 툴 활성화: ${toolName}`);
+    toolGroup.setToolActive(toolName, { bindings: [{ mouseButton: 1 }] });
+}
+
+
+
+async function initializeCornerstone() {
+    await coreInit();
+
+    cornerstoneDICOMImageLoader.external.cornerstone = cornerstone;
+    cornerstoneDICOMImageLoader.external.dicomParser = dicomParser;
+
+    cornerstoneDICOMImageLoader.configure({
+        webWorkerPath: '/path-to-worker/worker.js',
+        taskConfiguration: {
+            decodeTask: {
+                initializeCodecsOnStartup: false,
+                usePDFJS: false
+            }
+        }
+    });
+
+    initializeRenderingEngine();
+    registerAllTools();
+
+    // ✅ 뷰포트 활성화 후에 툴 그룹을 생성해야 함
+    setTimeout(() => {
+        createToolGroup();
+    }, 1000);
+
+    loadDicomImages();
+}
+
+function initializeRenderingEngine() {
+    if (renderingEngine) {
+        console.warn("⚠ 기존 WebGL 컨텍스트 제거 후 재생성")
+        renderingEngine.destroy();
+        renderingEngine = null;
+    }
+
+    renderingEngine = new RenderingEngine("cornerstoneRenderingEngine");
+
+    console.log("✅ 새 렌더링 엔진 생성됨:", renderingEngine);
+
+    // ✅ 뷰포트 등록
+    const viewportId = "dicomViewport";
+    const viewportInput = {
+        viewportId,
+        element: document.getElementById(viewportId),
+        type: Enums.ViewportType.STACK,
+    };
+
+    renderingEngine.enableElement(viewportInput);
+
+    // ✅ 뷰포트 활성화 후에 툴 그룹을 생성해야 함
+    setTimeout(() => {
+        createToolGroup();
+    }, 1000);
+}
+
+function registerAllTools() {
+    const tools = [
+        PanTool, ZoomTool, WindowLevelTool, PlanarRotateTool,
+        WindowLevelRegionTool, StackScrollTool, LengthTool,
+        AngleTool, RectangleROIThresholdTool, TrackballRotateTool
+    ];
+
+    tools.forEach(tool => cornerstoneTools.addTool(tool));
+    console.log("🔧 모든 툴이 등록됨!");
+}
+
+function createToolGroup() {
+    const toolGroupId = "DEFAULT_TOOLGROUP";
+    let toolGroup = cornerstoneTools.ToolGroupManager.getToolGroup(toolGroupId);
+
+    if (!toolGroup) {
+        console.log("🛠 새 툴 그룹 생성 중...");
+        cornerstoneTools.ToolGroupManager.createToolGroup(toolGroupId);
+        toolGroup = cornerstoneTools.ToolGroupManager.getToolGroup(toolGroupId);
+    }
+
+    if (!toolGroup) {
+        console.error("🔴 툴 그룹이 생성되지 않았습니다!");
+        return;
+    }
+
+    console.log("✅ 툴 그룹 로드 완료!");
+
+    // 🛠 툴 추가
+    const toolsToAdd = [
+        PanTool.toolName,
+        ZoomTool.toolName,
+        WindowLevelTool.toolName,
+        LengthTool.toolName,
+        AngleTool.toolName
+    ];
+
+    toolsToAdd.forEach(toolName => {
+        if (!toolGroup.getToolInstance(toolName)) {
+            toolGroup.addTool(toolName);
+            console.log(`🔧 툴 추가됨: ${toolName}`);
+        }
+    });
+
+    // ✅ 뷰포트 추가
+    const viewportId = "dicomViewport";
+    toolGroup.addViewport(viewportId, "cornerstoneRenderingEngine");
+
+    console.log(`📌 뷰포트 '${viewportId}' 툴 그룹에 추가 완료!`);
+}
+
+function ensureWebGLContext() {
+    const canvas = document.createElement("canvas");
+    const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+    if (!gl) {
+        console.error("🚨 WebGL을 사용할 수 없습니다!");
+        alert("WebGL을 활성화해주세요.");
+        return false;
+    }
+    return true;
+}
+
+// ✅ 초기화
+function resetImage() {
+    console.log("🔄 이미지 초기화!");
+    displayImage(0);
+}
+
+// ✅
+function updateToolPanel(activeTool) {
+    document.getElementById("activeTool").innerText = `현재 툴: ${activeTool}`;
+}
+
+// ✅ 다중 뷰포트 생성
+function createMultiViewport(rows = 2, cols = 2) {
+    console.log(`📤 ${rows}x${cols} 다중 뷰포트 생성!`);
+
+    const renderingEngine = new RenderingEngine("multiViewportEngine");
+
+    const viewports = [];
+    for (let i = 0; i < rows * cols; i++) {
+        const viewportId = `viewport${i + 1}`;
+        const viewportElement = document.getElementById(viewportId);
+
+        if (!viewportElement) {
+            console.error(`❌ '${viewportId}' 요소가 없습니다!`);
+            return;
+        }
+
+        viewports.push({
+            viewportId,
+            element: viewportElement,
+            type: "stack",
+        });
+    }
+
+    renderingEngine.setViewports(viewports);
+}
+
+// ✅ 히스토그램 조정 기능
+function adjustHistogram(minValue, maxValue) {
+    console.log(`📊 히스토그램 조정: min=${minValue}, max=${maxValue}`);
+
+    const renderingEngine = cornerstone.getRenderingEngine("cornerstoneRenderingEngine");
+    if (!renderingEngine) {
+        console.error("❌ 렌더링 엔진이 없습니다!");
+        return;
+    }
+
+    const viewport = renderingEngine.getViewport("dicomViewport");
+    if (!viewport) {
+        console.error("❌ 뷰포트를 찾을 수 없습니다!");
+        return;
+    }
+
+    if (!viewport.voi) {
+        console.warn("⚠ VOI 정보가 없습니다. 기본값을 설정합니다.");
+        viewport.voi = { windowWidth: 150, windowCenter: 75 }; // 기본값 설정
+    }
+
+    viewport.voi.windowWidth = maxValue - minValue;
+    viewport.voi.windowCenter = (maxValue + minValue) / 2;
+    viewport.render();
+}
+
+// ✅ 저장 버튼 이벤트 연결
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("saveReportBtn").addEventListener("click", saveRadiologistReport);
+    setupAutoSave();
+});
+
+// ✅ 자동 저장 기능
+function setupAutoSave() {
+    console.log("자동 저장 기능 활성화됨!");
+    setInterval(saveRadiologistReport, 60000);
+}
+
+// ✅ 마우스 휠 이벤트 추가 (이미지 스크롤)
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("viewerContainer").addEventListener("wheel", (event) => {
+        event.preventDefault();
+        if (event.deltaY > 0 && currentIndex < images.length - 1) {
+            displayImage(currentIndex + 1);
+        } else if (event.deltaY < 0 && currentIndex > 0) {
+            displayImage(currentIndex - 1);
+        }
+    });
 });
 
 async function loadStudyAndSeriesInfo() {
@@ -65,7 +353,6 @@ async function loadStudyAndSeriesInfo() {
     }
 }
 
-
 // 환자정보 불러오기
 async function loadPatientInfo() {
     try {
@@ -97,6 +384,8 @@ async function loadDicomImages() {
         const urlParts = window.location.pathname.split("/");
         const studyKey = urlParts[4];
         const seriesKey = urlParts[5];
+
+        console.log("📡 DICOM 이미지 목록 불러오는 중...");
 
         // API 요청해서 JSON 데이터 저장
         let response = await fetch(`/patientScan/action/images/${studyKey}/${seriesKey}`);
@@ -170,15 +459,21 @@ function displayImage(index) {
 
 // DICOM 파일 서버에서 가져오기(Z 드라이버에서 가져옴)
 function fetchDicomFileAndRender(dicomFilePath, viewportId) {
-    fetch(`/patientScan/action/getDicomFile?path=${encodeURIComponent(dicomFilePath)}`)
-        .then(response => response.arrayBuffer())
-        .then(arrayBuffer => renderImage(arrayBuffer, viewportId))
-        .catch(error => console.error("DICOM 파일 로딩 중 오류 발생:", error));
-}
+    console.log(`📥 DICOM 파일 가져오기: ${dicomFilePath}`);
 
-document.addEventListener("DOMContentLoaded", () => {
-    initializeCornerstone();
-});
+    fetch(`/patientScan/action/getDicomFile?path=${encodeURIComponent(dicomFilePath)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`❌ 서버 응답 오류: ${response.statusText}`);
+            }
+            return response.arrayBuffer();
+        })
+        .then(arrayBuffer => {
+            console.log("📡 DICOM 데이터 가져옴, 렌더링 시작...");
+            renderImage(arrayBuffer, viewportId);
+        })
+        .catch(error => console.error("❌ DICOM 파일 로딩 중 오류 발생:", error));
+}
 
 // 썸네일 리스트 업데이트 시 마우스 이벤트 추가
 function updateThumbnailList() {
@@ -273,37 +568,6 @@ document.getElementById("nextPageBtn").onclick = () => {
     updatePaginationControls();
 };
 
-// 마우스 휠 이벤트 추가
-document.getElementById("viewerContainer").addEventListener("wheel", (event) => {
-    event.preventDefault();
-    if (event.deltaY > 0 && currentIndex < images.length - 1) {
-        displayImage(currentIndex + 1);
-    } else if (event.deltaY < 0 && currentIndex > 0) {
-        displayImage(currentIndex - 1);
-    }
-});
-
-
-// MySQL에서 판독 데이터 가져오기
-// async function loadRadiologistReport() {
-//     try {
-//         const seriesInsUid = window.location.pathname.split("/")[5];
-//
-//         let response = await fetch(`/patientScan/action/reports/${seriesInsUid}`);
-//         let reports = await response.json();
-//
-//         if (reports.length > 0) {
-//             document.getElementById("reportText").value = reports[0].reportText || "";
-//             document.getElementById("severityLevel").innerText = reports[0].severityLevel || "N/A";
-//             document.getElementById("reportStatus").innerText = reports[0].reportStatus || "N/A";
-//         }
-//     } catch (error) {
-//         console.error("판독 데이터 불러오기 오류:", error);
-//     }
-//}
-
-/////////////////////////////
-// MySQL에 판독 데이터 저장
 // yyyyMMdd → YYYY-MM-DDTHH:mm:ss 변환 (LocalDateTime 대응)
 function formatTimestampString(dateString) {
     if (!dateString || dateString.length < 10) {
@@ -349,7 +613,6 @@ async function saveRadiologistReport() {
         return age;
     }
 
-
     const seriesInsUid = window.location.pathname.split("/")[5];
 
     const reportData = {
@@ -389,16 +652,3 @@ async function saveRadiologistReport() {
         console.error("저장 오류:", error);
     }
 }
-
-// 자동 저장 기능 (1분마다 저장)
-function setupAutoSave() {
-    console.log("자동 저장 기능 활성화됨!");
-    setInterval(saveRadiologistReport, 60000);
-}
-
-// 저장 버튼 클릭 이벤트 연결 & 자동 저장 설정
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("saveReportBtn").addEventListener("click", saveRadiologistReport);
-    loadRadiologistReport(); // 페이지 로드 시 자동으로 데이터 불러오기
-    setupAutoSave(); // **자동 저장 기능 실행**
-});
