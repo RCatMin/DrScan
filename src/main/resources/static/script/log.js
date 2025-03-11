@@ -3,7 +3,19 @@ let currentPage = 0;
 function searchLogs() {
     const search = document.getElementById("search").value;
 
-    fetch(`/admin/log?search=${search}&page=${currentPage}&size=10`)
+    const requestBody = {
+        search: search ? search : null,
+        page: currentPage,
+        size: 10
+    };
+
+    fetch('/admin/log', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+    })
         .then(response => response.json())
         .then(data => {
             const logs = data.content;

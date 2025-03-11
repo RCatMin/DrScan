@@ -1,6 +1,7 @@
 package com.drscan.web.Controller;
 
 import com.drscan.web.primary.log.domain.Log;
+import com.drscan.web.primary.log.domain.LogRequestDto;
 import com.drscan.web.primary.log.service.LogService;
 import com.drscan.web.primary.users.domain.User;
 import com.drscan.web.primary.users.domain.UserRequestDto;
@@ -103,15 +104,13 @@ public class AdminRestController {
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "탈퇴신청을 성공적으로 수정되었습니다."));
     }
 
-    @GetMapping("/log")
-    public ResponseEntity<Page<Log>> getLogs(@RequestParam(value = "search", required = false) Long userCode,
-                                             @RequestParam(value = "page", defaultValue = "0") int page,
-                                             @RequestParam(value = "size", defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    @PostMapping("/log")
+    public ResponseEntity<Page<Log>> getLogs(@RequestBody LogRequestDto request) {
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
         Page<Log> logPage;
 
-        if (userCode != null) {
-            logPage = logService.findByUserCode(userCode, pageable);
+        if (request.getSearch() != null) {
+            logPage = logService.findByUserCode(request.getSearch(), pageable);
         } else {
             logPage = logService.findAll(pageable);
         }

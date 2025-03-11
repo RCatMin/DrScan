@@ -31,6 +31,6 @@ public class HomeController {
         return "users/admin";
     }
 
-    @GetMapping("/admin/logs")
+    @GetMapping({"/admin/logs", "/admin/log"})
     public String adminLog() {return "/log/log";}
 }
