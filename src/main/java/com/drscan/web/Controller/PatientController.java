@@ -25,7 +25,7 @@ public class PatientController {
     public ModelAndView list(@RequestParam(required = false) Integer page) {
         ModelAndView modelAndView = new ModelAndView("patient/PatientsList");
 
-        Pageable paging = PageRequest.of(page ==null ? 0:page-1,5);
+        Pageable paging = PageRequest.of(page ==null ? 0:page-1,10);
 
         List<Patient> patients = patientService.findAll(paging);
         modelAndView.addObject("patients", patients);
