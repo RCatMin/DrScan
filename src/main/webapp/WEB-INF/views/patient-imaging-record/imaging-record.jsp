@@ -34,8 +34,14 @@
         <div id="toolButtons">
             <button id="zoomBtn">Zoom</button>
             <button id="panBtn">Pan</button>
-            <button id="stackScrollBtn">Stack Scroll</button>
+            <button id="windowLevelBtn">Window Level</button>
+            <button id="resetBtn">Reset</button>
+            <button id="lengthMeasureBtn">Measure Length</button>
+            <button id="angleMeasureBtn">Measure Angle</button>
+            <button id="multiViewportBtn">Multi-Viewport</button>
+            <button id="histogramAdjustBtn">Histogram Adjust</button>
         </div>
+
 
         <div id="dicomViewport"></div>
     </div>
