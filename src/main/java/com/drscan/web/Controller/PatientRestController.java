@@ -25,7 +25,7 @@ public class PatientRestController {
 
     @GetMapping("/all")
     public ResponseEntity<?> getPatientAll(@RequestParam(required = false)Integer page){
-        Pageable paging = PageRequest.of(page == null ? 0 : page - 1, 5, Sort.by(Sort.Direction.DESC, "pid"));
+        Pageable paging = PageRequest.of(page == null ? 0 : page - 1, 3, Sort.by(Sort.Direction.DESC, "pid"));
 
         List<Patient> list = patientService.findAll(paging);
 
