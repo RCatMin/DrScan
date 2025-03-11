@@ -24,18 +24,19 @@
     <tbody>
     <c:forEach var="patient" items="${patients}">
       <tr>
-        <td>${patient.pid}</td>
-        <td>${patient.pname}</td>
-        <td>${patient.psex}</td>
-        <td>${patient.pbirthdate}</td>
+        <td>${empty patient.pid ? "N/A" : patient.pid}</td>
+        <td>${empty patient.pname ? "N/A" : patient.pname}</td>
+        <td>${empty patient.psex ? "N/A" : patient.psex}</td>
+        <td>${empty patient.pbirthdate ? "N/A" : patient.pbirthdate}</td>
         <td>
-          <button class="clinic-btn" data-pid="${patient.pid}">진료보기</button> <!-- data-pid 속성 추가 -->
+          <button class="clinic-btn" data-pid="${empty patient.pid ? '' : patient.pid}">진료보기</button>
         </td>
         <td>
-          <button class="report-btn" data-pid="${patient.pid}">판독보기</button>
+          <button class="report-btn" data-pid="${empty patient.pid ? '' : patient.pid}">판독보기</button>
         </td>
       </tr>
     </c:forEach>
+
     </tbody>
   </table>
 
