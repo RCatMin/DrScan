@@ -1,6 +1,5 @@
 package com.drscan.web.primary.log.service;
 
-import com.drscan.web.primary.clinic.domain.Clinic;
 import com.drscan.web.primary.log.domain.Log;
 import com.drscan.web.primary.log.domain.LogRepository;
 import com.drscan.web.primary.reports.domain.RadiologistReport;
