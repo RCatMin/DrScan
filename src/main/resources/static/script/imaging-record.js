@@ -1,15 +1,9 @@
 import * as cornerstone from '@cornerstonejs/core';
 import { init as coreInit, RenderingEngine, Enums } from '@cornerstonejs/core';
-import * as cornerstoneTools from '@cornerstonejs/tools';
 import * as cornerstoneDICOMImageLoader from '@cornerstonejs/dicom-image-loader';
 import dicomParser from 'dicom-parser';
 import { init as dicomImageLoaderInit } from '@cornerstonejs/dicom-image-loader';
-
-import {
-    PanTool, ZoomTool, WindowLevelTool, PlanarRotateTool,
-    WindowLevelRegionTool, StackScrollTool, LengthTool,
-    AngleTool, RectangleROIThresholdTool, TrackballRotateTool
-} from '@cornerstonejs/tools';
+import { addTool, ToolGroupManager, PanTool, ZoomTool, WindowLevelTool, LengthTool, AngleTool } from '@cornerstonejs/tools';
 
 let images = [];
 let currentIndex = 0;
@@ -20,10 +14,40 @@ let totalPages = 0;
 let paginationStart = 0;
 let renderingEngine;
 
+addTool(PanTool);
+addTool(ZoomTool);
+addTool(WindowLevelTool);
+addTool(LengthTool);
+addTool(AngleTool);
+
+const toolGroupId = "DEFAULT_TOOLGROUP";
+
+let toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
+
+if (!toolGroup) {
+    console.log("🔨 툴 그룹 생성 중...");
+    ToolGroupManager.createToolGroup(toolGroupId);
+    toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
+}
+
+// ✅ cornerstoneTools에 툴을 강제로 추가
+const toolsToAdd = [PanTool, ZoomTool, WindowLevelTool, LengthTool, AngleTool];
+toolsToAdd.forEach(tool => {
+    if (!toolGroup.getToolInstance(tool.toolName)) {
+        console.log(`🔧 툴 등록: ${tool.toolName}`);
+        toolGroup.addTool(tool.toolName);
+    }
+});
+
+// ✅ 툴 활성화 (디폴트: PanTool)
+console.log("🚀 PanTool 활성화");
+toolGroup.setToolActive(PanTool.toolName, { bindings: [{ mouseButton: 1 }] });
+
 window.onload = function () {
     if (ensureWebGLContext()) {
         initializeCornerstone();
     }
+
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -50,52 +74,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 🛠 뷰어 툴 버튼들 가져오기
     // 🛠 툴 버튼 이벤트 연결
-    const toolMappings = {
-        "zoomBtn": ZoomTool.toolName,
-        "panBtn": PanTool.toolName,
-        "windowLevelBtn": WindowLevelTool.toolName,
-        "lengthMeasureBtn": LengthTool.toolName,
-        "angleMeasureBtn": AngleTool.toolName
-    };
+    setTimeout(() => {
+        console.log("🛠 툴 버튼 이벤트 등록 시작");
+        const toolMappings = {
+            "zoomBtn": ZoomTool.toolName,
+            "panBtn": PanTool.toolName,
+            "windowLevelBtn": WindowLevelTool.toolName,
+            "lengthMeasureBtn": LengthTool.toolName,
+            "angleMeasureBtn": AngleTool.toolName
+        };
 
-    for (const [buttonId, toolName] of Object.entries(toolMappings)) {
-        const btn = document.getElementById(buttonId);
-        if (btn) {
-            btn.addEventListener("click", () => activateTool(toolName));
-            console.log(`🔗 버튼 연결 완료: ${buttonId} → ${toolName}`);
-        } else {
-            console.error(`❌ 버튼을 찾을 수 없음: ${buttonId}`);
+        for (const [buttonId, toolName] of Object.entries(toolMappings)) {
+            const btn = document.getElementById(buttonId);
+            if (btn) {
+                btn.addEventListener("click", () => activateTool(toolName));
+                console.log(`🔗 버튼 연결 완료: ${buttonId} → ${toolName}`);
+            } else {
+                console.error(`❌ 버튼을 찾을 수 없음: ${buttonId}`);
+            }
         }
+    }, 1000);
+
+    const editReportBtn = document.getElementById("editReportBtn");
+
+    if (editReportBtn) {
+        editReportBtn.addEventListener("click", () => {
+            const pidElement = document.getElementById("patientId");
+            const pid = pidElement ? pidElement.textContent.trim() : "defaultPid";
+
+            const targetUrl = `/patientScan/radiology/${pid}`;
+            console.log(`🔄 페이지 이동: ${targetUrl}`);
+            window.location.href = targetUrl;
+        });
     }
 });
 
 // 🛠 툴 활성화 함수
 function activateTool(toolName) {
     const toolGroupId = "DEFAULT_TOOLGROUP";
-    const toolGroup = cornerstoneTools.ToolGroupManager.getToolGroup(toolGroupId);
+    const toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
 
     if (!toolGroup) {
         console.error("🔴 툴 그룹을 찾을 수 없습니다!");
         return;
     }
 
-    // ✅ cornerstone 엔진 확인
-    const renderingEngine = cornerstone.getRenderingEngine("cornerstoneRenderingEngine");
-    if (!renderingEngine) {
-        console.error("❌ 렌더링 엔진이 활성화되지 않음!");
-        return;
-    }
-
-    const viewport = renderingEngine.getViewport("dicomViewport");
-    if (!viewport) {
-        console.error("❌ 뷰포트를 찾을 수 없음!");
-        return;
-    }
-
-    // ✅ 툴이 등록되었는지 확인
+    // ✅ 툴이 등록되지 않았다면 자동 추가
     if (!toolGroup.getToolInstance(toolName)) {
-        console.error(`❌ 툴이 ToolGroup에 등록되지 않음: ${toolName}`);
-        return;
+        console.warn(`⚠ 툴이 등록되지 않음: ${toolName}, 자동 추가`);
+        toolGroup.addTool(toolName);
     }
 
     // 기존 활성화된 툴 모두 비활성화
@@ -111,6 +138,7 @@ function activateTool(toolName) {
 
 
 
+
 async function initializeCornerstone() {
     await coreInit();
 
@@ -118,7 +146,7 @@ async function initializeCornerstone() {
     cornerstoneDICOMImageLoader.external.dicomParser = dicomParser;
 
     cornerstoneDICOMImageLoader.configure({
-        webWorkerPath: '/path-to-worker/worker.js',
+        webWorkerPath: 'https://unpkg.com/@cornerstonejs/dicom-image-loader/dist/umd/worker.min.js',
         taskConfiguration: {
             decodeTask: {
                 initializeCodecsOnStartup: false,
@@ -128,13 +156,8 @@ async function initializeCornerstone() {
     });
 
     initializeRenderingEngine();
-    registerAllTools();
-
-    // ✅ 뷰포트 활성화 후에 툴 그룹을 생성해야 함
-    setTimeout(() => {
-        createToolGroup();
-    }, 1000);
-
+    registerAllTools(); // ✅ cornerstoneTools 툴 등록 후
+    createToolGroup();  // ✅ cornerstoneTools가 완전히 로드된 후 실행
     loadDicomImages();
 }
 
@@ -166,24 +189,24 @@ function initializeRenderingEngine() {
 }
 
 function registerAllTools() {
-    const tools = [
-        PanTool, ZoomTool, WindowLevelTool, PlanarRotateTool,
-        WindowLevelRegionTool, StackScrollTool, LengthTool,
-        AngleTool, RectangleROIThresholdTool, TrackballRotateTool
-    ];
+    const tools = [PanTool, ZoomTool, WindowLevelTool, LengthTool, AngleTool];
 
-    tools.forEach(tool => cornerstoneTools.addTool(tool));
-    console.log("🔧 모든 툴이 등록됨!");
+    tools.forEach(tool => {
+        addTool(tool);
+        console.log(`🔧 cornerstoneTools에 툴 추가됨: ${tool.toolName}`);
+    });
+
+    console.log("✅ cornerstoneTools 툴 등록 완료!");
 }
 
 function createToolGroup() {
     const toolGroupId = "DEFAULT_TOOLGROUP";
-    let toolGroup = cornerstoneTools.ToolGroupManager.getToolGroup(toolGroupId);
+    let toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
 
     if (!toolGroup) {
         console.log("🛠 새 툴 그룹 생성 중...");
-        cornerstoneTools.ToolGroupManager.createToolGroup(toolGroupId);
-        toolGroup = cornerstoneTools.ToolGroupManager.getToolGroup(toolGroupId);
+        ToolGroupManager.createToolGroup(toolGroupId);
+        toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
     }
 
     if (!toolGroup) {
@@ -194,18 +217,12 @@ function createToolGroup() {
     console.log("✅ 툴 그룹 로드 완료!");
 
     // 🛠 툴 추가
-    const toolsToAdd = [
-        PanTool.toolName,
-        ZoomTool.toolName,
-        WindowLevelTool.toolName,
-        LengthTool.toolName,
-        AngleTool.toolName
-    ];
+    const toolsToAdd = [PanTool, ZoomTool, WindowLevelTool, LengthTool, AngleTool];
 
-    toolsToAdd.forEach(toolName => {
-        if (!toolGroup.getToolInstance(toolName)) {
-            toolGroup.addTool(toolName);
-            console.log(`🔧 툴 추가됨: ${toolName}`);
+    toolsToAdd.forEach(tool => {
+        if (!toolGroup.getToolInstance(tool.toolName)) {
+            console.log(`🔧 툴 등록: ${tool.toolName}`);
+            toolGroup.addTool(tool.toolName);
         }
     });
 
@@ -214,6 +231,7 @@ function createToolGroup() {
     toolGroup.addViewport(viewportId, "cornerstoneRenderingEngine");
 
     console.log(`📌 뷰포트 '${viewportId}' 툴 그룹에 추가 완료!`);
+    toolGroup.setToolActive(PanTool.toolName, { bindings: [{ mouseButton: 1 }] });
 }
 
 function ensureWebGLContext() {
@@ -224,6 +242,7 @@ function ensureWebGLContext() {
         alert("WebGL을 활성화해주세요.");
         return false;
     }
+    console.log("✅ WebGL 정상 작동!");
     return true;
 }
 
