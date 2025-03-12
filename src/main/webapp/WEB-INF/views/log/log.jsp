@@ -10,7 +10,7 @@
 <body>
 <div class="search-bar">
     <input type="number" id="search" placeholder="User Code" value="${param.search}">
-    <button id="btn-search" onclick="searchLogs()">🔍 Search</button>
+    <button id="btn-search" onclick="search()">🔍 Search</button>
 </div>
 
 <table class="search-results">
