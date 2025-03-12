@@ -23,7 +23,7 @@ function getPatientCodeFromURL() {
 // 진료 데이터 및 페이징 처리 변수
 let allClinics = []; // 전체 데이터를 저장할 배열
 let currentPage = 1; // 현재 페이지
-const itemsPerPage = 5; // 한 페이지당 표시할 개수
+const itemsPerPage = 10; // 한 페이지당 표시할 개수
 
 // 진료 데이터 가져오기
 function fetchClinicData(patientCode) {

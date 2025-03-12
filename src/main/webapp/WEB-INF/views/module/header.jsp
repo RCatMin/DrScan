@@ -41,18 +41,25 @@
             <input type="button" id="btn-logout" value="로그아웃" onclick="location.href='/users/action/signout'">
         </div>
     </c:if>
-
-    <c:if test="${not empty admin }">
-        <div class="btn">
-            <input type="button" value="로그아웃" onclick="location.href='/service/admin?command=logout'">
-        </div>
-    </c:if>
 </header>
-<nav id="menu">
-    <ul>
-        <li><a href="/patientScan/list">의료 영상 목록</a></li>
-        <li><a href="/patients/">환자 목록</a></li>
-    </ul>
-</nav>
+<c:choose>
+    <c:when test="${not empty authUser and authUser.accountType eq 'admin'}">
+        <nav id="menu">
+            <ul>
+                <li><a href="/admin">관리자페이지</a></li>
+                <li><a href="/admin/log">로그목록</a></li>
+            </ul>
+        </nav>
+    </c:when>
+    <c:otherwise>
+        <nav id="menu">
+            <ul>
+                <li><a href="/patientScan/list">의료 영상 목록</a></li>
+                <li><a href="/patients/">환자 목록</a></li>
+            </ul>
+        </nav>
+    </c:otherwise>
+</c:choose>
+
 </body>
 </html>

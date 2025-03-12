@@ -1,6 +1,7 @@
 package com.drscan.web.Controller;
 
 import com.drscan.web.primary.log.domain.Log;
+import com.drscan.web.primary.log.domain.LogRequestDto;
 import com.drscan.web.primary.log.service.LogService;
 import com.drscan.web.primary.users.domain.User;
 import com.drscan.web.primary.users.domain.UserRequestDto;
@@ -9,6 +10,9 @@ import com.drscan.web.primary.users.util.ResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -98,5 +102,19 @@ public class AdminRestController {
                     .body(new ResponseDto(HttpStatus.BAD_REQUEST.value(), "탈퇴신청에 실패하였습니다."));
 
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK.value(), "탈퇴신청을 성공적으로 수정되었습니다."));
+    }
+
+    @PostMapping("/log")
+    public ResponseEntity<Page<Log>> getLogs(@RequestBody LogRequestDto request) {
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+        Page<Log> logPage;
+
+        if (request.getSearch() != null) {
+            logPage = logService.findByUserCode(request.getSearch(), pageable);
+        } else {
+            logPage = logService.findAll(pageable);
+        }
+
+        return ResponseEntity.ok(logPage);
     }
 }

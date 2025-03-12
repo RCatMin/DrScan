@@ -30,4 +30,7 @@ public class HomeController {
     public String admin() {
         return "users/admin";
     }
+
+    @GetMapping({"/admin/logs", "/admin/log"})
+    public String adminLog() {return "/log/log";}
 }

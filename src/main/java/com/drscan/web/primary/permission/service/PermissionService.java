@@ -3,7 +3,6 @@ package com.drscan.web.primary.permission.service;
 import com.drscan.web.primary.permission.domain.Permission;
 import com.drscan.web.primary.permission.domain.PermissionRepository;
 import com.drscan.web.primary.users.domain.User;
-import com.drscan.web.primary.users.domain.UserRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

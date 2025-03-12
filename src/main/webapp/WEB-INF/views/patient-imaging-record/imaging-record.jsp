@@ -9,6 +9,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <html>
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/style/imaging-record.css">
 <%--    <script type="module" src ="/script/dicomViewer.js"></script>--%>
 <%--    <script type="module" src ="/script/mysqlReport.js"></script>--%>
@@ -32,9 +33,14 @@
 
     <div id="viewerContainer">
         <div id="toolButtons">
-            <button id="zoomBtn">Zoom</button>
-            <button id="panBtn">Pan</button>
-            <button id="stackScrollBtn">Stack Scroll</button>
+            <button id="zoomBtn"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+            <button id="panBtn"><i class="fa-solid fa-arrows-alt"></i></button>
+            <button id="windowLevelBtn"><i class="fa-solid fa-adjust"></i></button>
+            <button id="resetBtn"><i class="fa-solid fa-rotate-left"></i></button>
+            <button id="lengthMeasureBtn"><i class="fa-solid fa-ruler"></i></button>
+            <button id="angleMeasureBtn"><i class="fa-solid fa-drafting-compass"></i></button>
+            <button id="multiViewportBtn"><i class="fa-solid fa-th-large"></i></button>
+            <button id="histogramAdjustBtn"><i class="fa-solid fa-chart-bar"></i></button>
         </div>
 
         <div id="dicomViewport"></div>
@@ -96,7 +102,7 @@
 
             <div class="button-group">
                 <button id="saveReportBtn">저장</button>
-                <button id="editReportBtn">수정</button>
+                <button id="editReportBtn">판독 목록</button>
             </div>
         </div>
 
