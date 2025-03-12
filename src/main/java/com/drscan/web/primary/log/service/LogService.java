@@ -1,12 +1,13 @@
 package com.drscan.web.primary.log.service;
 
-import com.drscan.web.primary.clinic.domain.Clinic;
 import com.drscan.web.primary.log.domain.Log;
 import com.drscan.web.primary.log.domain.LogRepository;
 import com.drscan.web.primary.reports.domain.RadiologistReport;
 import com.drscan.web.primary.users.domain.AuthUser;
 import com.drscan.web.primary.users.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,5 +43,14 @@ public class LogService {
 
         logRepository.save(log);
     }
+
+    public Page<Log> findByUserCode(Long userCode, Pageable pageable) {
+        return logRepository.findByUserCode(userCode, pageable);
+    }
+
+    public Page<Log> findAll(Pageable pageable) {
+        return logRepository.findAll(pageable);
+    }
+
 
 }

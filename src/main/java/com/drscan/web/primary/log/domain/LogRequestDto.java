@@ -14,5 +14,8 @@ public class LogRequestDto {
     private Long userCode;
     private Long reportCode;
     private String event;
+    private Long search;
+    private int page;
+    private int size;
 
 }

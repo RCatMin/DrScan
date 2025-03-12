@@ -4,40 +4,6 @@ body {
     color: white;
     font-family: Arial, sans-serif;
 }
-/* 툴바 스타일 */
-#toolButtons {
-    display: flex;
-    gap: 10px;
-    background: rgba(50, 50, 50, 0.8);
-    padding: 8px;
-    border-radius: 8px;
-    z-index: 10;
-}
-
-#toolButtons button {
-    background-color: #333;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 18px;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.3s;
-}
-
-#toolButtons button:hover {
-    background-color: #555;
-}
-
-/* 아이콘 크기 */
-#toolButtons button i {
-    font-size: 22px;
-}
 
 /* 메인 컨테이너 */
 #container {
@@ -49,7 +15,7 @@ body {
 
 /* 왼쪽 패널: 시리즈 목록 */
 #leftPanel {
-    width: 360px;
+    width: 350px;
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -36,14 +36,26 @@ function fetchClinicDetail(clinicCode) {
 }
 
 function updateClinic(clinicCode) {
-    const clinicDate = document.getElementById("clinicDate").value;
+    const clinicDateInput = document.getElementById("clinicDate").value;
     const context = document.getElementById("context").value
     const updatedData = {
-        clinicDate: clinicDate,
+        clinicDate: clinicDateInput,
         context: context
     };
+    // 입력된 날짜를 Date 객체로 변환
+    const clinicDate = new Date(clinicDateInput);
+    const currentDate = new Date();
 
-    if (clinicDate.trim() === "") {
+    // 시간을 00:00:00으로 초기화하여 날짜만 비교
+    currentDate.setHours(0, 0, 0, 0);
+    clinicDate.setHours(0, 0, 0, 0);
+
+    if (clinicDate > currentDate) {
+        alert("유효하지 않은 날짜입니다.");
+        return;
+    }
+
+    if (clinicDateInput.trim() === "") {
         alert("진료 날짜를 작성해주세요.");
         return;
     }

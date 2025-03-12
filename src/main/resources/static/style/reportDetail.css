@@ -1,7 +1,8 @@
 /* 전체 페이지 스타일 */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
+    background-color: #0a0a0a;
+    color : #ffffff;
     margin: 0;
     padding: 0;
 }
@@ -13,7 +14,7 @@ body {
     padding: 30px;
     text-align: center;
     border-radius: 12px;
-    background: white;
+    background: #222;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
 }
 
@@ -22,7 +23,7 @@ body {
     font-size: 24px !important;
     font-weight: bold !important;
     margin-bottom: 20px !important;
-    color: #2c3e50;
+    color: #E0E0E0;
 }
 
 .section-head {
@@ -43,12 +44,13 @@ body {
 textarea, select {
     width: calc(100% - 180px);
     padding: 12px;
-    border: 1px solid #ddd;
+    border: 1px solid #444;
     border-radius: 6px;
     font-size: 16px;
-    background-color: #f9f9f9;
+    background-color: #333;
     transition: border 0.3s ease;
     margin: 0 15px;
+    color:#ffffff;
 }
 
 /* textarea 높이 설정 */
@@ -68,7 +70,7 @@ input:focus, textarea:focus, select:focus {
 label {
     width: 160px;
     font-weight: bold;
-    color: #555;
+    color: #ffffff;
     text-align: right;
     margin-right: 20px;
 }
@@ -116,8 +118,8 @@ button {
 .section {
     margin-bottom: 25px;
     padding: 15px;
-    border: 2px solid #ddd;
+    border: 2px solid #444;
     border-radius: 8px;
-    background-color: #f9f9f9;
+    background-color: #333;
     text-align: left;
 }
