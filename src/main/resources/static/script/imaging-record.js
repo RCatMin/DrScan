@@ -50,32 +50,84 @@ window.onload = function () {
 
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    console.log("페이지 로드 완료, 초기화 시작");
+
+    // 🛠 초기 데이터 로드
     loadStudyAndSeriesInfo();
-    loadPatientInfo();
+    await loadPatientInfo();
 
-    // 이미지 초기화
+    // 🛠 판독 데이터 로드 (최신 데이터 가져오기)
+    await loadLatestRadiologistReport();
+
+    // 버튼 이벤트 등록
+    setupEventListeners();
+});
+
+// 최신 판독 데이터 로드 함수
+async function loadLatestRadiologistReport() {
+    const patientIdElement = document.getElementById("patientId");
+    if (!patientIdElement || !patientIdElement.textContent.trim()) {
+        console.warn("환자 ID가 아직 설정되지 않음, 판독 데이터 로드를 중단합니다.");
+        return;
+    }
+
+    const patientId = patientIdElement.textContent.trim();
+
+    try {
+        const response = await fetch(`/patientScan/action/latest/${patientId}`);
+        if (!response.ok) throw new Error(`서버 오류: ${response.statusText}`);
+
+        const report = await response.json();
+        console.log("최신 판독 데이터 응답:", report);
+
+        if (!report || !report.reportCode) {
+            console.warn("판독 데이터가 없음!");
+            return;
+        }
+
+        updateReportFields(report);
+    } catch (error) {
+        console.error("판독 데이터 로드 중 오류 발생:", error);
+    }
+}
+
+// 버튼 이벤트 핸들러 설정
+function setupEventListeners() {
+    // 이미지 초기화 버튼
     const resetBtn = document.getElementById("resetBtn");
-    if (resetBtn) {
-        resetBtn.addEventListener("click", resetImage);
-    }
+    if (resetBtn) resetBtn.addEventListener("click", resetImage);
 
-    // 다중 뷰포트
+    // 다중 뷰포트 버튼
     const multiViewportBtn = document.getElementById("multiViewportBtn");
-    if (multiViewportBtn) {
-        multiViewportBtn.addEventListener("click", createMultiViewport);
-    }
+    if (multiViewportBtn) multiViewportBtn.addEventListener("click", createMultiViewport);
 
-    // 히스토그램
+    // 히스토그램 조정 버튼
     const histogramAdjustBtn = document.getElementById("histogramAdjustBtn");
-    if (histogramAdjustBtn) {
-        histogramAdjustBtn.addEventListener("click", () => adjustHistogram(30, 200));
+    if (histogramAdjustBtn) histogramAdjustBtn.addEventListener("click", () => adjustHistogram(30, 200));
+
+    // 판독 목록 버튼 (환자 ID를 URL에 추가)
+    const editReportBtn = document.getElementById("editReportBtn");
+    if (editReportBtn) {
+        editReportBtn.addEventListener("click", () => {
+            const pidElement = document.getElementById("patientId");
+            const pid = pidElement ? pidElement.textContent.trim() : "defaultPid";
+
+            if (!pid || pid === "-") {
+                alert("환자 ID가 없습니다! 다시 확인해주세요.");
+                console.error("환자 ID가 올바르지 않습니다.");
+                return;
+            }
+
+            const targetUrl = `/patientScan/radiology/${pid}`;
+            console.log(`페이지 이동: ${targetUrl}`);
+            window.location.href = targetUrl;
+        });
     }
 
-    // 🛠 뷰어 툴 버튼들 가져오기
-    // 🛠 툴 버튼 이벤트 연결
+    // 뷰어 툴 버튼들 가져오기 & 이벤트 연결
     setTimeout(() => {
-        console.log("🛠 툴 버튼 이벤트 등록 시작");
+        console.log("뷰어 툴 버튼 이벤트 등록 시작");
         const toolMappings = {
             "zoomBtn": ZoomTool.toolName,
             "panBtn": PanTool.toolName,
@@ -88,28 +140,28 @@ document.addEventListener("DOMContentLoaded", () => {
             const btn = document.getElementById(buttonId);
             if (btn) {
                 btn.addEventListener("click", () => activateTool(toolName));
-                console.log(`🔗 버튼 연결 완료: ${buttonId} → ${toolName}`);
+                console.log(`버튼 연결 완료: ${buttonId} → ${toolName}`);
             } else {
-                console.error(`❌ 버튼을 찾을 수 없음: ${buttonId}`);
+                console.error(`버튼을 찾을 수 없음: ${buttonId}`);
             }
         }
     }, 1000);
+}
 
-    const editReportBtn = document.getElementById("editReportBtn");
 
-    if (editReportBtn) {
-        editReportBtn.addEventListener("click", () => {
-            const pidElement = document.getElementById("patientId");
-            const pid = pidElement ? pidElement.textContent.trim() : "defaultPid";
+// 최신 데이터 화면에 반영하는 함수
+function updateReportFields(report) {
+    const severityLevelElem = document.getElementById("severityLevel");
+    if (severityLevelElem) severityLevelElem.value = report.severityLevel || "1";
 
-            const targetUrl = `/patientScan/radiology/${pid}`;
-            console.log(`🔄 페이지 이동: ${targetUrl}`);
-            window.location.href = targetUrl;
-        });
-    }
-});
+    const reportStatusElem = document.getElementById("reportStatus");
+    if (reportStatusElem) reportStatusElem.value = report.reportStatus || "Draft";
 
-// 🛠 툴 활성화 함수
+    const reportTextElem = document.getElementById("reportText");
+    if (reportTextElem) reportTextElem.value = report.reportText || "";
+}
+
+// 툴 활성화 함수
 function activateTool(toolName) {
     const toolGroupId = "DEFAULT_TOOLGROUP";
     const toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
@@ -119,7 +171,7 @@ function activateTool(toolName) {
         return;
     }
 
-    // ✅ 툴이 등록되지 않았다면 자동 추가
+    // 툴이 등록되지 않았다면 자동 추가
     if (!toolGroup.getToolInstance(toolName)) {
         console.warn(`⚠ 툴이 등록되지 않음: ${toolName}, 자동 추가`);
         toolGroup.addTool(toolName);
@@ -404,7 +456,7 @@ async function loadDicomImages() {
         const studyKey = urlParts[4];
         const seriesKey = urlParts[5];
 
-        console.log("📡 DICOM 이미지 목록 불러오는 중...");
+        console.log("DICOM 이미지 목록 불러오는 중...");
 
         // API 요청해서 JSON 데이터 저장
         let response = await fetch(`/patientScan/action/images/${studyKey}/${seriesKey}`);
@@ -478,20 +530,20 @@ function displayImage(index) {
 
 // DICOM 파일 서버에서 가져오기(Z 드라이버에서 가져옴)
 function fetchDicomFileAndRender(dicomFilePath, viewportId) {
-    console.log(`📥 DICOM 파일 가져오기: ${dicomFilePath}`);
+    console.log(`DICOM 파일 가져오기: ${dicomFilePath}`);
 
     fetch(`/patientScan/action/getDicomFile?path=${encodeURIComponent(dicomFilePath)}`)
         .then(response => {
             if (!response.ok) {
-                throw new Error(`❌ 서버 응답 오류: ${response.statusText}`);
+                throw new Error(`서버 응답 오류: ${response.statusText}`);
             }
             return response.arrayBuffer();
         })
         .then(arrayBuffer => {
-            console.log("📡 DICOM 데이터 가져옴, 렌더링 시작...");
+            console.log("DICOM 데이터 가져옴, 렌더링 시작...");
             renderImage(arrayBuffer, viewportId);
         })
-        .catch(error => console.error("❌ DICOM 파일 로딩 중 오류 발생:", error));
+        .catch(error => console.error("DICOM 파일 로딩 중 오류 발생:", error));
 }
 
 // 썸네일 리스트 업데이트 시 마우스 이벤트 추가
@@ -592,7 +644,7 @@ function formatTimestampString(dateString) {
     if (!dateString || dateString.length < 10) {
         return new Date().toISOString().substring(0, 19); // 현재 시간 ISO 형식
     }
-    return `${dateString}T00:00:00`; // 🔥 LocalDateTime 대응
+    return `${dateString}T00:00:00`; // LocalDateTime 대응
 }
 
 async function saveRadiologistReport() {

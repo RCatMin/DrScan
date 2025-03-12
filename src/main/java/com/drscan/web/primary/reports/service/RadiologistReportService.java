@@ -18,10 +18,10 @@ public class RadiologistReportService {
     private final RadiologistReportRepository radiologistReportRepository;
 
     //    // 특정 시리즈 UID 기준으로 판독 데이터 가져오기
-//    public List<RadiologistReport> getReportsBySeriesInsUid(String seriesInsUid) {
-//        return repository.findBySeriesInsUid(seriesInsUid);
-//    }
-//
+    public RadiologistReport getLatestReportByPatientId(String patientId) {
+        return radiologistReportRepository.findLatestReportByPatientId(patientId);
+    }
+
 //    // 판독 데이터 저장 (등록/수정)
     public RadiologistReport saveReport(RadiologistReport report) {
         report.setModDate(LocalDateTime.parse(LocalDateTime.now().toString()));
