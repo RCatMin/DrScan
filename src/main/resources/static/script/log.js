@@ -34,6 +34,11 @@ function searchLogs() {
         .catch(error => console.error('Error:', error));
 }
 
+function search() {
+    currentPage = 0;
+    searchLogs();
+}
+
 function goToPage(page) {
     if (page < 0 || page >= totalPages) return;
     currentPage = page;
