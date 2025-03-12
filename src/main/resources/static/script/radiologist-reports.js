@@ -39,10 +39,13 @@ function displayReports() {
     const paginatedReports = reportsData.slice(start, end);
 
     paginatedReports.forEach(report => {
+        let severityClass = getSeverityClass(report.severityLevel);
+
         let row = `
-            <tr>
+            <tr class="${severityClass}">
                 <td>${report.reportCode}</td>
                 <td>${report.patientId}</td>
+                <td>${report.reportStatus}</td>
                 <td>${new Date(report.studyDate).toLocaleString()}</td>
                 <td>${report.reportText}</td>
                 <td>${new Date(report.regDate).toLocaleString()}</td>
@@ -61,6 +64,24 @@ function displayReports() {
             displayReports();
         });
     });
+}
+
+// 중증도 레벨에 따른 CSS 클래스 반환
+function getSeverityClass(severityLevel) {
+    switch (severityLevel) {
+        case "1":
+            return "severity-critical"; // 위급 - 파란색
+        case "2":
+            return "severity-urgent"; // 긴급 - 빨간색
+        case "3":
+            return "severity-high"; // 높음 - 노란색
+        case "4":
+            return "severity-moderate"; // 보통 - 초록색
+        case "5":
+            return "severity-low"; // 낮음 - 흰색
+        default:
+            return "severity-default"; // 기본
+    }
 }
 
 function updatePagination() {
