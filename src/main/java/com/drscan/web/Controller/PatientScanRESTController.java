@@ -213,4 +213,10 @@ public class PatientScanRESTController {
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/latest/{patientId}")
+    public ResponseEntity<RadiologistReport> getLatestReport(@PathVariable String patientId) {
+        RadiologistReport report = radiologistReportService.getLatestReportByPatientId(patientId);
+        return ResponseEntity.ok(report);
+    }
 }

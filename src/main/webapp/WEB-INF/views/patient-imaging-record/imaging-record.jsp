@@ -102,7 +102,7 @@
 
             <div class="button-group">
                 <button id="saveReportBtn">저장</button>
-                <button id="editReportBtn">수정</button>
+                <button id="editReportBtn">판독 목록</button>
             </div>
         </div>
 
