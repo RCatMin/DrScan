@@ -124,3 +124,42 @@ body {
     border-bottom: 1px solid #555;
 }
 
+.btn-report {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    color: white;
+}
+
+
+/* 중증도 레벨별  버튼 색상 */
+.severity-critical .btn-report {
+    background-color: #007bff !important; /* 파란색 */
+}
+
+.severity-urgent .btn-report {
+    background-color: #dc3545 !important; /* 빨간색 */
+}
+
+.severity-high .btn-report {
+    background-color: #ffc107 !important; /* 노란색 */
+    color: black;
+}
+
+.severity-moderate .btn-report {
+    background-color: #28a745 !important; /* 초록색 */
+}
+
+.severity-low .btn-report {
+    background-color: #ffffff !important; /* 흰색 */
+    color: black;
+    border: 1px solid black;
+}
+
+/* 비활성화된 버튼 */
+.btn-report.disabled {
+    background-color: #6c757d !important;
+    cursor: not-allowed;
+}
