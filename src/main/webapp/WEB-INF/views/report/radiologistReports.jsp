@@ -21,13 +21,14 @@
     <table>
         <thead>
         <tr>
-            <th>판독 코드</th>
+            <th id="sort-reportCode">판독 코드 ⬍</th>
+            <th id="sort-severityLevel">중증도 레벨 ⬍</th>
             <th>환자 ID</th>
-            <th>보고서 상태</th>
-            <th>검사 날짜</th>
-            <th>판독 내용</th>
-            <th>등록일</th>
-            <th>수정일</th>
+            <th id="sort-reportStatus">보고서 상태 ⬍</th>
+            <th id="sort-studyDate">검사 날짜 ⬍</th>
+            <th id="sort-reportText">판독 내용 ⬍</th>
+            <th id="sort-regDate">등록일 ⬍</th>
+            <th id="sort-modDate">수정일 ⬍</th>
             <th>상세보기</th>
         </tr>
         </thead>

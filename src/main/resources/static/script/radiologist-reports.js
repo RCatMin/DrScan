@@ -6,11 +6,21 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Extracted patientId:", patientId);
 
     loadReports(patientId);
+
+    // 정렬 버튼 클릭 이벤트
+    document.getElementById("sort-reportCode").addEventListener("click", () => sortReports("reportCode"));
+    document.getElementById("sort-severityLevel").addEventListener("click", () => sortReports("severityLevel"));
+    document.getElementById("sort-reportStatus").addEventListener("click", () => sortReports("reportStatus"));
+    document.getElementById("sort-studyDate").addEventListener("click", () => sortReports("studyDate"));
+    document.getElementById("sort-reportText").addEventListener("click", () => sortReports("reportText"));
+    document.getElementById("sort-regDate").addEventListener("click", () => sortReports("regDate"));
+    document.getElementById("sort-modDate").addEventListener("click", () => sortReports("modDate"));
 });
 
 let currentPage = 1;
 const itemsPerPage = 10;
 let reportsData = [];
+let sortState = { column: null, ascending: true };
 
 async function loadReports(patientId) {
     try {
@@ -30,6 +40,7 @@ async function loadReports(patientId) {
     }
 }
 
+// 데이터 로드
 function displayReports() {
     const reportTableBody = document.getElementById("reportTableBody");
     reportTableBody.innerHTML = "";
@@ -42,8 +53,9 @@ function displayReports() {
         let severityClass = getSeverityClass(report.severityLevel);
 
         let row = `
-            <tr class="${severityClass}">
+            <tr>
                 <td>${report.reportCode}</td>
+                <td class="${severityClass}">${report.severityLevel}</td>
                 <td>${report.patientId}</td>
                 <td>${report.reportStatus}</td>
                 <td>${new Date(report.studyDate).toLocaleString()}</td>
@@ -84,6 +96,46 @@ function getSeverityClass(severityLevel) {
     }
 }
 
+// 정렬
+function sortReports(column) {
+    if (sortState.column === column) {
+        sortState.ascending = !sortState.ascending; // 같은 컬럼이면 정렬 방향 변경
+    } else {
+        sortState.column = column;
+        sortState.ascending = true;
+    }
+
+    reportsData.sort((a, b) => {
+        let valA = a[column];
+        let valB = b[column];
+
+        // 날짜 데이터 처리
+        if (column.includes("Date")) {
+            valA = new Date(valA).getTime();
+            valB = new Date(valB).getTime();
+        }
+
+        // 숫자 데이터 처리 (판독 코드, 중증도 레벨)
+        if (column === "reportCode" || column === "severityLevel") {
+            valA = Number(valA);
+            valB = Number(valB);
+        }
+
+        // 문자열 데이터 처리 (보고서 상태, 판독 내용 등)
+        if (typeof valA === "string") {
+            valA = valA.toLowerCase();
+            valB = valB.toLowerCase();
+        }
+
+        if (valA < valB) return sortState.ascending ? -1 : 1;
+        if (valA > valB) return sortState.ascending ? 1 : -1;
+        return 0;
+    });
+
+    displayReports();
+}
+
+// 페이징
 function updatePagination() {
     const totalPages = Math.ceil(reportsData.length / itemsPerPage);
     const paginationContainer = document.querySelector(".pagination");
