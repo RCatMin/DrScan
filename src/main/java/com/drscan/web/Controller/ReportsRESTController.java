@@ -20,7 +20,7 @@ import java.util.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/reports/jinja/testing")
+@RequestMapping("/reports/develop/testing")
 public class ReportsRESTController {
 
     @Value("${smb.username}")
