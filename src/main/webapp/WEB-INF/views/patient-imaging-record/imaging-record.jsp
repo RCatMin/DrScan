@@ -76,8 +76,8 @@
 
         <div class="info-container">
             <h3>판독 결과</h3>
-            <p>판독 의사 : <span id="userCode">1020</span></p>
-            <p>승인 의사 : <span id="approveUserCode">1024</span></p>
+            <p>판독 의사 : <span id="userCode">-</span></p>
+            <p>승인 의사 : <span id="approveUserCode">1000</span></p>
             <p>판독 승인 날짜 : <span id="approveStudyDate">20250305</span></p>
 
             <p><strong>중증도 레벨:</strong></p>
