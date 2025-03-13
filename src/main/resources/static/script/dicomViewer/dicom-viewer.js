@@ -1,26 +1,18 @@
 import {Enums} from "@cornerstonejs/core";
-import * as cornerstone from "@cornerstonejs/core/loaders/imageLoader";
 
 export function initRendering(state) {
     loadStudyAndSeriesInfo(state);
 }
 
 async function loadStudyAndSeriesInfo(state) {
-//     document.addEventListener('selectedImage', async (event) => {
-//         const studykey = event.detail.studykey;
-//         const serieskey = event.detail.serieskey;
-//
-//         if (state.currentViewport) {
-//             await assignImageToViewport(state, studykey, serieskey);
-//         }
-//     });
-// }
+    const urlParts = window.location.pathname.split("/");
+    const studykey = urlParts[4];
+    const serieskey = urlParts[5];
 
     document.addEventListener('DOMContentLoaded', async () => {
-        // 테스트를 위해 임의의 studykey와 serieskey 값을 사용합니다.
-        // 예를 들어 studykey: 14, serieskey: 2
+
         state.currentViewport = {id : 'dicomViewerContainer' };
-        await assignImageToViewport(state, 5, 1);
+        await assignImageToViewport(state, studykey, serieskey);
     });
 }
 
@@ -53,7 +45,7 @@ async function assignImageToViewport(state, studykey, serieskey) {
 
     try {
         const response = await fetch(
-            `/reports/jinja/testing/wado?requestType=WADO&studykey=${studykey}&serieskey=${serieskey}`
+            `/reports/develop/testing/wado?requestType=WADO&studykey=${studykey}&serieskey=${serieskey}`
         );
 
         if (!response.ok) {
