@@ -76,7 +76,8 @@ function updateReport(reportCode) {
         .then(response => response.json())
         .then(() => {
             alert("판독 정보가 성공적으로 수정되었습니다!");
-            location.reload();
+            const patientId = document.getElementById("patientId").innerText;
+            window.location.href = `/patientScan/radiology/${patientId}`;
         })
         .catch(error => console.error("판독 정보 수정 중 오류 발생:", error));
 }
@@ -88,7 +89,8 @@ function deleteReport(reportCode) {
         .then(response => {
             if (response.ok) {
                 alert("판독 정보가 삭제되었습니다!");
-                window.location.href = "/patientScan/";
+                const patientId = document.getElementById("patientId").innerText;
+                window.location.href = `/patientScan/radiology/${patientId}`;
             } else {
                 alert("삭제 실패!");
             }
