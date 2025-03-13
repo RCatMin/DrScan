@@ -82,11 +82,11 @@
 
             <p><strong>중증도 레벨:</strong></p>
             <select id="severityLevel">
-                <option value="1">1 - Low</option>
-                <option value="2">2 - Mild</option>
-                <option value="3">3 - Moderate</option>
-                <option value="4">4 - Severe</option>
-                <option value="5">5 - Critical</option>
+                <option value="1">1 - Critical (위급)</option>
+                <option value="2">2 - Urgent (긴급)</option>
+                <option value="3">3 - High (높음)</option>
+                <option value="4">4 - Moderate (보통)</option>
+                <option value="5">5 - Low (낮음)</option>
             </select>
 
             <p><strong>보고서 상태:</strong></p>
