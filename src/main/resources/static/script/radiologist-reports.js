@@ -40,6 +40,17 @@ async function loadReports(patientId) {
     }
 }
 
+function getSeverityText(severityLevel) {
+    switch (severityLevel) {
+        case "1": return "Critical (위급)";
+        case "2": return "Urgent (긴급)";
+        case "3": return "High (높음)";
+        case "4": return "Moderate (보통)";
+        case "5": return "Low (낮음)";
+        default: return "Unknown (알 수 없음)";
+    }
+}
+
 // 데이터 로드
 function displayReports() {
     const reportTableBody = document.getElementById("reportTableBody");
@@ -51,11 +62,12 @@ function displayReports() {
 
     paginatedReports.forEach(report => {
         let severityClass = getSeverityClass(report.severityLevel);
+        let severityText = getSeverityText(report.severityLevel);
 
         let row = `
             <tr>
                 <td>${report.reportCode}</td>
-                <td class="${severityClass}">${report.severityLevel}</td>
+                <td class="severity-cell ${severityClass}">${severityText}</td>
                 <td>${report.patientId}</td>
                 <td>${report.reportStatus}</td>
                 <td>${new Date(report.studyDate).toLocaleString()}</td>
