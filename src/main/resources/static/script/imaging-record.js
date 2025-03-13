@@ -728,7 +728,18 @@ async function saveRadiologistReport() {
 
         let result = await response.json();
         console.log("저장 완료:", result);
-        document.getElementById("autoSaveStatus").innerText = "자동 저장 완료!";
+
+        const statusElement = document.getElementById("autoSaveStatus");
+        if (statusElement) {
+            statusElement.innerText = "저장 완료!";
+            statusElement.style.color = "green";
+
+            // 5초 후 메시지 자동 삭제
+            setTimeout(() => {
+                statusElement.innerText = "";
+            }, 5000);
+        }
+        document.getElementById("autoSaveStatus").innerText = "저장 완료!";
     } catch (error) {
         console.error("저장 오류:", error);
     }
