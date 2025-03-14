@@ -25,7 +25,6 @@
         <div id="toolBar">
             <button id="zoom" class="tool">Zoom</button>
             <button id="pan" class="tool">Pan</button>
-            <button id="stackScroll" class="tool">Scroll</button>
             <button id="annotation" class="tool">Annotation</button>
             <button id="length" class="tool">Length</button>
             <button id="circle" class="tool">Circle</button>
