@@ -25,7 +25,7 @@ public class AuthFilter implements Filter {
     );
 
     private final List<String> urls = List.of(
-            "/",
+
             "/index",
             "/header",
             "/footer",

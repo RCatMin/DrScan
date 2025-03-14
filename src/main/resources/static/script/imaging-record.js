@@ -142,6 +142,16 @@ async function loadPatientInfo() {
     }
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("saveReportBtn").addEventListener("click", saveRadiologistReport);
+    setupAutoSave();
+});
+
+function setupAutoSave() {
+    console.log("자동 저장 기능 활성화됨!");
+    setInterval(saveRadiologistReport, 60000);
+}
+
 // yyyyMMdd → YYYY-MM-DDTHH:mm:ss 변환 (LocalDateTime 대응)
 function formatTimestampString(dateString) {
     if (!dateString || dateString.length < 10) {
