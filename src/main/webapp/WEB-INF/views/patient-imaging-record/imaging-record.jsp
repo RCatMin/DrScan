@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/style/imaging-record.css">
 <%--    <script type="module" src ="/script/dicomViewer.js"></script>--%>
 <%--    <script type="module" src ="/script/mysqlReport.js"></script>--%>
-    <script type="module" src="/dist/bundle.js"></script>
+    <script src="/script/imaging-record.js"></script>
 
     <title>영상 판독 페이지</title>
 </head>
@@ -21,29 +21,21 @@
 <body>
 
 <div id="container">
-    <div id="leftPanel">
-        <p class="title">시리즈 목록</p>
-        <div id="thumbnailContainer"></div>
-        <div id="pagination">
-            <button id="prevPageBtn" class="pagination-btn">&lt;</button>
-            <div id="pageButtons"></div>
-            <button id="nextPageBtn" class="pagination-btn">&gt;</button>
-        </div>
-    </div>
-
     <div id="viewerContainer">
-        <div id="toolButtons">
-            <button id="zoomBtn"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
-            <button id="panBtn"><i class="fa-solid fa-arrows-alt"></i></button>
-            <button id="windowLevelBtn"><i class="fa-solid fa-adjust"></i></button>
-            <button id="resetBtn"><i class="fa-solid fa-rotate-left"></i></button>
-            <button id="lengthMeasureBtn"><i class="fa-solid fa-ruler"></i></button>
-            <button id="angleMeasureBtn"><i class="fa-solid fa-drafting-compass"></i></button>
-            <button id="multiViewportBtn"><i class="fa-solid fa-th-large"></i></button>
-            <button id="histogramAdjustBtn"><i class="fa-solid fa-chart-bar"></i></button>
+        <div id="toolBar">
+            <button id="zoom" class="tool">Zoom</button>
+            <button id="pan" class="tool">Pan</button>
+            <button id="annotation" class="tool">Annotation</button>
+            <button id="length" class="tool">Length</button>
+            <button id="circle" class="tool">Circle</button>
+            <button id="rectangle" class="tool">Rectangle</button>
+            <button id="label" class="tool">Label</button>
+            <button id="windowLevel" class="tool">Window/Level</button>
+            <button id="reset" class="tool">Reset</button>
         </div>
 
-        <div id="dicomViewport"></div>
+        <div id="dicomViewerContainer" class="screen"></div>
+        <script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
     </div>
 
     <div id="info">
