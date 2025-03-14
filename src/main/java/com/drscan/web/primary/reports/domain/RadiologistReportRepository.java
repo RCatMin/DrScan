@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface RadiologistReportRepository extends JpaRepository<RadiologistReport, Integer> {
-    @Query("SELECT r FROM RadiologistReport r WHERE r.patientId = :patientId ORDER BY r.modDate DESC LIMIT 1")
+    @Query("SELECT r FROM RadiologistReport r WHERE r.patientId = :patientId ORDER BY r.regDate DESC  LIMIT 1")
     RadiologistReport findLatestReportByPatientId(@Param("patientId") String patientId);
 
     List<RadiologistReport> findByPatientId(String patientId);

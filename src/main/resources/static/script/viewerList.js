@@ -106,14 +106,18 @@ function displayPage(page) {
 }
 
 // 테이블 렌더링
+// 테이블 렌더링
 function renderPatientTable(data) {
     var tableBody = document.getElementById("patientRecords");
     tableBody.innerHTML = "";
 
     data.forEach((item, index) => {
         var row = document.createElement("tr");
+        row.setAttribute("data-index", index);
         row.innerHTML = `
-            <td><button class="expand-btn" onclick="toggleRow(${index})">▶</button></td>
+            <td>
+                <button id="expand-btn-${index}" class="expand-btn" onclick="toggleRow(${index}, '${item.pid}')">▶</button>
+            </td>
             <td>${item.pname}</td>
             <td>${item.pid}</td>
             <td>${item.studydate}</td>
@@ -129,18 +133,17 @@ function renderPatientTable(data) {
         `;
         tableBody.appendChild(row);
 
-        //  세부목록
+        // ✅ 세부목록 추가
         var detailsRow = document.createElement("tr");
-        detailsRow.id = `details-${index}`;
-        detailsRow.style.display = "none"; // 처음에는 숨김
+        detailsRow.setAttribute("id", `details-${index}`);
+        detailsRow.style.display = "none";
         detailsRow.innerHTML = `
             <td colspan="9">
                 <div class="details-content">
-                    <strong>Study Key:</strong> ${item.studykey} | 
-                    <strong>Series Key:</strong> ${item.serieskey} | 
-                    <strong>Modality:</strong> ${item.modality} | 
-                    <strong>Accession #:</strong> ${item.accessnum || "N/A"} |
-                    <strong>Images:</strong> ${item.imagecnt}
+                    <p><strong>중증도 레벨:</strong> 불러오는 중...</p>
+                    <p><strong>보고서 상태:</strong> 불러오는 중...</p>
+                    <p><strong>판독 내용:</strong> 불러오는 중...</p>
+                    <button class="btn-report disabled">판독 상세목록</button>
                 </div>
             </td>
         `;
@@ -148,8 +151,8 @@ function renderPatientTable(data) {
     });
 }
 
-// 목록표시
-function toggleRow(index) {
+// 세부목록 토글
+function toggleRow(index, patientId) {
     var detailsRow = document.getElementById(`details-${index}`);
 
     if (!detailsRow) {
@@ -157,10 +160,112 @@ function toggleRow(index) {
         return;
     }
 
-    if (detailsRow.style.display === "none" || detailsRow.style.display === "") {
-        detailsRow.style.display = "table-row";
-    } else {
-        detailsRow.style.display = "none";
+    if (!expandedRows[index]) {
+        detailsRow.innerHTML = `
+            <td colspan="9">
+                <div class="details-content">
+                    <p><strong>중증도 레벨:</strong> 불러오는 중...</p>
+                    <p><strong>보고서 상태:</strong> 불러오는 중...</p>
+                    <p><strong>판독 내용:</strong> 불러오는 중...</p>
+                </div>
+            </td>
+        `;
+        fetchReportData(patientId, index);
+        expandedRows[index] = true;
+    }
+
+    detailsRow.style.display = (detailsRow.style.display === "none" || detailsRow.style.display === "") ? "table-row" : "none";
+}
+
+// 판독 데이터 불러오기
+function fetchReportData(patientId, index) {
+    fetch(`/patientScan/action/latest/${patientId}`)
+        .then(response => {
+            if (!response.ok) {
+                console.warn(`서버 응답 오류: ${response.status}`);
+                return null;
+            }
+            return response.text(); // JSON 대신 text로 먼저 읽기
+        })
+        .then(text => {
+            if (!text) return null; // 빈 응답이면 null 반환
+            return JSON.parse(text); // JSON 파싱
+        })
+        .then(report => {
+            let detailsRow = document.getElementById(`details-${index}`);
+            let expandButton = document.getElementById(`expand-btn-${index}`);
+
+            if (!detailsRow) return;
+
+            // 판독 데이터가 없는 경우 처리
+            if (!report) {
+                detailsRow.innerHTML = `
+                    <td colspan="9">
+                        <div class="details-content">
+                            <p><strong>중증도 레벨:</strong> 없음</p>
+                            <p><strong>보고서 상태:</strong> 없음</p>
+                            <p><strong>판독 내용:</strong> 없음</p>
+                        </div>
+                    </td>
+                `;
+                return;
+            }
+
+            let severityClass = getSeverityClass(report.severityLevel || "0");
+            let severityText = getSeverityText(report.severityLevel || "0");
+
+            // 세부목록 버튼 색상 변경
+            if (expandButton) {
+                expandButton.classList.add(severityClass);
+            }
+
+            // 판독 상세목록 버튼 색상 적용
+            let reportButtonClass = severityClass ? `btn-report ${severityClass}` : "btn-report";
+
+            // 세부목록 UI 업데이트 (판독 상세목록 버튼 추가)
+            detailsRow.innerHTML = `
+                <td colspan="9">
+                    <div class="details-content ${severityClass}">
+                        <p><strong>중증도 레벨:</strong> ${severityText}</p>
+                        <p><strong>보고서 상태:</strong> ${report.reportStatus || "없음"}</p>
+                        <p><strong>판독 내용:</strong> ${report.reportText || "내용 없음"}</p>
+                        <button class="${reportButtonClass}" onclick="location.href='/patientScan/report-detail/${report.reportCode || ''}'">
+                            판독 상세목록
+                        </button>
+                    </div>
+                </td>
+            `;
+
+            // 판독 기록이 없으면 버튼 비활성화
+            if (!report.reportCode) {
+                detailsRow.querySelector(".btn-report").classList.add("disabled");
+            }
+        })
+        .catch(error => {
+            console.error("판독 데이터 가져오기 실패:", error);
+        });
+}
+
+function getSeverityClass(severityLevel) {
+    switch (severityLevel) {
+        case "1": return "severity-critical";   // 파란색
+        case "2": return "severity-urgent";    // 빨간색
+        case "3": return "severity-high";      // 노란색
+        case "4": return "severity-moderate";  // 초록색
+        case "5": return "severity-low";       // 흰색
+        default: return "severity-default";    // 기본값
+    }
+}
+
+// 중증도 레벨을 사람이 읽을 수 있는 문자열로 변환하는 함수
+function getSeverityText(severityLevel) {
+    switch (severityLevel) {
+        case "1": return "Critical (위급)";
+        case "2": return "Urgent (긴급)";
+        case "3": return "High (높음)";
+        case "4": return "Moderate (보통)";
+        case "5": return "Low (낮음)";
+        default: return "Unknown (알 수 없음)";
     }
 }
 

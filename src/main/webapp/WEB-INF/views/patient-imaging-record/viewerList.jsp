@@ -51,13 +51,13 @@
   <thead>
   <tr>
     <th>목록</th>
-    <th onclick="sortTable('pname')">Patient Name</th>
-    <th onclick="sortTable('pid')">MRN</th>
-    <th onclick="sortTable('studydate')">Study Date</th>
-    <th onclick="sortTable('studydesc')">Description</th>
-    <th onclick="sortTable('modality')">Modality</th>
-    <th onclick="sortTable('accessnum')">Accession #</th>
-    <th onclick="sortTable('imagecnt')">Images</th>
+    <th onclick="sortTable('pname')">Patient Name ⬍</th>
+    <th onclick="sortTable('pid')">MRN ⬍</th>
+    <th onclick="sortTable('studydate')">Study Date ⬍</th>
+    <th onclick="sortTable('studydesc')">Description ⬍</th>
+    <th onclick="sortTable('modality')">Modality ⬍</th>
+    <th onclick="sortTable('accessnum')">Accession # ⬍</th>
+    <th onclick="sortTable('imagecnt')">Images ⬍</th>
     <th>Viewer</th>
   </tr>
   </thead>

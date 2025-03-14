@@ -219,4 +219,14 @@ public class PatientScanRESTController {
         RadiologistReport report = radiologistReportService.getLatestReportByPatientId(patientId);
         return ResponseEntity.ok(report);
     }
+
+    // 유저정보확인
+    @GetMapping("/authUser")
+    public ResponseEntity<?> getAuthUser(HttpSession session) {
+        AuthUser authUser = (AuthUser) session.getAttribute("authUser");
+        if (authUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유저정보 없습니다.");
+        }
+        return ResponseEntity.ok(authUser);
+    }
 }
