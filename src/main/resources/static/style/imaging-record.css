@@ -159,8 +159,8 @@ body {
 
 /* 도구 버튼을 DICOM 뷰어 위쪽에 배치 */
 #toolBar {
-    width: 80%;
-    margin: 20px auto;
+    /*width: 50%;*/
+    margin: 10px auto;
     text-align: center;
 }
 .tool {
@@ -186,8 +186,8 @@ body {
 
 /* 중앙에서 DICOM을 랜더링하는 공간 */
 #dicomViewerContainer {
-    width: 512px;
-    height: 512px;
+    width: 700px;
+    height: 700px;
     background-color: black;
 }
 
