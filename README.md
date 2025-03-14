@@ -23,8 +23,13 @@
    	- DICOM 영상 렌더링
 
 #### 🐅 방서준 (팀원)
- - 기능 : 
-   - 
+ - 기능 : 환자 목록 조회 및 진료 기록 관리
+   - 환자 목록 조회
+   - 환자의 진료 기록 조회
+   - 진료 기록 상세 조회
+   - 진료 기록 등록
+   - 진료 기록 수정
+   - 진료 기록 삭제
 
 #### 🐔 김현창 (팀원)
  - 기능 : 
@@ -106,6 +111,37 @@ https://github.com/user-attachments/assets/389f2865-6a9b-41d8-adc1-bd2910dd5dfb
 https://github.com/user-attachments/assets/34e8e4f8-df40-4e43-9233-ac86f991888a
 
 https://github.com/user-attachments/assets/6ff44f07-b6a4-4463-aa81-98ed3b1d42ab
+
+### 환자 목록 조회 및 진료 기록 관리
+
+#### [환자 목록 조회]
+![Image](https://github.com/user-attachments/assets/6cf1be2a-8e95-451b-8ff6-c7f3d38e0121)
+- 외부 데이터 베이스에 존재하는 환자정보를 GET요청을 통하여 요청 및 조회하여 출력합니다.
+- 사용자에게 데이토를 효율적으로 제공하기 위해 페이징 처리를 하였습니다.
+
+#### [진료 목록 조회]
+![Image](https://github.com/user-attachments/assets/e52f5a68-0fbe-4f58-b8a2-915ad99a1a11)
+- 환자 목록 페이지에서 한 환자를 선택 후 진료 보기 버튼을 누를 시 해당 환자의 진료 목록 페이지로 이동합니다. 
+
+#### [진료 등록]
+![Image](https://github.com/user-attachments/assets/afbea619-fa9a-4cf1-a043-80499836087d)
+- 하단에 위치한 진료 등록 추가 버튼을 클릭하여 내용을 작성하고 진료를 추가합니다. 
+
+#### [진료 수정]
+![Image](https://github.com/user-attachments/assets/2142f108-88e0-408f-a998-79cb14b4f48e)
+- 우측에 위치한 진료 상세보기 버튼을 눌러 진료 상세 페이지로 이동할 수 있습니다.
+- 수정할 내용을 작성하고 하단에 위치한 수정 버튼을 클릭할 시 해당 진료 정보가 수정됩니다.
+
+#### [진료 삭제]
+![Image](https://github.com/user-attachments/assets/10c1d115-51b0-46f7-a5cf-54dd66419487)
+- 상세 페이지에서 하단에 위치한 삭제 버튼을 클릭할 시에 해단 진료 정보를 삭제합니다.
+- 삭제한 후에 해당 진료의 대상인 환자의 진료 목록페이지로 이동하게 됩니다.
+
+#### [진료 등록 및 수정 시 유효성 검사]
+![Image](https://github.com/user-attachments/assets/86970a61-27ab-40dc-bbab-4a3cfbf2bc0e)
+- 진료 내용과 날짜가 비어있다면 "해당 내용을 작성해주세요"라는 오류 메세지를 출력합니다.
+- 진료 날짜가 오늘의 날짜보다 미래일 경우 "유효하지 않은 날짜입니다."라는 오류 메세지를 출력합니다.
+
 
 ### 6. 발표 영상
 - https://www.youtube.com/watch?v=XUc5bNPgREE
