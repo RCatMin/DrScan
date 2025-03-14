@@ -1,6 +1,9 @@
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("페이지 로드 완료, 초기화 시작");
 
+    // 유저 정보 확인
+    await fetchAuthUser();
+    
     // 🛠 초기 데이터 로드
     loadStudyAndSeriesInfo();
     await loadPatientInfo();
@@ -150,6 +153,13 @@ function formatTimestampString(dateString) {
 async function saveRadiologistReport() {
     console.log("판독 데이터 저장 시도!");
 
+    // 판독 내용이 없으면 저장하지 않음
+    const reportTextElem = document.getElementById("reportText");
+    if (!reportTextElem || reportTextElem.value.trim() === "") {
+        console.warn("판독 내용이 없어 자동 저장을 중단합니다.");
+        return;
+    }
+
     function getElementValue(id, defaultValue = "N/A") {
         const elem = document.getElementById(id);
         return elem ? (elem.value || elem.innerText || defaultValue) : defaultValue;
@@ -218,8 +228,36 @@ async function saveRadiologistReport() {
 
         let result = await response.json();
         console.log("저장 완료:", result);
-        document.getElementById("autoSaveStatus").innerText = "자동 저장 완료!";
+
+        const statusElement = document.getElementById("autoSaveStatus");
+        if (statusElement) {
+            statusElement.innerText = "저장 완료!";
+            statusElement.style.color = "green";
+
+            // 5초 후 메시지 자동 삭제
+            setTimeout(() => {
+                statusElement.innerText = "";
+            }, 5000);
+        }
+        document.getElementById("autoSaveStatus").innerText = "저장 완료!";
     } catch (error) {
         console.error("저장 오류:", error);
+    }
+}
+
+async function fetchAuthUser() {
+    try {
+        const response = await fetch("/patientScan/action/authUser");
+        if (!response.ok) throw new Error("유저 정보를 가져오지 못했습니다.");
+
+        const authUser = await response.json();
+        console.log("세션에서 가져온 유저 정보:", authUser);
+
+        // HTML 요소 업데이트 (userCode 표시)
+        document.getElementById("userCode").innerText = authUser.userCode;
+
+    } catch (error) {
+        console.error("세션 정보 가져오기 실패:", error);
+        document.getElementById("userCode").innerText = "-"; // 에러 시 기본값
     }
 }

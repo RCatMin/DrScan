@@ -68,17 +68,17 @@
 
         <div class="info-container">
             <h3>판독 결과</h3>
-            <p>판독 의사 : <span id="userCode">1020</span></p>
-            <p>승인 의사 : <span id="approveUserCode">1024</span></p>
+            <p>판독 의사 : <span id="userCode">-</span></p>
+            <p>승인 의사 : <span id="approveUserCode">1000</span></p>
             <p>판독 승인 날짜 : <span id="approveStudyDate">20250305</span></p>
 
             <p><strong>중증도 레벨:</strong></p>
             <select id="severityLevel">
-                <option value="1">1 - Low</option>
-                <option value="2">2 - Mild</option>
-                <option value="3">3 - Moderate</option>
-                <option value="4">4 - Severe</option>
-                <option value="5">5 - Critical</option>
+                <option value="1">1 - Critical (위급)</option>
+                <option value="2">2 - Urgent (긴급)</option>
+                <option value="3">3 - High (높음)</option>
+                <option value="4">4 - Moderate (보통)</option>
+                <option value="5">5 - Low (낮음)</option>
             </select>
 
             <p><strong>보고서 상태:</strong></p>

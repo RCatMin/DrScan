@@ -48,7 +48,6 @@ th {
     font-size: 16px !important;
 }
 
-
 /* 페이지네이션 컨테이너 */
 .pagination {
     margin-top: 20px;
@@ -70,7 +69,6 @@ th {
     background-color: #BDBDBD !important;
 }
 
-
 .clinic-btn,
 .report-btn {
     background-color: #E0E0E0 !important;
@@ -87,6 +85,11 @@ th {
     background-color: #BDBDBD !important;
 }
 
+textarea:focus, select:focus {
+    background-color: #555 !important; /* 포커스 시 배경색 유지 */
+    color: #ffffff !important; /* 글자색 유지 */
+}
+
 /* 현재 페이지 버튼 (active) 스타일 */
 .pagination-btn.active {
     background-color: #E0E0E0 !important; /* 파란색 배경 */
@@ -94,3 +97,34 @@ th {
     font-weight: bold;
 }
 
+/* 중증도 레벨별 배경색 설정 */
+.severity-critical {
+    background-color: #007bff !important; /* 1순위 - 파란색 */
+    color: #ffffff !important;
+}
+
+.severity-urgent {
+    background-color: #dc3545 !important; /* 긴급 - 빨간색 */
+    color: #ffffff !important;
+}
+
+.severity-high {
+    background-color: #ffc107 !important; /* 높음 - 노란색 */
+    color: #ffffff !important;
+}
+
+.severity-moderate {
+    background-color: #28a745 !important; /* 보통 - 초록색 */
+    color: #ffffff !important;
+}
+
+.severity-low {
+    background-color: #ffffff !important; /* 낮음 - 흰색 */
+    color: #000000 !important;
+}
+
+/* 기본 스타일 */
+.severity-default {
+    background-color: #f8f9fa !important; /* 연한 회색 */
+    color: #343a40 !important;
+}
