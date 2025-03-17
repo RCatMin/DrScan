@@ -145,6 +145,15 @@
 - 진료 내용과 날짜가 비어있다면 "해당 내용을 작성해주세요"라는 오류 메세지를 출력합니다.
 - 진료 날짜가 오늘의 날짜보다 미래일 경우 "유효하지 않은 날짜입니다."라는 오류 메세지를 출력합니다.
 
+#### [비정상적인 로그인 시 계정정지]
+![Image](https://github.com/user-attachments/assets/efd05a8b-9a4a-4267-9d3c-40c06ffd6ae1)
+- 5회 이상 실패 시 계정정지
+- 관리자가 해제 가능
+
+#### [로그리스트]
+![Image](https://github.com/user-attachments/assets/83c42de7-18b4-4823-bd55-3f3cba3d4ad1)
+- 필요한 접근 기록을 저장
+- 유저코드별로 검색 가능
 
 ### 6. 발표 영상
 - https://www.youtube.com/watch?v=XUc5bNPgREE
