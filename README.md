@@ -78,13 +78,12 @@
                한 번더 클릭하면 **내림차순**으로 정렬합니다.
 ![메인 정렬](https://github.com/user-attachments/assets/341e463a-d9a5-411b-a91f-4563026d11a2)
 
-
 #### [메인 (상세목록)]
 - **상세목록** | **판독 내용있는 환자만 표시**가 됩니다.
                  판독 내용이 없는 경우엔 없음으로 표시됩니다.
 - **중증도 레벨** |중증도 레벨은 **한국형 응급환자 분류 도구**를 참고하여 **버튼 색상**을 구분하였습니다.
 
-https://github.com/user-attachments/assets/1e9d8db8-7405-4c73-b25f-aeee2a34d09c
+![세부목록](https://github.com/user-attachments/assets/21b5f42c-bd1a-4ff5-86da-5a152330ae1d)
 
 #### [DICOM Viewer (판독 저장)]
 - **표시** | **환자, Study, Series** 정보가 **외부 데이터베이스**에서 가져와 표시했습니다.
@@ -92,8 +91,8 @@ https://github.com/user-attachments/assets/1e9d8db8-7405-4c73-b25f-aeee2a34d09c
 - **자동저장** | 판독 중 입력된 데이터는 중간중간 **자동 저장**되어, 예상치 못한 데이터 손실을 예방할 수 있습니다.
 - **렌더링** | Cornerstone.js (코너스톤)로 초기화 및 이미지 로드 -> WebGL을 활용하여 DICOM 파일을 표시
   		  -> DICOM 데이터를 Blob 형태로 변환 후, HTML 뷰포트에 표시
-
-https://github.com/user-attachments/assets/389f2865-6a9b-41d8-adc1-bd2910dd5dfb
+  
+![판독저장](https://github.com/user-attachments/assets/50038eb1-5f78-4824-8e2d-3fcd362c077e)
 
 #### [판독 기록(목록)]
 - **정렬** | **테이블 제목**을 클릭하면 해당 목록에 맞게 **오름차순**으로 정렬합니다. 
@@ -108,9 +107,9 @@ https://github.com/user-attachments/assets/389f2865-6a9b-41d8-adc1-bd2910dd5dfb
              **중증도 레벨, 보고서 상태, 판독 내용**은 **내부 데이터베이스**에서 관리되며 수정 가능합니다.
 - **삭제** | 삭제 버튼 누르면 **삭제 확인 메세지**가 나오는데 확인을 눌려야지 **삭제가 완료**됩니다.
 
-https://github.com/user-attachments/assets/34e8e4f8-df40-4e43-9233-ac86f991888a
+![수정](https://github.com/user-attachments/assets/5a657212-a64b-497c-b616-171a52fa55f5)
 
-https://github.com/user-attachments/assets/6ff44f07-b6a4-4463-aa81-98ed3b1d42ab
+![삭제](https://github.com/user-attachments/assets/b2574090-3054-40d4-bed1-2a108187a4a5)
 
 ### 환자 목록 조회 및 진료 기록 관리
 
