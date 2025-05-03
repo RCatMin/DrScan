@@ -2,6 +2,9 @@
 
 
 ### 프로젝트 소개
+- 닥터스캔은 웹 기반으로 의료기관이 자체 환경과 필요에 맞게 손쉽게 통합 및 커스터마이징 가능한 웹 DICOM Viewer입니다.
+- DICOM 의료 영상의 실시간 렌더링과 판독 보고서 작성 및 관리가 가능합니다!
+- 의료 영상 판독 및 데이터 관리를 효율화하고 사용자 친화적 UI로 의료 업무 환경 개선을 목표로 했습니다!
 
 
 
@@ -42,29 +45,38 @@
 
 
 
-
 ### 2. 개발환경
-
+SERVER
+- 클라우드 기반(AWS EC2)
+- DBMS : MySQL, Oracle
+FORONT-END
+- JSP, JSTL
+- HTML5, CSS3, ECMAScript 6 (ES6)
+BACK-END
+- Java 17
+- Spring & Spring Boot
+- Spring MVC, Spring Data JPA
+STORAGE
+- Local Storage
+EXTERNAL LIBRARY & API
+- CFS / SMB 파일 공유 라이브러리: jcifs-ng
+- DICOM 뷰어 라이브러리: Cornerstone.js
+- dcm4che
 
 
 ### 3. 개발 기간 및 작업 관리
-- 프로젝트 기회 및 DB Modeling :
-- 서비스 개발 : 
-- 피드백 수정 및 배포 : 
+- 프로젝트 기회 및 DB Modeling : 2/1 ~ 2/4
+- 서비스 개발 : 2/4 ~ 3/4
+- 피드백 수정 및 배포 : 3/5 ~ 3/14
 
 
 ### 4. 문서
-- [프로젝트 기획서]()
-- [요구사항 명세서]()
-- [화면 설계서]()
-- [테이블 정의서]()
-- [인터페이스 정의서]()
+- [프로젝트 기획서](https://drive.google.com/file/d/1BAfhfP24IKO7qfxHzUTf0FfOh66tursc/view?usp=drive_link)
+- [요구사항 명세서](https://docs.google.com/spreadsheets/d/1IQUEEyGvU-f12gtRoEWC9gzALvhmW6Rt/edit?usp=drive_link&ouid=116757251093669453414&rtpof=true&sd=true)
+- [화면 설계서](https://docs.google.com/presentation/d/1gT2KXG8XfJNKqk7hueVldkOYEA2sdGOc/edit?usp=drive_link&ouid=116757251093669453414&rtpof=true&sd=true)
+- [테이블 정의서](https://docs.google.com/spreadsheets/d/1iomm7_cP0ewT_BbrJy3bBUIy0tGq9goJ/edit?usp=drive_link&ouid=116757251093669453414&rtpof=true&sd=true)
+- [인터페이스 정의서](https://docs.google.com/spreadsheets/d/1QC7firwHMEuktxPQkzh02QiAH5vuFHVY/edit?usp=drive_link&ouid=116757251093669453414&rtpof=true&sd=true)
   
-
-#### [기능1]
-- 
-![로그인 X](영상주소)
-
 
 ### [판독 및 조회]
 
