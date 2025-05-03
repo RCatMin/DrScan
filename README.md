@@ -46,19 +46,19 @@
 
 
 ### 2. 개발환경
-SERVER
+#### SERVER
 - 클라우드 기반(AWS EC2)
 - DBMS : MySQL, Oracle
-FORONT-END
+#### FORONT-END
 - JSP, JSTL
 - HTML5, CSS3, ECMAScript 6 (ES6)
-BACK-END
+#### BACK-END
 - Java 17
 - Spring & Spring Boot
 - Spring MVC, Spring Data JPA
-STORAGE
+#### STORAGE
 - Local Storage
-EXTERNAL LIBRARY & API
+#### EXTERNAL LIBRARY & API
 - CFS / SMB 파일 공유 라이브러리: jcifs-ng
 - DICOM 뷰어 라이브러리: Cornerstone.js
 - dcm4che
