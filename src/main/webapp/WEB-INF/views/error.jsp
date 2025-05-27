@@ -9,13 +9,13 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <html>
 <head>
-  <title>Title</title>
+  <title>Error</title>
 </head>
-<c:import url="/header">
+<c:import url="/header" />
   <body>
   <div id ="content-container">
     error
   </div>
   </body>
-</c:import url="/footer" />
-        </html>
+<c:import url="/footer" />
+</html>

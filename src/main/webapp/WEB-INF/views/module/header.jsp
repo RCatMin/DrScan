@@ -6,32 +6,60 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
 <html>
 <head>
-    <link rel="stylesheet"  href="/style/reset.css">
-    <link rel="stylesheet" href="style/global.css">
-    <title>DrScan</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/style/reset.css">
+    <link rel="stylesheet" href="/style/header.css">
+    <script type="module" src="/script/header.js"></script>
+    <link rel="shortcut icon"
+          href="https://store-images.s-microsoft.com/image/apps.6418.14364493555984900.9ea956f3-4735-41a8-b265-5c9a29b0fa8c.aa7487ad-5d24-4776-8364-cdfa4576252e">
+    <meta property="og:title" content="DrScan">
+    <meta property="og:description" content="DICOM활용 의료영상 서비스">
+    <meta property="og:image"
+          content="https://cmsmedia.defense.gov/2024/Dec/03/2003597411/740/740/0/241203-M-VW876-001.JPG?sv=2024-11-04&ss=b&srt=o&spr=https&se=2025-02-18T03%3A30%3A41Z&sp=r&sig=uPIfIjSAWAqwg0AscqNVxyZoL1nTPY9HBvcnwNVaUVA%3D">
 </head>
 <body>
-    <div>
-        <h1>DRSCAN</h1>
-        <nav id="navi-user">
+<header>
+    <div id="logo">
+        <h1>
+            <a href="/">Dr.Scan</a>
+        </h1>
+    </div>
+
+    <c:if test="${empty admin && empty authUser }">
+        <div class="btn">
+            <input type="button" value="로그인" onclick="location.href='/users/signin'">
+            <input type="button" value="회원가입" onclick="location.href='/users/signup'">
+        </div>
+    </c:if>
+
+    <c:if test="${not empty authUser }">
+        <div class="btn">
+            <input type="button" value="회원정보" onclick="location.href='/users/me'">
+            <input type="button" id="btn-logout" value="로그아웃" onclick="location.href='/users/action/signout'">
+        </div>
+    </c:if>
+</header>
+<c:choose>
+    <c:when test="${not empty authUser and authUser.accountType eq 'admin'}">
+        <nav id="menu">
             <ul>
-                <li>로그인</li>
-                <li>로그아웃</li>
-                <li>회원가입</li>
-                <li>님 마이페이지</li>
+                <li><a href="/admin">관리자페이지</a></li>
+                <li><a href="/admin/log">로그목록</a></li>
             </ul>
         </nav>
-    </div>
-    <h1>DrScan</h1>
-    <nav>
-        <ul>
-            <li>메뉴1</li>
-            <li>메뉴2</li>
-            <li>메뉴3</li>
-            <li>메뉴4</li>
-        </ul>
-    </nav>
+    </c:when>
+    <c:otherwise>
+        <nav id="menu">
+            <ul>
+                <li><a href="/patientScan/list">의료 영상 목록</a></li>
+                <li><a href="/patients/">환자 목록</a></li>
+            </ul>
+        </nav>
+    </c:otherwise>
+</c:choose>
+
 </body>
 </html>

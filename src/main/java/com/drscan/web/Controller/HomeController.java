@@ -1,4 +1,4 @@
-package Controller;
+package com.drscan.web.Controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,4 +25,12 @@ public class HomeController {
     public String error() {
         return "error";
     }
+
+    @GetMapping("/admin")
+    public String admin() {
+        return "users/admin";
+    }
+
+    @GetMapping({"/admin/logs", "/admin/log"})
+    public String adminLog() {return "/log/log";}
 }

@@ -1,5 +1,13 @@
-.DS_Store
+### Node.js ###
+node_modules/
+dist/
 
+### OS ###
+.DS_Store
+application.*.properties
+application.properties
+
+### Gradle ###
 HELP.md
 .gradle
 build/
@@ -37,3 +45,4 @@ out/
 
 ### VS Code ###
 .vscode/
+
