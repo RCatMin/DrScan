@@ -1,4 +1,40 @@
-# 👨🏻‍⚕️닥터스캔 (DICOM 활용 의료 영상 서비스) 
+
+<div align="center">
+
+### 👨🏻‍⚕️닥터스캔 (DICOM 활용 의료 영상 서비스) 
+ 
+### 의료영상 표준 웹 뷰어 프로젝트 🖍️
+![프로젝트 기간](https://img.shields.io/badge/프로젝트_기간-2025.02.11~2025.03.14-fab2ac?style=for-the-badge&logo=&logoColor=white&color=skyblue)
+<br/>
+![사용 언어 수](https://img.shields.io/github/languages/count/RCatMin/DrScan?style=for-the-badge&color=green)
+![커밋수](https://img.shields.io/github/commit-activity/t/RCatMin/DrScan?style=for-the-badge&color=green)
+![릴리즈](https://img.shields.io/badge/릴리즈-v1.0.0-1?style=for-the-badge&logo=google-chrome&color=green)
+<br/>
+![Node.js](https://img.shields.io/badge/Node.js-white?logo=nodedotjs&style=for-the-badge&color=edacb1)
+![Figma](https://img.shields.io/badge/Figma-white?logo=figma&style=for-the-badge&color=edacb1)
+![JSP/JSTL](https://img.shields.io/badge/JSP/JSTL-white?style=for-the-badge&color=edacb1)
+![HTML5](https://img.shields.io/badge/HTML5-white?logo=html5&style=for-the-badge&color=edacb1)
+![CSS](https://img.shields.io/badge/CSS-white?logo=css3&style=for-the-badge&color=edacb1)
+![JavaScript](https://img.shields.io/badge/JavaScript-white?logo=javascript&style=for-the-badge&color=edacb1)
+![npm](https://img.shields.io/badge/npm-white?logo=npm&style=for-the-badge&color=edacb1)
+![Webpack](https://img.shields.io/badge/Webpack-white?logo=webpack&style=for-the-badge&color=edacb1)
+![Cornerstone JS](https://img.shields.io/badge/Cornerstone_JS-white?style=for-the-badge&color=edacb1)
+
+![Java 17](https://img.shields.io/badge/Java_17-white?style=for-the-badge&color=edacb1)
+![Spring](https://img.shields.io/badge/Spring-white?logo=spring&style=for-the-badge&color=edacb1)
+![SpringBoot](https://img.shields.io/badge/SpringBoot-white?logo=springboot&style=for-the-badge&color=edacb1)
+![dcm4che](https://img.shields.io/badge/dcm4che-white?style=for-the-badge&color=edacb1)
+![jcifs](https://img.shields.io/badge/jcifs-white?style=for-the-badge&color=edacb1)
+
+![MySQL](https://img.shields.io/badge/MySQL-white?logo=mysql&style=for-the-badge&color=edacb1)
+![AWS RDS](https://img.shields.io/badge/AWS_RDS-white?logo=amazonrds&style=for-the-badge&color=edacb1)
+![Oracle DB](https://img.shields.io/badge/Oracle_DB-white?style=for-the-badge&color=edacb1)
+
+![Intellij IDEA](https://img.shields.io/badge/Intellij_IDEA-white?logo=intellijidea&style=for-the-badge&color=edacb1)
+![Git](https://img.shields.io/badge/Git-white?logo=git&style=for-the-badge&color=edacb1)
+![GitHub](https://img.shields.io/badge/GitHub-white?logo=github&style=for-the-badge&color=edacb1)
+
+</div> 
 
 
 ### 프로젝트 소개
@@ -7,11 +43,29 @@
 - 의료 영상 판독 및 데이터 관리를 효율화하고 사용자 친화적 UI로 의료 업무 환경 개선을 목표로 했습니다!
 
 
+>#### 🚨 빌드 시 주의
+>DrScan 프로젝트는 **제공된 Oracle DB와 네트워크 Storage(NAS) 주소**를 기반으로 설정 및 빌드가 진행됩니다.</br>
+> 아래와 같은 상황에서 빌드에 어려움이 발생할 수 있으니, 실행 전 다음 사항을 반드시 확인해주시기 바랍니다.:
+>- DrScan 프로젝트는 Oracle DB에 접근하여 데이터를 처리합니다.<br/>
+   >  제공된 DB 주소, 사용자 계정, 비밀번호 등이 누락되거나 잘못된 경우 실행이 불가능합니다.
+>- 의료 영상 데이터(DICOM 파일)는 네트워크 스토리지에 저장되어 있으며,<br/>
+   >  해당 주소가 유효하지 않거나 접근 권한이 없는 경우 영상 렌더링 및 조회 기능이 동작하지 않습니다.
+
+<br/>
+
+
 
 ### 1. 팀원 구성 및 역할 분담
 
 #### 🐉 이민수 (팀장)
-
+ - 기능 : 의료 영상 렌더링 및 조작
+	- 해당 환자 DICOM 영상 렌더링
+	- 영상 확대 기능
+   	- 영상 이동 기능
+	- 영상 음영 처리
+	- 영상 좌우 반전 및 기울기 기능
+	- 선택 후 주석 삽입 기능
+	- 특정 부위 길이 측정 및 그리기 기능
 
 #### 🐇 박현균 (서기)
  - 기능 : 판독 및 조회
@@ -170,11 +224,68 @@
 - 유저코드별로 검색 가능
 
 ### 6. 발표 영상
-- https://www.youtube.com/watch?v=XUc5bNPgREE
+[<작품발표영상> 이민수 팀 - DrScan ](https://www.youtube.com/watch?v=XUc5bNPgREE)
 
-### 7. 프로젝트 후기
+
+### 7. 기술 스택
+
+### Front-end
+<div>
+<img src="https://github.com/user-attachments/assets/5caa5b35-314b-4d44-82c9-b9bc1b0d27cd" width="80">
+<img src="https://github.com/user-attachments/assets/87ae75e5-bbf7-48e8-98ad-04da6e708a89" width="80">
+<img src="https://github.com/user-attachments/assets/4a0f33c1-37d7-4b2b-9454-d13ec723fc72" width="80">
+<img src="https://github.com/user-attachments/assets/76af8467-0cc6-4ab6-af5e-d995817b25d5" width="80">
+<img src="https://github.com/user-attachments/assets/185c428c-2206-4014-944c-b6bb1f0c5c18" width="80">
+<img src="https://github.com/user-attachments/assets/b0058543-d60d-45e8-a9eb-a5873c558b91" width="80">
+<img src="https://github.com/user-attachments/assets/c082ba58-1f43-4f5f-abd6-dc9cb6208d8f" width="80">
+<img src="https://github.com/user-attachments/assets/bf5cbb32-920c-4ff3-b213-4bb0112170b8" width="80">
+<img src="https://github.com/user-attachments/assets/e90e70cc-fb4d-43f8-b4d0-e8f8813ba6f0" width="80">
+</div>
+
+### Back-end
+<div>
+<img src="https://github.com/user-attachments/assets/aed9f647-486a-4bde-b296-680a5c48937c" width="80">
+<img src="https://github.com/user-attachments/assets/6fa87a9c-a159-4e25-815a-281d9969202b" width="80">
+<img src="https://github.com/user-attachments/assets/66e05d43-7247-42aa-b6f7-a1fccd9e39a6" width="80">
+<img src="https://github.com/user-attachments/assets/bc65ad72-8ddf-4145-802c-e1151cb482ea" width="80">
+<img src="https://github.com/user-attachments/assets/92664f96-2f46-4402-b777-872356e041e4" width="80">
+<img src="https://github.com/user-attachments/assets/a6942a4d-1daf-4da1-bff7-8b9a1fa45d56" width="80">
+<img src="https://github.com/user-attachments/assets/574dfe5f-1db9-44ff-91ba-f2ebd4d8fdb8" width="80">
+</div>
+
+### Database
+<div>
+<img src="https://github.com/user-attachments/assets/a4f7d7d0-cf9f-434e-97ff-d2b9a020eb97" width="80">
+<img src="https://github.com/user-attachments/assets/ea902b55-c6a2-4678-b9c5-e5295bc5aa3f" width="80">
+<img src="https://github.com/user-attachments/assets/c544939e-38dd-4820-8b5c-4f7a6843ceab" width="80">
+</div>
+
+### Tool
+<div>
+<img src="https://github.com/user-attachments/assets/4b7bbf9a-6ab5-4756-95d9-a14300c465be" width="80">
+<img src="https://github.com/user-attachments/assets/b5d225af-1363-427b-bec2-799da1535c29" width="80">
+<img src="https://github.com/user-attachments/assets/4463e299-8d6a-40a8-8d91-263509d9feba" width="80">
+</div>
+
+<br />
+
+### 8. 프로젝트 후기
 
 ### 🐉이민수
+이번 프로젝트는 이전에 진행했던 프로젝트와 달리 규모가 커진 5명이 하나의 팀이 되어 **의료 영상 판독 및 관리 시스템 서비스**를 만들어 **개발자로서 첫 걸음을 시작하는 귀중한 시간**이 되었습니다.
+
+백엔드에서는 **Spring MVC, RESTful API**를 중심으로 구조화 및 설계하고 **Spring Data JPA와 Hibernate**를 통하여 **Oracle DB, 직접 설계한 MySQL DB**를 동시 활용하여 환자의 기본 정보 및 검사 정보, 영상 데이터를 분리하였습니다.
+
+프론트엔드에서는 **dcm4che**를 통해 **의료 영상 (DICOM 영상) 렌더링 기능을 구현**, **Cornerstone.js API**를 적극 도입하여 영상 판독에 필요한 **확대 및 이동, 음영 처리, 주석 삽입 및 그리기 기능 등**을 구현하였습니다.
+
+프로젝트 간 처음 팀장을 담당하였습니다.
+
+처음에 서로 의견이 맞지 않는 일도 있었지만 의견 조율을 중재하고 협업하는 분위기를 만든 결과 프로젝트를 잘 마무리 할 수 있었습니다.
+
+많은 기술들을 써가며, 실제 의료 시스템에서 제공되는 서비스를 직접 만들어 본 경험과 팀장으로서 팀을 이끌어 간 경험은 앞으로 있을 개발자로서의 활동에 좋은 경험으로 남을 것 입니다.
+
+본 프로젝트가 끝난 이후로도 실제 서비스를 만들며 어떻게 해야 더 좋은 서비스를 만들 수 있는지, **단순 기능을 구현하는 Coder가 아닌 Service를 제공하는 Developer**로 성장해 나가겠습니다.
+
 
 ### 🐇박현균
 이번 프로젝트에서는 **Spring Boot 기반의 의료 영상 판독 및 관리 시스템**을 직접 설계하고 개발했습니다. 의료 데이터를 웹 환경에서 다루는 경험은 처음이었지만, 팀 프로젝트를 통해 하나의 시스템으로 완성해가는 과정이 무척 뜻깊었습니다.
