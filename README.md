@@ -8,7 +8,7 @@
 <br/>
 ![사용 언어 수](https://img.shields.io/github/languages/count/RCatMin/DrScan?style=for-the-badge&color=green)
 ![커밋수](https://img.shields.io/github/commit-activity/t/RCatMin/DrScan?style=for-the-badge&color=green)
-![릴리즈](https://img.shields.io/badge/릴리즈-v1.0.0-1?style=for-the-badge&logo=google-chrome&color=green)
+![릴리즈](https://img.shields.io/badge/Releases-v1.0.0-1?style=for-the-badge&logo=google-chrome&color=green)
 <br/>
 ![Node.js](https://img.shields.io/badge/Node.js-white?logo=nodedotjs&style=for-the-badge&color=edacb1)
 ![Figma](https://img.shields.io/badge/Figma-white?logo=figma&style=for-the-badge&color=edacb1)
